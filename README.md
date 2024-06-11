@@ -2,14 +2,16 @@
 # (K)ein ganz normales Stichspiel?
 
 ## Benötigte Karten
+
 1-18 in 5 Farben
-Anzahl Spieler | Anzahl Karten | Kartenkombinationen
-----------------------------------------------------
-2 Spieler |	42 (3 übrig) |	3x 1-14
-3 Spieler |	56 (5 übrig) |	4x 1-14
-4 Spieler |	68 (5 übrig) |	4x 1-17
-5 Spieler |	85 (10 übrig) |	5x 1-17
-6 Spieler |	90 (3 übrig) |	5x 1-18
+
+|Anzahl Spieler | Anzahl Karten | Kartenkombinationen|
+|---------------|---------------|--------------------|
+|2 Spieler |	42 (3 übrig) |	3x 1-14|
+|3 Spieler |	56 (5 übrig) |	4x 1-14|
+|4 Spieler |	68 (5 übrig) |	4x 1-17|
+|5 Spieler |	85 (10 übrig) |	5x 1-17|
+|6 Spieler |	90 (3 übrig) |	5x 1-18|
 
 ## Spielablauf
 - Karten werden verteilt: (Anzahl Spieler)+1 Stapel mit je 12 Karten + 2 Karten extra + 1 Karte für Trumpf
