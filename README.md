@@ -18,6 +18,8 @@
     - Übrige Karten kommen beiseite
 - Trumpffarbe wird aufgedeckt
 - Rollen werden gewählt
+    - Gegen den Uhrzeigersinn, beginnend beim Geber
+    - Variante: Erst stehen nur drei zufällige Rollen zur Auswahl, zwischen denen gewählt wird. Der Geber wählt eine dieser Rollen, der nächste Spieler erhält die verbliebenen beiden zur Auswahl, ergänzt um eine weitere zufällig gewählte Rolle.
 - Rolleneffekte werden ausgeführt (Trumpffarbe geändert, Tokens verteilt, …)
 
 - Trümpfe können nur gespielt werden, wenn man keine Farbe bedienen muss
