@@ -69,3 +69,11 @@ Punkte: max(0, 8 - Anzahl Stiche * 2)
 
 ## Spielstatistik
 F C G I - 5 6 3 6
+
+## Python-version
+
+Pygame kann gestartet werden durch
+
+```python -m tricking_bees```
+
+Benötigt python 3.12 oder höher + pygame.
