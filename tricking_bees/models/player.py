@@ -10,14 +10,14 @@ class Player:
     name: str
     tricks_won: int = 0
     hand: CardStack = field(default_factory=CardStack)
-    current_role: Role | None = None
+    current_role: Role = Role()
     total_points: int = 0
 
     def reset_for_new_subgame(self):
         """Resets the player for a new subgame."""
         self.tricks_won = 0
         self.hand = CardStack()
-        self.current_role = None
+        self.current_role = Role()
 
     def deal_hand(self, card_stack: CardStack):
         """Deal a hand to the player."""
@@ -43,8 +43,4 @@ class Player:
         """Return the cards the player can currently play."""
         if not has_turn:
             return []
-        if compulsory_color is None:
-            return self.hand.cards
-        if self.hand.contains_color(compulsory_color):
-            return [card for card in self.hand.cards if card.color == compulsory_color]
-        return self.hand.cards
+        return self.current_role.get_playable_cards(self.hand, compulsory_color)

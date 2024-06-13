@@ -1,18 +1,20 @@
 from dataclasses import dataclass
 from math import ceil
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 if TYPE_CHECKING:
+    from .card import Card, CardColor
+    from .card_stack import CardStack
     from .player import Player
 
 
 @dataclass
 class Role:
-    letter: str
+    letter: str = ""
     """The letter identifying the role."""
-    name: str
+    name: str = ""
     """The name we give this role."""
-    desc_benefits: str
+    desc_benefits: str = ""
     """Description of benefits the role offers."""
     desc_points: str = "2 x N_tricks"
     """Description of how this role scores points."""
@@ -20,6 +22,16 @@ class Role:
     def calculate_points(self, tricks_won: int) -> int:
         """Calculate the points for this role."""
         return tricks_won * 2
+
+    def get_playable_cards(
+        self, hand: CardStack, compulsory_color: CardColor | None
+    ) -> list[Card]:
+        """Tell a player with this role which cards they should be able to play."""
+        if compulsory_color is None:
+            return hand.cards
+        if hand.contains_color(compulsory_color):
+            return [card for card in hand.cards if card.color == compulsory_color]
+        return hand.cards
 
 
 class RoleA(Role):
@@ -61,17 +73,25 @@ class RoleE(Role):
         self.desc_benefits = "You may always play any of your cards, i.e. don't have to follow the compulsory color."
         self.desc_points = "N_tricks"
 
+    @override
     def calculate_points(self, tricks_won: int) -> int:
         return tricks_won
+
+    @override
+    def get_playable_cards(
+        self, hand: CardStack, compulsory_color: CardColor | None
+    ) -> list[Card]:
+        return hand.cards
 
 
 class RoleF(Role):
     def __init__(self):
         self.letter = "F"
         self.name = "Double agent"
-        self.desc_benefits = "In the beginning of the game, you receive 12 more cards and have to play two for each trick."
+        self.desc_benefits = "In the beginning of the game, you receive 12 more cards and have to play two for each trick when you would usually only play one."
         self.desc_points = "N_tricks"
 
+    @override
     def calculate_points(self, tricks_won: int) -> int:
         return tricks_won
 
@@ -83,6 +103,7 @@ class RoleG(Role):
         self.desc_benefits = "You begin every trick."
         self.desc_points = "N_tricks"
 
+    @override
     def calculate_points(self, tricks_won: int) -> int:
         return tricks_won
 
@@ -99,11 +120,10 @@ class RoleH(Role):
         self.p1 = player_1
         self.p2 = player_2
 
+    @override
     def calculate_points(self, tricks_won: int) -> int:
         if not hasattr(self, "p1") or not hasattr(self, "p2"):
             raise ValueError("Players have not been selected for this role.")
-        if self.p1.current_role is None or self.p2.current_role is None:
-            raise ValueError("Players have not selected their roles.")
         # TODO: This is currently wrong, the player's points need to be calculated directly as they've won their own amount of tricks.
         p1_points = self.p1.current_role.calculate_points(tricks_won)
         p2_points = self.p2.current_role.calculate_points(tricks_won)
@@ -117,6 +137,7 @@ class RoleI(Role):
         self.desc_benefits = "None of your cards are trumps."
         self.desc_points = "max(0, 8-N_tricks*2)"
 
+    @override
     def calculate_points(self, tricks_won: int) -> int:
         return max(0, 8 - tricks_won * 2)
 
