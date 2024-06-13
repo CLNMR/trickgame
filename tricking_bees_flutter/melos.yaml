@@ -1,0 +1,72 @@
+name: tricking_bees
+
+packages:
+    - packages/**
+    # - packages_external/**
+
+scripts:
+    lint:
+        name: Run Lints
+        description: 'Runs the flutter analyze cmd in all packages'
+        exec: flutter analyze --congratulate --fatal-warnings --fatal-infos
+    lint-fix:
+        name: Autofix Linter Warnings
+        description: 'Runs the dart fix cmd in all packages'
+        exec: dart fix --apply
+    test:
+        name: Run Tests
+        description: 'Runs the flutter test cmd in all packages'
+        run: flutter test test/**/*_test.dart
+        exec:
+            concurrency: 1
+        packageFilters:
+            dirExists: 'test'
+
+    coverage:
+        name: Run Tests including Coverage
+        description: 'Runs the flutter test cmd with coverage in all packages'
+        run: flutter test --coverage test/**/*_test.dart
+        exec:
+            concurrency: 1
+        packageFilters:
+            dirExists: 'test'
+
+    generate_coverage_report:
+        name: Generate coverage report
+        description: 'Converts rel. to abs. paths and generates one combined html report'
+        # if this fails you need to install the `lcov` & `sed` package on your system
+        run:
+            >- # This converts rel. to abs. paths; then generates one combined html report
+            sed -e 's/lib\//packages\/ww_core\/lib\//g' packages/ww_core/coverage/lcov.info > ww_core_coverage.info &&
+            genhtml -p $MELOS_ROOT_PATH ww_core_coverage.info -o coverage_report
+
+    gen:
+        name: Generate Parts
+        description: 'Regenerates the .g-Files for all packages'
+        run: dart run build_runner build --delete-conflicting-outputs
+        exec:
+            concurrency: 1
+            orderDependence: true
+
+    upgrade_yust:
+        name: Upgrade yust and yust_ui
+        description: Runs dart upgrade yust and dart upgrade yust_ui in all packages
+        exec: flutter pub upgrade yust &&
+            flutter pub upgrade yust_ui
+
+    doc:
+        name: Generate Docs
+        description: 'Generates the docs for all packages'
+        exec: dart doc --output ../../doc/api/MELOS_PACKAGE_NAME
+
+    metrics:
+        name: Run Metrics
+        description: Run `dart_code_metrics` in all packages.
+        exec: flutter pub run dart_code_metrics:metrics analyze lib
+
+    countLines:
+        name: Count Lines
+        description: Counts the lines of code in all packages
+        exec: find ./lib -name '*.dart' ! -name '*.g.dart' ! -name '*.freezed.dart' ! -name '*.gr.dart' ! -name '*.gen.dart' | xargs wc -l | sort -n
+        
+        

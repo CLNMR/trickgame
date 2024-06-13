@@ -1,0 +1,8 @@
+name: tricking_bees_workspace
+version: 0.0.1
+
+environment:
+  sdk: '>=3.0.0'
+  
+dev_dependencies:
+  melos: ^3.0.1

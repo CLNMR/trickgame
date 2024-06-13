@@ -1,0 +1,30 @@
+bidAccepted: The bidding phase is over, {player} takes the bid of {number} and is
+  now playing the others as the challenger.
+cardPlayed: '{player} plays {card}.'
+factionChosen: '{player} chooses the {faction} faction.'
+roundStart: Round {number} starts. The event {event} is revealed.
+skipTurn: ''
+soloCardChosen: '{player} chooses to add {card} to their cards.'
+startOfGame: 'The game (ID: {gameId}) begins with {player1}, {player2} and {player3}.
+  The following selection of cards is available: {cardList}'
+turnStart: '{player} starts their turn.'
+unitDestroyed: A {unitType} of {player} at {coordinate} is destroyed.
+unitModMulti: This turn, all {attOrDef}{unitType} get a {numberWithOperator} battle
+  modifier.
+unitModMultiPlayer: This round, all {attOrDef}{unitType} get a {numberWithOperator}
+  battle modifier.
+unitModMultiWholeRound: ''
+unitModSingle: This turn, the unit at {coordinate} receives a {numberWithOperator}
+  battle modifier.
+unitMoves: '{player} moves a unit from {coordinateFrom} to {coordinateTo}.'
+unitPlaced: '{player} places a {unitType} at {coordinate}.'
+unitPromoted: '{player} promotes a unit at {coordinate} to a {unitType}.'
+unitRevealed: The unit of {player} at {coordinate} is a {unitType}.
+unitRevived: The unit of {player} at {coordinate} is revived as a {unitType}.
+unitsFightAttWins: '{playerAtt} thus attacks {playerDef}''s {unitTypeDef} with a {unitTypeAtt}
+  and wins the fight with {numberAtt} to {numberDef}.'
+unitsFightAttWinsOnBase: ''
+unitsFightDefOnBase: ''
+unitsFightDefWins: '{playerAtt} thus attacks {playerDef}''s {unitTypeDef} with a {unitTypeAtt}
+  and looses the fight with {numberAtt} to {numberDef}.'
+unitsSwapped: '{player} swaps the units at {coordinate1} and {coordinate2}.'
