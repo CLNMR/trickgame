@@ -1,5 +1,7 @@
 
 # (K)ein ganz normales Stichspiel?
+# Bienenstich
+Ein Spiel von Fabian Balzer und Colin Ihlenfeldt
 
 ## Benötigte Karten
 
@@ -44,7 +46,7 @@ Du darfst am Anfang 2 Karten drücken und dafür 2 der übrigen Karten nehmen.
 Punkte: Anzahl Stiche * 2
 
 Letzte Karte - D  
-Du legst immer als Letztes (wenn *Zwei Karten pro Stich* mitspielt, auch danach).
+Du legst immer als Letztes, es sei denn, du spielst den Stich an.
 Punkte: Anzahl Stiche * 2
 
 Kein Farbzwang - E  
@@ -52,7 +54,7 @@ Du kannst immer alle Karten spielen
 Punkte: Anzahl Stiche
 
 Zwei Karten pro Stich - F  
-Du erhältst 20 Karten am Anfang und musst am Ende eines Stichs noch eine weitere Karte legen.
+Du erhältst 20 Karten am Anfang und musst immer wenn du am Zug bist noch eine weitere Karte legen.
 Punkte: Anzahl Stiche
 
 Anspielen - G  
