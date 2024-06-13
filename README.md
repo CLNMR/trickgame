@@ -43,8 +43,8 @@ Drücken - C
 Du darfst am Anfang 2 Karten drücken und dafür 2 der übrigen Karten nehmen.
 Punkte: Anzahl Stiche * 2
 
-Zwischenwerfen - D  
-Du darfst entscheiden, an welcher Stelle im Stich deine Karte liegt, musst sie aber trotzdem dann spielen, wenn du an der Reihe bist.
+Letzte Karte - D  
+Du legst immer als Letztes (wenn *Zwei Karten pro Stich* mitspielt, auch danach).
 Punkte: Anzahl Stiche * 2
 
 Kein Farbzwang - E  
