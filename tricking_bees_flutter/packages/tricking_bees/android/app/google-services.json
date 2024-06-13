@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "449478430713",
+    "project_id": "trickingbees",
+    "storage_bucket": "trickingbees.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449478430713:android:0b0fb65d2b6ee34619f728",
+        "android_client_info": {
+          "package_name": "com.randomapps.trickingbees"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvFEHVPVfO4I-fGSuY7jrJrdOZSjfiV7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

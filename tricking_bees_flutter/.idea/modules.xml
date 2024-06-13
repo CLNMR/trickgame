@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/packages/tb_core/melos_tb_core.iml" filepath="$PROJECT_DIR$/packages/tb_core/melos_tb_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/tricking_bees/melos_tricking_bees.iml" filepath="$PROJECT_DIR$/packages/tricking_bees/melos_tricking_bees.iml" />
+      <module fileurl="file://$PROJECT_DIR$/melos_tricking_bees.iml" filepath="$PROJECT_DIR$/melos_tricking_bees.iml" />
+    </modules>
+  </component>
+</project>

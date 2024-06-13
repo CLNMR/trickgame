@@ -1,0 +1,13 @@
+{
+  "buttons": "BUT",
+  "logging": "LOG",
+  "event_names": "EVENT:NAME",
+  "event_descs": "EVENT:DESC",
+  "card_names": "CARD:NAME",
+  "card_descs": "CARD:DESC",
+  "header": "HEAD",
+  "other": "",
+  "status": "STATUS",
+  "status_special": "STATUS:SPECIAL",
+  "snippets": "SNIPPET"
+}

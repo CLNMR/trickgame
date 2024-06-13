@@ -1,0 +1,26 @@
+2024/05/20-13:49:47.866 a507 Reusing MANIFEST /private/var/folders/7z/pg1qhls154nd_2640fyl6k1m0000gn/T/flutter_tools.tavsbu/flutter_tools_chrome_device.W9JNd2/Default/IndexedDB/http_localhost_55415.indexeddb.leveldb/MANIFEST-000001
+2024/05/20-13:49:47.867 a507 Recovering log #4
+2024/05/20-13:49:47.867 a507 Reusing old log /private/var/folders/7z/pg1qhls154nd_2640fyl6k1m0000gn/T/flutter_tools.tavsbu/flutter_tools_chrome_device.W9JNd2/Default/IndexedDB/http_localhost_55415.indexeddb.leveldb/000004.log 
+2024/05/20-13:49:47.896 f903 Level-0 table #8: started
+2024/05/20-13:49:47.900 f903 Level-0 table #8: 933 bytes OK
+2024/05/20-13:49:47.906 f903 Delete type=0 #4
+2024/05/20-13:49:47.906 a507 Manual compaction at level-0 from '\x00\x05\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/05/20-14:08:55.154 9f03 Level-0 table #10: started
+2024/05/20-14:08:55.160 9f03 Level-0 table #10: 353 bytes OK
+2024/05/20-14:08:55.182 9f03 Delete type=0 #7
+2024/05/20-14:08:55.183 9f03 Manual compaction at level-0 from (begin) .. (end); will stop at '\x00\x02\x01\x02\x01\x05\x00_\x00_\x00s\x00a\x00k' @ 185 : 1
+2024/05/20-14:08:55.183 9f03 Compacting 1@0 + 1@1 files
+2024/05/20-14:08:55.187 9f03 Generated table #11@0: 16 keys, 558 bytes
+2024/05/20-14:08:55.187 9f03 Compacted 1@0 + 1@1 files => 558 bytes
+2024/05/20-14:08:55.195 9f03 compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/05/20-14:08:55.196 9f03 Delete type=2 #10
+2024/05/20-14:08:55.196 9f03 Delete type=2 #8
+2024/05/20-14:08:55.197 9f03 Manual compaction at level-0 from '\x00\x02\x01\x02\x01\x05\x00_\x00_\x00s\x00a\x00k' @ 185 : 1 .. (end); will stop at (end)
+2024/05/20-14:08:55.197 9f03 Manual compaction at level-1 from (begin) .. (end); will stop at '\x00\x02\x01\x02\x01\x05\x00_\x00_\x00s\x00a\x00k' @ 189 : 0
+2024/05/20-14:08:55.197 9f03 Compacting 1@1 + 1@2 files
+2024/05/20-14:08:55.200 9f03 Generated table #12@1: 34 keys, 1134 bytes
+2024/05/20-14:08:55.200 9f03 Compacted 1@1 + 1@2 files => 1134 bytes
+2024/05/20-14:08:55.207 9f03 compacted to: files[ 0 0 1 0 0 0 0 ]
+2024/05/20-14:08:55.207 9f03 Delete type=2 #5
+2024/05/20-14:08:55.207 9f03 Delete type=2 #11
+2024/05/20-14:08:55.208 9f03 Manual compaction at level-1 from '\x00\x02\x01\x02\x01\x05\x00_\x00_\x00s\x00a\x00k' @ 189 : 0 .. (end); will stop at (end)

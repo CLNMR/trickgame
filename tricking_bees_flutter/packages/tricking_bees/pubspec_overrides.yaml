@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: tb_core,flutter_painter
+dependency_overrides:
+  flutter_painter:
+    git: https://github.com/Harishwarrior/flutter_painter.git
+  tb_core:
+    path: ../tb_core
