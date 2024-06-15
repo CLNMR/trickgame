@@ -13,7 +13,7 @@ enum CardColor {
   yellow,
 
   /// Black?
-  black;
+  violet;
 
   /// Retrieve the number of colors for a given number of players.
   static int getColorNumForPlayerNum(int playerNum) => playerNum == 2
