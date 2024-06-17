@@ -11,7 +11,7 @@ from .player import Player
 class Game:
     """A class keeping track of the current game state."""
 
-    players: list["Player"]
+    players: list[Player]
     """The players in the game."""
 
     subgame_index: int = 0

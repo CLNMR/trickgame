@@ -9,9 +9,12 @@ from .role import Role
 class Player:
     name: str
     tricks_won: int = 0
-    hand: CardStack = field(default_factory=CardStack)
-    current_role: Role = Role()
+    hand: CardStack = field(init=False)
+    current_role: Role = field(default_factory=Role)
     total_points: int = 0
+
+    def __post_init__(self):
+        self.hand = CardStack()
 
     def reset_for_new_subgame(self):
         """Resets the player for a new subgame."""

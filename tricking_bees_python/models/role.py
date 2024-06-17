@@ -24,8 +24,8 @@ class Role:
         return tricks_won * 2
 
     def get_playable_cards(
-        self, hand: CardStack, compulsory_color: CardColor | None
-    ) -> list[Card]:
+        self, hand: "CardStack", compulsory_color: "CardColor | None"
+    ) -> list["Card"]:
         """Tell a player with this role which cards they should be able to play."""
         if compulsory_color is None:
             return hand.cards
@@ -79,8 +79,8 @@ class RoleE(Role):
 
     @override
     def get_playable_cards(
-        self, hand: CardStack, compulsory_color: CardColor | None
-    ) -> list[Card]:
+        self, hand: "CardStack", compulsory_color: "CardColor | None"
+    ) -> list["Card"]:
         return hand.cards
 
 
