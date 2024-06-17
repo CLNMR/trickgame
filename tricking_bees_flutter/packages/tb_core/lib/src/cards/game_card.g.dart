@@ -7,19 +7,21 @@ part of 'game_card.dart';
 // **************************************************************************
 
 GameCard _$GameCardFromJson(Map json) => GameCard(
-      number: json['number'] as int,
+      number: (json['number'] as num?)?.toInt(),
       color: $enumDecode(_$CardColorEnumMap, json['color']),
+      isQueen: json['isQueen'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$GameCardToJson(GameCard instance) => <String, dynamic>{
       'number': instance.number,
       'color': _$CardColorEnumMap[instance.color]!,
+      'isQueen': instance.isQueen,
     };
 
 const _$CardColorEnumMap = {
   CardColor.red: 'red',
-  CardColor.yellow: 'yellow',
   CardColor.green: 'green',
   CardColor.blue: 'blue',
+  CardColor.yellow: 'yellow',
   CardColor.violet: 'violet',
 };

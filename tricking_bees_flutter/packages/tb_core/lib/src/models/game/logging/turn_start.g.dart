@@ -7,8 +7,8 @@ part of 'turn_start.dart';
 // **************************************************************************
 
 LogTurnStart _$LogTurnStartFromJson(Map json) => LogTurnStart(
-      playerIndex: json['playerIndex'] as int,
-      indentLevel: json['indentLevel'] as int?,
+      playerIndex: (json['playerIndex'] as num).toInt(),
+      indentLevel: (json['indentLevel'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LogTurnStartToJson(LogTurnStart instance) =>

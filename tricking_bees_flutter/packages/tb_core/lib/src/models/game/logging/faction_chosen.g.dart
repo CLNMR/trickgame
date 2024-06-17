@@ -7,9 +7,9 @@ part of 'faction_chosen.dart';
 // **************************************************************************
 
 LogFactionChosen _$LogFactionChosenFromJson(Map json) => LogFactionChosen(
-      playerIndex: json['playerIndex'] as int,
-      factionIndex: json['factionIndex'] as int,
-      indentLevel: json['indentLevel'] as int?,
+      playerIndex: (json['playerIndex'] as num).toInt(),
+      factionIndex: (json['factionIndex'] as num).toInt(),
+      indentLevel: (json['indentLevel'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LogFactionChosenToJson(LogFactionChosen instance) =>

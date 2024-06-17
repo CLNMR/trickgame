@@ -7,9 +7,9 @@ part of 'skip_turn.dart';
 // **************************************************************************
 
 LogSkipTurn _$LogSkipTurnFromJson(Map json) => LogSkipTurn(
-      playerIndex: json['playerIndex'] as int,
+      playerIndex: (json['playerIndex'] as num).toInt(),
       isCardSkip: json['isCardSkip'] as bool? ?? false,
-      indentLevel: json['indentLevel'] as int?,
+      indentLevel: (json['indentLevel'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LogSkipTurnToJson(LogSkipTurn instance) =>

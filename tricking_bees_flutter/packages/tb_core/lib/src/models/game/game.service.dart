@@ -4,9 +4,9 @@
 // ServiceGenerator
 // **************************************************************************
 
+import 'package:tb_core/src/models/game/game.dart';
 // ignore_for_file: directives_ordering, prefer_relative_imports, empty_statements, lines_longer_than_80_chars
 import 'package:yust/yust.dart';
-import 'package:tb_core/src/models/game/game.dart';
 
 /// A service to get elements of [Game].
 class GameService {

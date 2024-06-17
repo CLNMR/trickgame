@@ -27,7 +27,7 @@ extension GameStatusGenerationExt on Game {
         TrObject(
           'STATUS:waitingForOtherPlayers',
           richTrObjects: [
-            RichTrObject(RichTrType.number, value: 3 - playerIds.length),
+            RichTrObject(RichTrType.number, value: playerNum - players.length),
           ],
         ),
       ];

@@ -35,16 +35,12 @@ class LogStartOfGame extends LogEntry {
   TrObject getDescription(Game game) => TrObject(
         localizedKey,
         richTrObjects: [
-          ...[0, 1, 2].map(
+          ...List.generate(game.playerNum, (index) => index).map(
             (i) => RichTrObject(
               RichTrType.player,
               value: i,
               keySuffix: '${i + 1}',
             ),
-          ),
-          RichTrObject(
-            RichTrType.cardList,
-            value: game.cards[3],
           ),
         ],
         namedArgs: {'gameId': game.gameId.toString()},

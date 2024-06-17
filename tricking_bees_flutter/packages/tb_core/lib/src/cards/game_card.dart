@@ -34,15 +34,24 @@ class GameCard {
   /// A short description.
   String get name => isQueen ? '$color Queen' : '$color $number';
 
-  /// Returns a list of all cards in the game.
-  static List<GameCard> getAllCards() {
-    //TODO: Different cards for different player sizes
-    final cards = <GameCard>[];
-    for (final color in CardColor.values) {
-      for (var number = 1; number < 18; number++) {
-        cards.add(GameCard(number: number, color: color));
-      }
+  /// Custom sorting function for GameCard objects.
+  static int sort(GameCard a, GameCard b) {
+    // First, compare by color.
+    if (a.color.index != b.color.index) {
+      return a.color.index.compareTo(b.color.index);
     }
-    return cards;
+
+    // If colors are equal, compare by number.
+    if (a.number != null && b.number != null) {
+      return a.number!.compareTo(b.number!);
+    }
+
+    // If numbers are equal or null, compare by whether the card is a queen.
+    if (a.isQueen != b.isQueen) {
+      return a.isQueen ? 1 : -1;
+    }
+
+    // If all properties are equal, the cards are equal.
+    return 0;
   }
 }

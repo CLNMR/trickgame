@@ -1,3 +1,4 @@
+import 'package:tb_core/src/models/player.dart';
 import 'package:tb_core/tb_core.dart';
 import 'package:test/test.dart';
 import 'package:yust/yust.dart';
@@ -19,10 +20,10 @@ void main() {
     await game.addUser(user1);
     await game.addUser(user2);
     await game.addUser(user3);
-    expect(game.playerIds.toSet(), {
-      PlayerId.fromUser(user1),
-      PlayerId.fromUser(user2),
-      PlayerId.fromUser(user3),
+    expect(game.players.toSet(), {
+      Player.fromUser(user1),
+      Player.fromUser(user2),
+      Player.fromUser(user3),
     });
   });
 

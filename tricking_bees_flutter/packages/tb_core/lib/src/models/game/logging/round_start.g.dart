@@ -7,8 +7,8 @@ part of 'round_start.dart';
 // **************************************************************************
 
 LogRoundStart _$LogRoundStartFromJson(Map json) => LogRoundStart(
-      round: json['round'] as int,
-      indentLevel: json['indentLevel'] as int?,
+      round: (json['round'] as num).toInt(),
+      indentLevel: (json['indentLevel'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LogRoundStartToJson(LogRoundStart instance) =>

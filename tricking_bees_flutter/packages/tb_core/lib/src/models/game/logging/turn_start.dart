@@ -52,9 +52,9 @@ class LogTurnStart extends LogEntry {
     ) displayEvent,
     Function() incrementLogDisplayCount,
   ) async {
-    final playerInfo = game.getPlayerStatusInfo(playerIndex);
+    final playerInfo = game.currentPlayer;
     await displayEvent(
-      TrObject('${playerInfo.name}s turn starts'),
+      TrObject("${playerInfo.displayName}'s turn starts"),
       TrObject(''),
     );
     incrementLogDisplayCount();

@@ -9,8 +9,8 @@ part of 'card_played.dart';
 LogCardPlayed _$LogCardPlayedFromJson(Map json) => LogCardPlayed(
       cardKey:
           GameCard.fromJson(Map<String, dynamic>.from(json['cardKey'] as Map)),
-      playerIndex: json['playerIndex'] as int,
-      indentLevel: json['indentLevel'] as int?,
+      playerIndex: (json['playerIndex'] as num).toInt(),
+      indentLevel: (json['indentLevel'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LogCardPlayedToJson(LogCardPlayed instance) =>

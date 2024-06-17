@@ -7,7 +7,7 @@ part of 'start_of_game.dart';
 // **************************************************************************
 
 LogStartOfGame _$LogStartOfGameFromJson(Map json) => LogStartOfGame(
-      indentLevel: json['indentLevel'] as int?,
+      indentLevel: (json['indentLevel'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LogStartOfGameToJson(LogStartOfGame instance) =>
