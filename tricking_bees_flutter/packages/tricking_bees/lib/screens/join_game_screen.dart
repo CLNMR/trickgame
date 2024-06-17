@@ -107,8 +107,7 @@ class _HomeScreenState extends ConsumerState<JoinGameScreen> {
         builder: (g, _, __) {
           final games = g
               .where(
-                (doc) =>
-                    doc.playerIds.any((player) => player.id == ref.user!.id),
+                (doc) => doc.players.any((player) => player.id == ref.user!.id),
               )
               .toList();
           if (games.isEmpty) {

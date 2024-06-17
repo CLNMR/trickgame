@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,7 @@ import '../widgets/own_button.dart';
 import '../widgets/own_text.dart';
 import 'account_screen.r.dart';
 import 'game_list_screen.r.dart';
+import 'game_screen.r.dart';
 import 'join_game_screen.r.dart';
 import 'new_game_screen.r.dart';
 import 'setting_screen.r.dart';
@@ -38,6 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 _buildJoinGameButton(context),
                 _buildResumeGameButton(context),
                 _buildSettingButton(context),
+                if (kDebugMode) _buildResumeTestGameButton(context),
                 _buildTestWidget(context),
               ],
             ),
@@ -70,15 +73,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildAvatar() {
     final user = ref.user;
-    if (user == null) {
-      return const SizedBox();
-    }
     return GestureDetector(
       onTap: _goToAccountScreen(context),
       child: CircleAvatar(
-        backgroundColor: UIHelper.getColorFromString(user.email),
+        backgroundColor: (user == null)
+            ? Colors.black
+            : UIHelper.getColorFromString(user.email),
         child: Text(
-          user.firstName.substring(0, 2).toUpperCase(),
+          (user == null) ? 'X' : user.firstName.substring(0, 2).toUpperCase(),
           style: const TextStyle(fontSize: 24),
         ),
       ),
@@ -117,9 +119,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         onPressed: _goToSettingScreen(context),
       );
 
+  Widget _buildResumeTestGameButton(BuildContext context) => OwnButton(
+        text: 'TestGame',
+        onPressed: () async =>
+            context.push('${GameScreenRouting.path}/D4NgsfETfMuNJS9egIlY'),
+      );
+
   Widget _buildTestWidget(BuildContext context) => Row(
         children: [
-          const Text('Test: '),
+          SelectableText('Current user: ${ref.user}'),
           if (ref.user == null) const SizedBox(),
           // else
           //   OwnRichText(

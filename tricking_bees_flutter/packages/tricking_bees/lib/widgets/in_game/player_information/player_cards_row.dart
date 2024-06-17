@@ -44,10 +44,10 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
   Widget _buildPlayerCards() => ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 130),
         child: CardGridView(
-          cards: sortCardsList(widget.game.getRemainingHandCards(ref.user)),
-          isDisabled: !widget.game.canPlayAnyCards(ref.user),
+          cards: widget.game.getPlayer(ref.user!).cards,
+          isDisabled: !widget.game.canPlayAnyCards(ref.user!),
           onTap: (card) async {
-            await widget.game.playCard(card, ref.user);
+            await widget.game.playCard(card, ref.user!);
           },
         ),
       );

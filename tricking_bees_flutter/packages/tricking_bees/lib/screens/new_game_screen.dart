@@ -75,6 +75,9 @@ class _HomeScreenState extends ConsumerState<NewGameScreen> {
                   text: 'StartGame',
                   onPressed: () async {
                     final router = GoRouter.of(context);
+                    if (ref.user == null) {
+                      throw Exception('No user found in ref.');
+                    }
                     await _game.start(ref.user!);
                     await router.pushNamed(
                       GameScreenRouting.path,

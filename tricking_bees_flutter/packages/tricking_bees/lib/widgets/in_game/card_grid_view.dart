@@ -17,7 +17,7 @@ class CardGridView extends StatelessWidget {
   }) : super();
 
   /// The cards to be displayed
-  final List<GameCard> cards;
+  final CardStack cards;
 
   /// Whether the gridView is disabled (untappable)
   final bool isDisabled;
@@ -30,6 +30,7 @@ class CardGridView extends StatelessWidget {
 
   /// The number of rows for the cards to be displayed.
   final int rowNumber;
+
   @override
   Widget build(BuildContext context) => GridView.builder(
         scrollDirection: Axis.horizontal,

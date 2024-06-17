@@ -20,7 +20,7 @@ class GameButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.all(8),
         child: OwnButton(
-          text: game.playerIds.map((player) => player.displayName).join(' - '),
+          text: game.players.map((player) => player.displayName).join(' - '),
           translate: false,
           onPressed: () async {
             final goRouter = GoRouter.of(context);

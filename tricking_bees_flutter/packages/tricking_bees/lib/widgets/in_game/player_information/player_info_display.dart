@@ -11,23 +11,24 @@ class PlayerInfoDisplay extends StatefulWidget {
   /// Creates a [PlayerInfoDisplay].
   const PlayerInfoDisplay({
     super.key,
-    required this.playerStatusInfo,
+    required this.player,
+    required this.hasCurrentTurn,
   });
 
-  /// The faction of the player.
-  final PlayerStatusInfo playerStatusInfo;
+  /// The player to display info for.
+  final Player player;
+
+  /// Whether the given player is currently required to input an action.
+  final bool hasCurrentTurn;
 
   @override
   State<PlayerInfoDisplay> createState() => _PlayerInfoDisplayState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<PlayerStatusInfo>(
-        'playerStatusInfo',
-        playerStatusInfo,
-      ),
-    );
+    properties
+      ..add(DiagnosticsProperty<Player>('player', player))
+      ..add(DiagnosticsProperty<bool>('hasCurrentTurn', hasCurrentTurn));
   }
 }
 
@@ -60,17 +61,16 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
           height: 85,
           decoration: BoxDecoration(
             border: Border.all(
-              color: widget.playerStatusInfo.hasCurrentTurn
+              color: widget.hasCurrentTurn
                   ? Colors.black.withOpacity(_controller.value)
                   : Colors.white,
-              width: widget.playerStatusInfo.hasCurrentTurn ? 5 : 3,
+              width: widget.hasCurrentTurn ? 5 : 3,
             ),
             color: Colors.white.lighten(20),
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(
-            padding:
-                EdgeInsets.all(widget.playerStatusInfo.hasCurrentTurn ? 3 : 5),
+            padding: EdgeInsets.all(widget.hasCurrentTurn ? 3 : 5),
             child: Row(
               children: [
                 Flexible(
@@ -92,7 +92,7 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
   Widget _buildHeader() => Flexible(
         child: Row(
           children: [
-            OwnText(text: widget.playerStatusInfo.name, translate: false),
+            OwnText(text: widget.player.displayName, translate: false),
             const Spacer(),
           ],
         ),
@@ -107,7 +107,7 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
             children: [
               IconWithNumber(
                 iconData: Icons.collections,
-                displayNum: widget.playerStatusInfo.cardNum,
+                displayNum: widget.player.cards.length,
                 tooltip: 'PLAYERINFO:CardsRemaining',
               ),
             ],

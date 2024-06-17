@@ -67,7 +67,7 @@ class _HomeScreenState extends ConsumerState<GameListScreen> {
               YustFilter(
                 field: 'playerNames',
                 comparator: YustFilterComparator.arrayContains,
-                value: PlayerId.fromUser(ref.user!).id,
+                value: Player.fromUser(ref.user!).id,
               ),
               YustFilter(
                 field: 'gameState',

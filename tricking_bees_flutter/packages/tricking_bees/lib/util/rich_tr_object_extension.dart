@@ -24,8 +24,7 @@ extension UiRichTrObject on RichTrObject {
           style: const TextStyle(fontWeight: FontWeight.bold),
         );
       case RichTrType.cardList:
-        final cards = value as List<GameCard>;
-        sortCardsList(cards);
+        final cards = value as CardStack;
         return TextSpan(
           children: cards
               .map(
