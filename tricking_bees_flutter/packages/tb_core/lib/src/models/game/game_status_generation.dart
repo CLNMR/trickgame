@@ -98,7 +98,7 @@ extension GameStatusGenerationExt on Game {
   List<TrObject> _getStatusMessagesForSpecialInput(YustUser user) =>
       currentRoles
           .map(
-            (cardOrEvent) => cardOrEvent.getSpecialStatusMessage(this, user),
+            (role) => role.getSpecialStatusMessage(this, user),
           )
           .nonNulls
           .toList();

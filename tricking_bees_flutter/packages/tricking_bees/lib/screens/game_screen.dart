@@ -90,7 +90,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             // Reset the game if we try to set it in progress.
             if (state == GameState.inProgress) {
               statefulGame
-                ..gameArea = GameArea()
                 ..currentRound = 0
                 ..logEntries.forEach((key, value) {
                   if (key != 0) value.clear();

@@ -56,7 +56,7 @@ class SingleCardDisplay extends StatelessWidget {
                         alignment: Alignment.bottomLeft,
                         children: [
                           _buildCardStrengthIndicator(
-                            cardKey.number,
+                            cardKey.number ?? 0,
                           ),
                         ],
                       ),

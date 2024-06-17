@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yust/yust.dart';
 
@@ -17,7 +16,6 @@ import '../../util/other_functions.dart';
 import '../../wrapper/rich_tr_object.dart';
 import '../../wrapper/rich_tr_object_type.dart';
 import '../../wrapper/tr_object.dart';
-import '../game_area.dart';
 import '../game_id.dart';
 import '../game_state.dart';
 import '../player_id.dart';
@@ -65,9 +63,7 @@ class Game extends YustDoc {
     this.inputRequirement = InputRequirement.card,
     Map<RoundNumber, Map<TurnNumber, List<LogEntry>>>? existingLogEntries,
     Map<String, dynamic>? cardAndEventFlags,
-    GameArea? board,
   })  : gameId = gameId ?? GameId.generate(),
-        gameArea = board ?? GameArea(),
         playerIds = players ?? [PlayerId.empty, PlayerId.empty, PlayerId.empty],
         roles = roles ?? [],
         cards = existingCards ?? _getShuffledAndDistributedCards(),
@@ -111,9 +107,6 @@ class Game extends YustDoc {
 
   /// The player who has the current turn.
   PlayerIndex currentPlayerIndex;
-
-  /// The game area where the action takes place.
-  GameArea gameArea;
 
   /// Which input is required from the user.
   InputRequirement inputRequirement;
@@ -192,25 +185,6 @@ class Game extends YustDoc {
   static Map<int, List<GameCard>> _getShuffledAndDistributedCards() {
     final map = <int, List<GameCard>>{};
     // TODO: Distribute the cards
-    // var maxDiff = 35;
-    // while (maxDiff > 6) {
-    //   final shuffledCards = GameCard.getAllCards().shuffle();
-    //   final cardsPerPlayer = shuffledCards.length ~/ 4;
-    //   for (var i = 0; i < 3; i++) {
-    //     map[i] =
-    //         shuffledCards.sublist(i * cardsPerPlayer, (i + 1) * cardsPerPlayer);
-    //   }
-    //   map[3] = shuffledCards.sublist(3 * cardsPerPlayer);
-    //   final cardSums = map.values
-    //       .map(
-    //         (cards) => cards.fold<int>(
-    //           0,
-    //           (previousValue, card) => previousValue + card.strength,
-    //         ),
-    //       )
-    //       .toList();
-    //   maxDiff = cardSums.reduce(max) - cardSums.reduce(min);
-    // }
     return map;
   }
 

@@ -3,7 +3,7 @@
 import 'no_role.dart';
 import 'role.dart';
 
-/// All events available in the game.
+/// All roles available in the game.
 enum RoleCatalog {
   noRole(NoRole.new);
 

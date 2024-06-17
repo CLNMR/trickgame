@@ -38,8 +38,6 @@ Game _$GameFromJson(Map json) => Game(
       ..playerIds = (json['playerIds'] as List<dynamic>)
           .map((e) => PlayerId.fromJson(Map<String, dynamic>.from(e as Map)))
           .toList()
-      ..gameArea =
-          GameArea.fromJson(Map<String, dynamic>.from(json['gameArea'] as Map))
       ..logEntries = (json['logEntries'] as Map).map(
         (k, e) => MapEntry(
             int.parse(k as String),
@@ -72,7 +70,6 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
           (k, e) => MapEntry(k.toString(), e.map((e) => e.toJson()).toList())),
       'currentRound': instance.currentRound,
       'currentPlayerIndex': instance.currentPlayerIndex,
-      'gameArea': instance.gameArea.toJson(),
       'inputRequirement': _$InputRequirementEnumMap[instance.inputRequirement]!,
       'logEntries': instance.logEntries.map((k, e) => MapEntry(
           k.toString(),

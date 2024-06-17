@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'card_color.dart';
+
 part 'game_card.g.dart';
 
 @JsonSerializable()
@@ -9,7 +11,8 @@ class GameCard {
   /// Creates a [GameCard].
   GameCard({
     required this.number,
-    required this.color, // Add initializer for the 'color' field
+    required this.color,
+    this.isQueen = false,
   });
 
   /// Create a [GameCard] from a JSON map.
@@ -20,10 +23,16 @@ class GameCard {
   Map<String, dynamic> toJson() => _$GameCardToJson(this);
 
   /// The number of the card
-  int number;
+  int? number;
 
-  /// The color of the card
-  CardColor color;
+  /// The color of the card (i.e. suit)
+  final CardColor color;
+
+  /// Whether this card is a queen.
+  final bool isQueen;
+
+  /// A short description.
+  String get name => isQueen ? '$color Queen' : '$color $number';
 
   /// Returns a list of all cards in the game.
   static List<GameCard> getAllCards() {
@@ -36,18 +45,4 @@ class GameCard {
     }
     return cards;
   }
-}
-
-/// The possible colors of a card.
-enum CardColor {
-  // ignore: public_member_api_docs
-  red,
-  // ignore: public_member_api_docs
-  yellow,
-  // ignore: public_member_api_docs
-  green,
-  // ignore: public_member_api_docs
-  blue,
-  // ignore: public_member_api_docs
-  violet;
 }
