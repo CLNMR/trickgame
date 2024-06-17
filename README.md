@@ -16,6 +16,7 @@ Ein Spiel von Fabian Balzer und Colin Ihlenfeldt
 |6 Spieler |	90 (3 übrig) |	5x 1-18|
 
 ## Spielablauf
+
 - Karten werden verteilt: (Anzahl Spieler)+1 Stapel mit je 12 Karten + 2 Karten extra + 1 Karte für Trumpf
     - Übrige Karten kommen beiseite
 - Trumpffarbe wird aufgedeckt
@@ -25,6 +26,7 @@ Ein Spiel von Fabian Balzer und Colin Ihlenfeldt
 - Rolleneffekte werden ausgeführt (Trumpffarbe geändert, Tokens verteilt, …)
 
 ### Legeregeln
+
 - Trümpfe können nur gespielt werden, wenn man keine Farbe bedienen muss
 - Nieten können immer gespielt werden
 - Letzter Trumpf gewinnt, außer letzte Runde
@@ -69,8 +71,15 @@ Kein Trumpf - I
 Keine deiner Karten ist Trumpf.
 Punkte: max(0, 8 - Anzahl Stiche * 2)
 
+Verdecktes Spiel - J
+Wenn du nicht ausspielst, spielst du deine Karten verdeckt.
+Erst am Ende jedes Stichs wird die verdeckte Karte aufgedeckt.
+Punkte: Anzahl Stiche * 2
+
 ## Spielstatistik
 F C G I - 5 6 3 6
+Database-Schema: Alle verfügbaren Karten, dann alle gespielten Karten und deren Punkte:
+("ABCDEFGHIJK", "F5C3G3I6")
 
 ## Python-version
 
