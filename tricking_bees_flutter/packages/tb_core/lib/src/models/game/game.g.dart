@@ -99,7 +99,7 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
 const _$GameStateEnumMap = {
   GameState.waitingForPlayers: 'waitingForPlayers',
   GameState.roleSelection: 'roleSelection',
-  GameState.inProgress: 'inProgress',
+  GameState.playingTricks: 'playingTricks',
   GameState.finished: 'finished',
 };
 

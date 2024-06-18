@@ -7,7 +7,7 @@ enum GameState {
   roleSelection(0xe90e),
 
   /// The game is in progress.
-  inProgress(0xf8d9),
+  playingTricks(0xf8d9),
 
   /// The game is finished.
   finished(0xe876);

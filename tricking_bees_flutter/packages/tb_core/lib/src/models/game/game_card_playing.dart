@@ -4,7 +4,7 @@ part of 'game.dart';
 extension GameCardExt on Game {
   /// Determines whether the given user can currently any cards.
   bool canPlayAnyCards(YustUser user) =>
-      gameState == GameState.inProgress &&
+      gameState == GameState.playingTricks &&
       (inputRequirement == InputRequirement.cardOrSkip ||
           inputRequirement == InputRequirement.card) &&
       isCurrentPlayer(user);

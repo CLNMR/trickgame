@@ -3,9 +3,7 @@ part of 'game.dart';
 /// Handles the events for each round of the game.
 extension GameEventHandlingExt on Game {
   /// Retrieve all roles that are currently active in this game.
-  List<Role> get currentRoles => roles.isEmpty
-      ? [Role.fromEventType(RoleCatalog.noRole)]
-      : roles.map(Role.fromEventType).toList();
+  List<Role> get currentRoles => players.map((e) => e.role).toList();
 
   /// Sets a flag for the current card or event.
   void setFlag(String key, dynamic value) {

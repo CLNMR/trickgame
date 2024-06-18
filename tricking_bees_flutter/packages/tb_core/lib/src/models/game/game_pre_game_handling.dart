@@ -14,7 +14,7 @@ extension GamePreGameHandlingExt on Game {
     Player player, {
     bool shouldSave = true,
   }) async {
-    if (players.contains(player)) return;
+    if (players.map((e) => e.id).contains(player.id)) return;
     players.add(player);
     if (shouldSave) await save();
   }

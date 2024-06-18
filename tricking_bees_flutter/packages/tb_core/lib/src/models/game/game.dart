@@ -171,6 +171,12 @@ class Game extends YustDoc {
     await save();
   }
 
+  /// Finishes the role selection and advances the game to the next player.
+  Future<void> finishRoleSelection() async {
+    gameState = GameState.playingTricks;
+    await nextPlayer(nextIndex: 0);
+  }
+
   /// Advances the game to the next player.
   Future<void> nextPlayer({int? nextIndex}) async {
     for (final handler in currentRoles) {
