@@ -62,7 +62,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       game: game,
                       child: RoleSelectionDisplay(game: game),
                     );
-                  case GameState.inProgress:
+                  case GameState.playingTricks:
                     return InGameDisplay(
                       game: game,
                       child: GameBoardInProgressDisplay(game: game),
@@ -88,7 +88,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           onPressed: () async {
             statefulGame.gameState = state;
             // Reset the game if we try to set it in progress.
-            if (state == GameState.inProgress) {
+            if (state == GameState.playingTricks) {
               statefulGame
                 ..currentRound = 0
                 ..logEntries.forEach((key, value) {

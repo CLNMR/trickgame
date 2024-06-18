@@ -13,8 +13,11 @@ class RoleSelectionDisplay extends ConsumerWidget {
   /// The id of the game to show.
   final Game game;
   @override
-  Widget build(BuildContext context, WidgetRef ref) => const Center(
-        child: OwnButton(text: 'Start game', onPressed: null),
+  Widget build(BuildContext context, WidgetRef ref) => Center(
+        child: OwnButton(
+          text: 'PlayWithoutRoles',
+          onPressed: game.finishRoleSelection,
+        ),
       );
 
   @override
