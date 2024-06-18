@@ -39,9 +39,8 @@ class CardStack extends IterableBase<GameCard> {
   /// The cards this [CardStack] holds.
   List<GameCard> _cards;
 
-  @override
-
   /// The number of cards in the stack.
+  @override
   int get length => _cards.length;
 
   /// Return the highest numerical value a card should have for the given number
