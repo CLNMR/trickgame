@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
+import '../../widgets/own_button.dart';
+
 /// The display screen of the bidding.
 class RoleSelectionDisplay extends ConsumerWidget {
   /// Creates a [RoleSelectionDisplay].
@@ -12,7 +14,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
   final Game game;
   @override
   Widget build(BuildContext context, WidgetRef ref) => const Center(
-        child: SizedBox(),
+        child: OwnButton(text: 'Start game', onPressed: null),
       );
 
   @override

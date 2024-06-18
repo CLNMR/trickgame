@@ -37,17 +37,17 @@ class OwnDropdownBox extends StatefulWidget {
 /// The state of a [OwnDropdownBox].
 class OwnDropdownBoxState extends State<OwnDropdownBox> {
   /// The current value of the dropdown. If null, no option is selected.
-  String? dropdownValue;
+  String? _dropdownValue;
 
   @override
   void initState() {
     super.initState();
-    dropdownValue = widget.initialValue;
+    _dropdownValue = widget.initialValue;
   }
 
   @override
   Widget build(BuildContext context) => DropdownButton<String>(
-        value: dropdownValue,
+        value: _dropdownValue,
         icon: const Icon(Icons.arrow_downward),
         iconSize: 24,
         elevation: 16,
@@ -58,7 +58,7 @@ class OwnDropdownBoxState extends State<OwnDropdownBox> {
         ),
         onChanged: (newValue) {
           setState(() {
-            dropdownValue = newValue;
+            _dropdownValue = newValue;
             widget.onChanged?.call(newValue);
           });
         },
@@ -71,9 +71,4 @@ class OwnDropdownBoxState extends State<OwnDropdownBox> {
             )
             .toList(),
       );
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('dropdownValue', dropdownValue));
-  }
 }

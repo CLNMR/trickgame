@@ -35,7 +35,6 @@ extension GamePreGameHandlingExt on Game {
         shouldSave: false,
       );
     }
-    players.shuffle();
     final game = GameService.init(this);
     await game.save();
   }
