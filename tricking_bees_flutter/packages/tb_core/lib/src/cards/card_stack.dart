@@ -21,9 +21,10 @@ class CardStack extends IterableBase<GameCard> {
     final highestNumber = getHighestCardNumber(playerNum);
     for (final color in CardColor.values) {
       cards.addAll(
-        List.generate(highestNumber, (index) => index).map(
-          (e) => GameCard(number: e, color: color),
-        ),
+        List.generate(
+          highestNumber,
+          (index) => GameCard(number: index + 1, color: color),
+        )..add(GameCard(number: null, color: color, isQueen: true)),
       );
     }
     return CardStack(cards: cards);
@@ -48,6 +49,21 @@ class CardStack extends IterableBase<GameCard> {
   static int getHighestCardNumber(int playerNum) =>
       {6: 18, 5: 15, 4: 17, 3: 14}[playerNum] ?? 14;
 
+  /// Filters this card stack's cards for the given color, returning a new card
+  /// stack.
+  CardStack filterByColor(CardColor color, {required bool allowOtherQueens}) =>
+      CardStack(
+        cards: _cards
+            .where(
+              (card) =>
+                  (allowOtherQueens && card.isQueen) || card.color == color,
+            )
+            .toList(),
+      );
+
+  ///  An unmodifiable enumerated [Map] view of the cards in the stack.
+  Map<int, GameCard> asMap() => _cards.asMap();
+
   /// Check whether the stack contains a card of the given color.
   bool containsColor(CardColor color) =>
       _cards.any((card) => card.color == color);
@@ -69,6 +85,12 @@ class CardStack extends IterableBase<GameCard> {
   void addCard(GameCard card, {bool sort = true}) {
     _cards.add(card);
     if (sort) sortCards();
+  }
+
+  /// Adds the cards to the stack, and sorts them by default.
+  void addCards(Iterable<GameCard> newCards) {
+    _cards.addAll(newCards);
+    sortCards();
   }
 
   /// Sorts the cards in the stack.
