@@ -16,4 +16,14 @@ Map<String, dynamic> _$RoleToJson(Role instance) => <String, dynamic>{
 
 const _$RoleCatalogEnumMap = {
   RoleCatalog.noRole: 'noRole',
+  RoleCatalog.roleA: 'roleA',
+  RoleCatalog.roleB: 'roleB',
+  RoleCatalog.roleC: 'roleC',
+  RoleCatalog.roleD: 'roleD',
+  RoleCatalog.roleE: 'roleE',
+  RoleCatalog.roleF: 'roleF',
+  RoleCatalog.roleG: 'roleG',
+  RoleCatalog.roleH: 'roleH',
+  RoleCatalog.roleI: 'roleI',
+  RoleCatalog.roleJ: 'roleJ',
 };
