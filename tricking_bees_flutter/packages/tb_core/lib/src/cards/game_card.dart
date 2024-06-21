@@ -1,15 +1,17 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 
 import 'card_color.dart';
 
 part 'game_card.g.dart';
 
 @JsonSerializable()
+@immutable
 
 /// A card in the game.
 class GameCard {
   /// Creates a [GameCard].
-  GameCard({
+  const GameCard({
     required this.number,
     required this.color,
     this.isQueen = false,
@@ -23,7 +25,7 @@ class GameCard {
   Map<String, dynamic> toJson() => _$GameCardToJson(this);
 
   /// The number of the card
-  int? number;
+  final int? number;
 
   /// The color of the card (i.e. suit)
   final CardColor color;
@@ -31,8 +33,18 @@ class GameCard {
   /// Whether this card is a queen.
   final bool isQueen;
 
+  @override
+  int get hashCode => number.hashCode ^ color.hashCode ^ isQueen.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is GameCard && other.hashCode == hashCode;
+
   /// A short description.
-  String get name => isQueen ? '$color Queen' : '$color $number';
+  String get name => isQueen ? '${color.name} Queen' : '${color.name} $number';
+
+  /// The display name of the card, might need to be localized.
+  String get displayName => isQueen ? 'Q' : number.toString();
 
   /// Custom sorting function for GameCard objects.
   static int sort(GameCard a, GameCard b) {
