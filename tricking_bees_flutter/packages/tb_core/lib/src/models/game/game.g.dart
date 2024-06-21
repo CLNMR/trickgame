@@ -29,6 +29,8 @@ Game _$GameFromJson(Map json) => Game(
       players: (json['players'] as List<dynamic>?)
           ?.map((e) => Player.fromJson(Map<String, dynamic>.from(e as Map)))
           .toList(),
+      playOrder:
+          (json['playOrder'] as List<dynamic>?)?.map((e) => e as int).toList(),
       gameState: $enumDecodeNullable(_$GameStateEnumMap, json['gameState']) ??
           GameState.waitingForPlayers,
       currentSubgame: (json['currentSubgame'] as num?)?.toInt() ?? 0,
@@ -36,11 +38,12 @@ Game _$GameFromJson(Map json) => Game(
       currentPlayerIndex: (json['currentPlayerIndex'] as num?)?.toInt() ?? 0,
       currentTrump: json['currentTrump'] == null
           ? null
-          : GameCard.fromJson(Map<String, dynamic>.from(
-              (json['currentTrump'] as Map).cast<String, dynamic>())),
-      roles: (json['roles'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$RoleCatalogEnumMap, e))
-          .toList(),
+          : GameCard.fromJson(
+              (json['currentTrump'] as Map).cast<String, dynamic>()),
+      currentTrick: json['currentTrick'] == null
+          ? null
+          : Trick.fromJson(
+              (json['currentTrick'] as Map).cast<String, dynamic>()),
       undealtCards: json['cards'] == null
           ? null
           : CardStack.fromJson((json['cards'] as Map).cast<String, dynamic>()),
@@ -52,14 +55,13 @@ Game _$GameFromJson(Map json) => Game(
       existingLogEntries: (json['logEntries'] as Map).map(
         (k, e) => MapEntry(
           int.parse(k as String),
-          (e as Map).map(
-            (k, e) => MapEntry(
-                int.parse(k as String),
-                (e as List<dynamic>)
-                    .map((e) =>
-                        LogEntry.fromJson(Map<String, dynamic>.from(e as Map)))
-                    .toList()),
-          ),
+          (e as List)
+              .map(
+                (v) => LogEntry.fromJson(
+                  Map<String, dynamic>.from(v as Map),
+                ),
+              )
+              .toList(),
         ),
       ),
     );
@@ -77,23 +79,22 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'public': instance.public,
       'password': instance.password,
       'playerNum': instance.playerNum,
+      'playOrder': instance.playOrder,
       'subgameNum': instance.subgameNum,
       'gameState': instance.gameState.toJson(),
       'players': instance.players.map((e) => e.toJson()).toList(),
       'playerNames': instance.players
           .map((e) => e.id)
           .toList(), // TODO: CRITICAL: This is a hack to make the filter work
-      'roles': instance.roles.map((e) => _$RoleCatalogEnumMap[e]!).toList(),
       'cards': instance.undealtCards.toJson(),
       'currentSubgame': instance.currentSubgame,
       'currentRound': instance.currentRound,
       'currentPlayerIndex': instance.currentPlayerIndex,
       'currentTrump': instance.currentTrump?.toJson(),
+      'currentTrick': instance.currentTrick?.toJson(),
       'inputRequirement': _$InputRequirementEnumMap[instance.inputRequirement]!,
-      'logEntries': instance.logEntries.map((k, e) => MapEntry(
-          k.toString(),
-          e.map((k, e) =>
-              MapEntry(k.toString(), e.map((e) => e.toJson()).toList())))),
+      'logEntries': instance.logEntries.map(
+          (k, e) => MapEntry(k.toString(), e.map((v) => v.toJson()).toList())),
     };
 
 const _$GameStateEnumMap = {
@@ -103,12 +104,12 @@ const _$GameStateEnumMap = {
   GameState.finished: 'finished',
 };
 
-const _$RoleCatalogEnumMap = {
-  RoleCatalog.noRole: 'noRole',
-};
-
 const _$InputRequirementEnumMap = {
   InputRequirement.cardOrSkip: 'cardOrSkip',
   InputRequirement.card: 'card',
-  InputRequirement.special: 'special',
+  InputRequirement.twoCards: 'twoCards',
+  InputRequirement.selectTrump: 'selectTrump',
+  InputRequirement.selectPlayer: 'selectPlayer',
+  InputRequirement.selectRole: 'selectRole',
+  InputRequirement.selectCardToRemove: 'selectCardToRemove',
 };

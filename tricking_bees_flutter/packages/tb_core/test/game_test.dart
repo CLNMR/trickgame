@@ -1,4 +1,3 @@
-import 'package:tb_core/src/models/player.dart';
 import 'package:tb_core/tb_core.dart';
 import 'package:test/test.dart';
 import 'package:yust/yust.dart';
@@ -28,7 +27,7 @@ void main() {
   });
 
   test('getLogEntries', () {
-    final logEntries = game.getLogEntries(1);
+    final logEntries = game.getLogEntries(round: 1);
     expect(logEntries, []);
   });
 }

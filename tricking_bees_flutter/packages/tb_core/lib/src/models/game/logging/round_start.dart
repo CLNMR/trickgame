@@ -65,7 +65,7 @@ class LogRoundStart extends LogEntry {
         game.currentRoles.first; // TODO: This is a temporary solution.
     await displayEvent(
       TrObject('New Round: ${currentEvent.key.locName}'),
-      TrObject(currentEvent.key.description),
+      TrObject(currentEvent.key.descBenefits),
     );
     incrementLogDisplayCount();
   }

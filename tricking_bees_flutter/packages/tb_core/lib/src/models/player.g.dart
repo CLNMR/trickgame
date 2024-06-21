@@ -27,3 +27,17 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'role': instance.role.toJson(),
       'pointTotal': instance.pointTotal,
     };
+
+const _$RoleCatalogEnumMap = {
+  RoleCatalog.noRole: 'noRole',
+  RoleCatalog.roleA: 'roleA',
+  RoleCatalog.roleB: 'roleB',
+  RoleCatalog.roleC: 'roleC',
+  RoleCatalog.roleD: 'roleD',
+  RoleCatalog.roleE: 'roleE',
+  RoleCatalog.roleF: 'roleF',
+  RoleCatalog.roleG: 'roleG',
+  RoleCatalog.roleH: 'roleH',
+  RoleCatalog.roleI: 'roleI',
+  RoleCatalog.roleJ: 'roleJ',
+};

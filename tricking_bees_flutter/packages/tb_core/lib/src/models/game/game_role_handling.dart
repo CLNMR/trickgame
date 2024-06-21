@@ -5,6 +5,59 @@ extension GameEventHandlingExt on Game {
   /// Retrieve all roles that are currently active in this game.
   List<Role> get currentRoles => players.map((e) => e.role).toList();
 
+  /// Assigns the given Role to the current player and advances the game to the
+  /// next player.
+  Future<void> chooseRole(Role role) async {
+    _currentNormalOrderPlayer.role = role;
+    // TODO: Log role selection here
+    incrementPlayerIndex();
+    if (currentPlayerIsStartingPlayer) {
+      await finishRoleSelection(firstTime: true);
+    } else {
+      await save();
+    }
+  }
+
+  /// Finishes the role selection and goes through the remaining players to
+  /// resolve their start-of-game effects.
+  Future<void> finishRoleSelection({bool firstTime = false}) async {
+    var isFirstTime = firstTime;
+    inputRequirement = InputRequirement.selectRole;
+    // Iterate through the players and see whether the roles require the player
+    // to do something at the start of the game.
+    while (isFirstTime || !currentPlayerIsStartingPlayer) {
+      isFirstTime = false;
+      _currentNormalOrderPlayer.role.onStartOfSubgame(this);
+      if (inputRequirement != InputRequirement.selectRole) {
+        await save();
+        return;
+      }
+      incrementPlayerIndex();
+    }
+    await endRoleSelectionAndStartTrickGame();
+  }
+
+  /// Finishes the role selection and advances the game to the next player.
+  Future<void> endRoleSelectionAndStartTrickGame() async {
+    gameState = GameState.playingTricks;
+    playOrder = List.generate(
+        playerNum, (index) => (index + currentSubgame - 1) % playerNum);
+    await nextPlayer(doNotIncrement: true);
+  }
+
+  /// Select a trump color.
+  Future<void> selectTrumpColor(CardColor trump) async {
+    setFlag(_overridingTrumpColorKey, trump.toString());
+    incrementPlayerIndex();
+    await finishRoleSelection();
+  }
+
+  /// Select a player.
+  Future<void> selectPlayer(int selectedPlayerIndex) async {
+    await _currentNormalOrderPlayer.role
+        .onPlayerSelect(this, selectedPlayerIndex);
+  }
+
   /// Sets a flag for the current card or event.
   void setFlag(String key, dynamic value) {
     var val = value;

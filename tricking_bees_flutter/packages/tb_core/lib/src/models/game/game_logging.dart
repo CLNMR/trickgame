@@ -7,48 +7,18 @@ extension GameLogEntryExt on Game {
       getUniqueStartSubstrings(players.map((e) => e.displayName));
 
   /// Get the indent level of the last log entry.
-  int get lastLogIndentLevel =>
-      logEntries[currentRound]?[currentPlayerIndex]?.last.indentLevel ?? 1;
+  int get lastLogIndentLevel => logEntries[currentRound]?.last.indentLevel ?? 1;
 
   /// Get all [LogEntry]s for the given round, and filter (if necessary)
   /// by the given type, e.g. getLogEntries<LogUnitMoves>(2) will provide all
   /// UnitMoves log entries of round 2.
-  Map<TurnNumber, List<T>> getLogEntries<T extends LogEntry>(
-    RoundNumber round,
-  ) {
-    final entries = logEntries[round] ?? {};
-    return entries.map(
-      (turn, entriesForTurn) => MapEntry(
-        turn,
-        entriesForTurn.whereType<T>().toList(),
-      ),
-    );
-  }
-
-  /// Get all [LogEntry]s for the given round, and filter (if necessary)
-  /// by the given type, e.g. getLogEntries<LogUnitMoves>(2) will provide all
-  /// UnitMoves log entries of round 2.
-  /// The entries are flattened into a single list without information about the
-  /// turnNumber.
-  List<T> getLogEntriesFlattened<T extends LogEntry>({
+  List<T> getLogEntries<T extends LogEntry>({
     RoundNumber? round,
   }) {
     if (round == null) {
-      return logEntries.values
-          .fold(<LogEntry>[], (prevEntries, newEntries) {
-            final entries = newEntries.values.fold(
-              <LogEntry>[],
-              (prevEntries, newEntries) => prevEntries..addAll(newEntries),
-            );
-            return prevEntries..addAll(entries);
-          })
-          .whereType<T>()
-          .toList();
+      return logEntries.values.expand((e) => e).whereType<T>().toList();
     }
-    return getLogEntries<T>(round).values.fold(
-      <T>[],
-      (previousValue, element) => previousValue..addAll(element),
-    );
+    return (logEntries[round] ?? []).whereType<T>().toList();
   }
 
   /// Creates the next logEntry.
@@ -60,10 +30,7 @@ extension GameLogEntryExt on Game {
   }) {
     final indentationLevel = absoluteIndentLevel ?? logEntry.indentLevel;
     logEntry.indentLevel = indentationLevel;
-    if (!logEntries.containsKey(currentRound)) logEntries[currentRound] = {};
-    if (!logEntries[currentRound]!.containsKey(currentPlayerIndex)) {
-      logEntries[currentRound]![currentPlayerIndex] = [];
-    }
-    logEntries[currentRound]![currentPlayerIndex]!.add(logEntry);
+    if (!logEntries.containsKey(currentRound)) logEntries[currentRound] = [];
+    logEntries[currentRound]!.add(logEntry);
   }
 }

@@ -1,7 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yust/yust.dart';
 
+import '../cards/card_color.dart';
 import '../cards/card_stack.dart';
+import '../cards/game_card.dart';
 import '../roles/role.dart';
 import '../roles/role_catalog.dart';
 
@@ -67,6 +69,15 @@ class Player {
 
   /// Deal this player the given cards.
   void dealCards(CardStack newCards) {
-    cards = newCards;
+    cards.addCards(newCards);
+  }
+
+  /// Returns whether the player can play a given card, given it's their turn.
+  bool canPlayCard(GameCard card, CardColor? compulsoryColor) =>
+      role.getPlayableCards(cards, compulsoryColor).contains(card);
+
+  /// Play the given card.
+  void playCard(GameCard card) {
+    cards.removeCard(card);
   }
 }

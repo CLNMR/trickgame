@@ -50,10 +50,18 @@ extension GameStatusGenerationExt on Game {
     switch (inputRequirement) {
       case InputRequirement.card:
         return _getStatusMessagesForCardInput(user);
+      case InputRequirement.twoCards:
+        return _getStatusMessagesForTwoCardsInput(user);
       case InputRequirement.cardOrSkip:
         return _getStatusMessagesForCardOrSkipInput(user);
-      case InputRequirement.special:
-        return _getStatusMessagesForSpecialInput(user);
+      case InputRequirement.selectTrump:
+        return [TrObject('TODO')];
+      case InputRequirement.selectPlayer:
+        return [TrObject('TODO')];
+      case InputRequirement.selectRole:
+        return [TrObject('TODO')];
+      case InputRequirement.selectCardToRemove:
+        return [TrObject('TODO')];
     }
   }
 
@@ -95,11 +103,17 @@ extension GameStatusGenerationExt on Game {
           ),
       ];
 
-  List<TrObject> _getStatusMessagesForSpecialInput(YustUser user) =>
-      currentRoles
-          .map(
-            (role) => role.getSpecialStatusMessage(this, user),
+  List<TrObject> _getStatusMessagesForTwoCardsInput(YustUser user) => [
+        if (isCurrentPlayer(user))
+          TrObject(
+            'STATUS:whileTwoCardsChoosing',
           )
-          .nonNulls
-          .toList();
+        else
+          TrObject(
+            'STATUS:whileTwoCardsWaiting',
+            richTrObjects: [
+              RichTrObject(RichTrType.player, value: currentPlayerIndex),
+            ],
+          ),
+      ];
 }
