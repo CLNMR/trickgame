@@ -1,6 +1,8 @@
 
 # (K)ein ganz normales Stichspiel?
+
 # Bienenstich
+
 Ein Spiel von Fabian Balzer und Colin Ihlenfeldt
 
 ## Benötigte Karten
@@ -9,20 +11,20 @@ Ein Spiel von Fabian Balzer und Colin Ihlenfeldt
 
 |Anzahl Spieler | Anzahl Karten | Kartenkombinationen|
 |---------------|---------------|--------------------|
-|2 Spieler |	42 (3 übrig) |	3x 1-14|
-|3 Spieler |	56 (5 übrig) |	4x 1-14|
-|4 Spieler |	68 (5 übrig) |	4x 1-17|
-|5 Spieler |	85 (10 übrig) |	5x 1-17|
-|6 Spieler |	90 (3 übrig) |	5x 1-18|
+|2 Spieler |    42 (3 übrig) |    3x 1-14|
+|3 Spieler |    56 (5 übrig) |    4x 1-14|
+|4 Spieler |    68 (5 übrig) |    4x 1-17|
+|5 Spieler |    85 (10 übrig) |    5x 1-17|
+|6 Spieler |    90 (3 übrig) |    5x 1-18|
 
 ## Spielablauf
 
 - Karten werden verteilt: (Anzahl Spieler)+1 Stapel mit je 12 Karten + 2 Karten extra + 1 Karte für Trumpf
-    - Übrige Karten kommen beiseite
+  - Übrige Karten kommen beiseite
 - Trumpffarbe wird aufgedeckt
 - Rollen werden gewählt
-    - Gegen den Uhrzeigersinn, beginnend beim Geber
-    - Variante: Erst stehen nur drei zufällige Rollen zur Auswahl, zwischen denen gewählt wird. Der Geber wählt eine dieser Rollen, der nächste Spieler erhält die verbliebenen beiden zur Auswahl, ergänzt um eine weitere zufällig gewählte Rolle.
+  - Gegen den Uhrzeigersinn, beginnend beim Geber
+  - Variante: Erst stehen nur drei zufällige Rollen zur Auswahl, zwischen denen gewählt wird. Der Geber wählt eine dieser Rollen, der nächste Spieler erhält die verbliebenen beiden zur Auswahl, ergänzt um eine weitere zufällig gewählte Rolle.
 - Rolleneffekte werden ausgeführt (Trumpffarbe geändert, Tokens verteilt, …)
 
 ### Legeregeln
@@ -31,7 +33,6 @@ Ein Spiel von Fabian Balzer und Colin Ihlenfeldt
 - Nieten können immer gespielt werden
 - Letzter Trumpf gewinnt, außer letzte Runde
 - Kein Farbzwang, wenn Trumpf gespielt wird
-
 
 ## Rollen
 
@@ -77,6 +78,7 @@ Erst am Ende jedes Stichs wird die verdeckte Karte aufgedeckt.
 Punkte: Anzahl Stiche * 2
 
 ## Spielstatistik
+
 F C G I - 5 6 3 6
 Database-Schema: Alle verfügbaren Karten, dann alle gespielten Karten und deren Punkte:
 ("ABCDEFGHIJK", "F5C3G3I6")
@@ -88,3 +90,13 @@ Pygame kann gestartet werden durch
 ```python -m tricking_bees```
 
 Benötigt python 3.12 oder höher + pygame.
+
+## TODOs
+
+Zeugs das aktuell noch offen ist:
+
+- [] Trumpffarbe loggen und anzeigen.
+- [] Rollenwahl visuell implementieren.
+- [] Log messages für Rollenwahl und Trumpfwahl.
+- [] Log messages überarbeiten; Unterscheidung Runde und Subgame.
+- [] Status messages überarbeiten.
