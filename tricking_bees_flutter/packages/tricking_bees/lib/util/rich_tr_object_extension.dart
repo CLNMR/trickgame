@@ -23,6 +23,15 @@ extension UiRichTrObject on RichTrObject {
           text: val > 0 ? '+ $val' : '- ${val.abs()}',
           style: const TextStyle(fontWeight: FontWeight.bold),
         );
+      case RichTrType.card:
+        final card = value as GameCard;
+        return TextSpan(
+          text: tr(card.name),
+          style: TextStyle(
+            color: Color(card.color.hexValue),
+            fontWeight: FontWeight.bold,
+          ),
+        );
       case RichTrType.cardList:
         final cards = value as CardStack;
         return TextSpan(
@@ -87,7 +96,7 @@ extension UiRichTrObject on RichTrObject {
           eventSpan,
         ],
       ),
-      tr(event.description),
+      tr(event.descBenefits),
     );
   }
 

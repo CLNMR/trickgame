@@ -10,10 +10,9 @@ class CardGridView extends StatelessWidget {
   const CardGridView({
     super.key,
     required this.cards,
-    required this.onTap,
-    required this.isDisabled,
+    this.onTap,
+    this.isDisabled = false,
     this.rowNumber = 1,
-    this.isCrossedOut,
   }) : super();
 
   /// The cards to be displayed
@@ -23,10 +22,7 @@ class CardGridView extends StatelessWidget {
   final bool isDisabled;
 
   /// The function that should be called on tap of a card.
-  final void Function(GameCard) onTap;
-
-  /// The function that determines whether a card should be crossed out..
-  final bool Function(GameCard)? isCrossedOut;
+  final void Function(GameCard)? onTap;
 
   /// The number of rows for the cards to be displayed.
   final int rowNumber;
@@ -45,8 +41,7 @@ class CardGridView extends StatelessWidget {
           return SingleCardDisplay(
             cardKey: card,
             isDisabled: isDisabled,
-            isCrossedOut: isCrossedOut != null && isCrossedOut!(card),
-            onTap: () => onTap(card),
+            onTap: () => onTap?.call(card),
           );
         },
       );
@@ -75,13 +70,7 @@ class CardGridView extends StatelessWidget {
         ObjectFlagProperty<void Function(GameCard p1)?>.has('onTap', onTap),
       )
       ..add(IntProperty('rowNumber', rowNumber))
-      ..add(DiagnosticsProperty<bool>('isDisabled', isDisabled))
-      ..add(
-        ObjectFlagProperty<bool Function(GameCard p1)?>.has(
-          'isCrossedOut',
-          isCrossedOut,
-        ),
-      );
+      ..add(DiagnosticsProperty<bool>('isDisabled', isDisabled));
   }
 
   // SizedBox(

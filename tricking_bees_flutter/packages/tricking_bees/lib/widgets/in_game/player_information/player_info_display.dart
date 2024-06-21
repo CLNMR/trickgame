@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tb_core/tb_core.dart';
 
 import '../../own_text.dart';
+import 'role_icon.dart';
 
 /// A small widget displaying the player's status.
 class PlayerInfoDisplay extends StatefulWidget {
@@ -40,7 +41,7 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      lowerBound: 0.5,
+      lowerBound: 0.6,
       value: 1,
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -57,12 +58,11 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
   Widget build(BuildContext context) => AnimatedBuilder(
         animation: _controller,
         builder: (context, child) => Container(
-          width: 200,
-          height: 85,
+          width: 150,
           decoration: BoxDecoration(
             border: Border.all(
               color: widget.hasCurrentTurn
-                  ? Colors.black.withOpacity(_controller.value)
+                  ? Colors.redAccent[700]!.withOpacity(_controller.value)
                   : Colors.white,
               width: widget.hasCurrentTurn ? 5 : 3,
             ),
@@ -75,6 +75,7 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
               children: [
                 Flexible(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildHeader(),
@@ -94,6 +95,11 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
           children: [
             OwnText(text: widget.player.displayName, translate: false),
             const Spacer(),
+            IconWithNumber(
+              iconData: Icons.emoji_events,
+              displayNum: widget.player.pointTotal,
+              tooltip: 'PLAYERINFO:TotalPoints',
+            ),
           ],
         ),
       );
@@ -103,12 +109,13 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
           padding: const EdgeInsets.only(top: 5),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              RoleIcon(role: widget.player.role),
               IconWithNumber(
-                iconData: Icons.collections,
-                displayNum: widget.player.cards.length,
-                tooltip: 'PLAYERINFO:CardsRemaining',
+                iconData: Icons.done_outline,
+                displayNum: widget.player.tricksWon,
+                tooltip: 'PLAYERINFO:TricksWon',
               ),
             ],
           ),

@@ -8,10 +8,11 @@ import 'package:tb_core/tb_core.dart';
 import '../../util/widget_ref_extension.dart';
 import '../../widgets/in_game/log_entry_list_display.dart';
 import '../../widgets/in_game/player_information/player_cards_row.dart';
-import '../../widgets/in_game/player_information/player_info_widget.dart';
+import '../../widgets/in_game/player_information/player_info_display.dart';
 import '../../widgets/in_game/player_information/player_instructions_row.dart';
 import '../../widgets/own_button.dart';
 import '../../widgets/own_text.dart';
+import '../../widgets/single_card_display.dart';
 
 /// The display screen of a game that is in progress.
 /// The child widget should usually contain the GameBoard, but can also contain
@@ -57,7 +58,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
   @override
   void initState() {
     super.initState();
-    lastLogDisplayed = widget.game.getLogEntriesFlattened().length;
+    lastLogDisplayed = widget.game.getLogEntries().length;
     // _controller = AnimationController(
     //   value: 0,
     //   duration: const Duration(seconds: 1),
@@ -73,7 +74,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    final allLogEntries = widget.game.getLogEntriesFlattened();
+    final allLogEntries = widget.game.getLogEntries();
     if (allLogEntries.length > lastLogDisplayed) {
       unawaited(
         allLogEntries[lastLogDisplayed].showEventDisplay(
@@ -86,12 +87,20 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
     return Center(
       child: LayoutBuilder(
         builder: (context, constraints) {
+          final player = widget.game.getPlayer(ref.user!);
           if (constraints.maxHeight > constraints.maxWidth) {
             return Column(
               children: [
-                PlayerInfoWidget(game: widget.game),
                 Expanded(child: _buildBoardAndLog(ref)),
-                PlayerInstructionsRow(game: widget.game),
+                Row(
+                  children: [
+                    PlayerInfoDisplay(
+                      player: player,
+                      hasCurrentTurn: widget.game.currentPlayer.id == player.id,
+                    ),
+                    Expanded(child: PlayerInstructionsRow(game: widget.game)),
+                  ],
+                ),
                 PlayerCardsRow(game: widget.game),
               ],
             );
@@ -101,12 +110,19 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
               Expanded(
                 child: Row(
                   children: [
-                    PlayerInfoWidget(game: widget.game, asColumn: true),
                     Expanded(child: _buildBoardAndLog(ref)),
                   ],
                 ),
               ),
-              PlayerInstructionsRow(game: widget.game),
+              Row(
+                children: [
+                  PlayerInfoDisplay(
+                    player: player,
+                    hasCurrentTurn: widget.game.currentPlayer.id == player.id,
+                  ),
+                  Expanded(child: PlayerInstructionsRow(game: widget.game)),
+                ],
+              ),
               PlayerCardsRow(game: widget.game),
             ],
           );
@@ -124,8 +140,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
             child: Stack(
               children: [
                 widget.child,
-                // if (_controller.value > 0) _buildEventDisplay(),
-                // if (showEventDisplay) _buildEventDisplay(),
+                ..._buildPlayerOverlays(),
               ],
             ),
           ),
@@ -199,6 +214,115 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
           ],
         ),
         // ),
+      );
+
+  List<Widget> _buildPlayerOverlays() {
+    final players = widget.game.getOtherPlayers(ref.user);
+    final playerNum = widget.game.playerNum;
+
+    if (playerNum == 3) {
+      return [
+        _buildPlayerOverlay(players[0], Alignment.topLeft),
+        _buildPlayerOverlay(players[1], Alignment.topRight),
+      ];
+    }
+
+    if (playerNum == 4) {
+      return [
+        _buildPlayerOverlay(players[0], Alignment.centerLeft, vertical: true),
+        _buildPlayerOverlay(players[1], Alignment.topCenter),
+        _buildPlayerOverlay(players[2], Alignment.centerRight, vertical: true),
+      ];
+    }
+
+    if (playerNum == 5) {
+      return [
+        _buildPlayerOverlay(players[0], Alignment.centerLeft, vertical: true),
+        _buildPlayerOverlay(players[1], Alignment.topLeft),
+        _buildPlayerOverlay(players[2], Alignment.topRight),
+        _buildPlayerOverlay(players[3], Alignment.centerRight, vertical: true),
+      ];
+    }
+    return [
+      _buildPlayerOverlay(players[0], Alignment.centerLeft, vertical: true),
+      _buildPlayerOverlay(players[1], Alignment.topLeft),
+      _buildPlayerOverlay(players[2], Alignment.topCenter),
+      _buildPlayerOverlay(players[3], Alignment.topRight),
+      _buildPlayerOverlay(players[4], Alignment.centerRight, vertical: true),
+    ];
+  }
+
+  Widget _buildPlayerOverlay(
+    Player player,
+    Alignment alignment, {
+    bool vertical = false,
+  }) =>
+      Align(
+        alignment: alignment,
+        child: DecoratedBox(
+          decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: vertical
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PlayerInfoDisplay(
+                        player: player,
+                        hasCurrentTurn:
+                            player.id == widget.game.currentPlayer.id,
+                      ),
+                      RotatedBox(
+                        quarterTurns: 3,
+                        child: _buildPlayerCards(player),
+                      ),
+                    ],
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PlayerInfoDisplay(
+                        player: player,
+                        hasCurrentTurn:
+                            widget.game.currentPlayer.id == player.id,
+                      ),
+                      _buildPlayerCards(player),
+                    ],
+                  ),
+          ),
+        ),
+      );
+
+  Widget _buildPlayerCards(Player player) => DecoratedBox(
+        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: SizedBox(
+            width: 220,
+            height: 150,
+            child: Stack(
+              children: player.cards
+                  .asMap()
+                  .entries
+                  .map(
+                    (e) => Positioned(
+                      left: player.cards.length > 2
+                          ? e.key * (200 / (player.cards.length + 1))
+                          : e.key * 50,
+                      child: SingleCardDisplay(
+                        cardKey: e.value,
+                        isHidden: false,
+                        onTap: () async =>
+                            widget.game.playOtherPlayerCard(e.value, player),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ),
       );
 
   @override

@@ -131,12 +131,12 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
         ),
       );
 
-  Widget _buildEntryList(Map<int, Map<int, List<LogEntry>>> logEntries) =>
+  Widget _buildEntryList(Map<int, List<LogEntry>> logEntries) =>
       ListView.builder(
         itemCount: logEntries.length,
         controller: _scrollController,
         itemBuilder: (context, round) {
-          final entries = logEntries[round]!.values.expand((i) => i).toList();
+          final entries = logEntries[round]!;
           return _buildExpansionPanelForRound(round, entries);
         },
       );

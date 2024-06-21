@@ -21,6 +21,7 @@ const emulatorAddress = null;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  EasyLocalization.logger.enableBuildModes = [];
 
   _initAppConfig();
 
@@ -81,8 +82,8 @@ class _TrickingBeesState extends ConsumerState<TrickingBees> {
 
   @override
   void initState() {
-    _router.initialize(context, ref);
     super.initState();
+    _router.initialize(context, ref);
   }
 
   @override

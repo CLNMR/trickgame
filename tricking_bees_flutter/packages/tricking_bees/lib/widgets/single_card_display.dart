@@ -10,9 +10,9 @@ class SingleCardDisplay extends StatelessWidget {
   const SingleCardDisplay({
     super.key,
     required this.cardKey,
-    required this.onTap,
+    this.onTap,
     this.isDisabled = false,
-    this.isCrossedOut = false,
+    this.isHidden = false,
   });
 
   /// The card key to display.
@@ -21,15 +21,15 @@ class SingleCardDisplay extends StatelessWidget {
   /// Whether the view of the card is disabled (untappable)
   final bool isDisabled;
 
-  /// Whether the card is crossed out.
-  final bool isCrossedOut;
+  /// Whether the card is hidden.
+  final bool isHidden;
 
   /// The function to call when the card is tapped.
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) => Tooltip(
-        message: cardKey.number.toString(),
+        message: isHidden ? '' : cardKey.name,
         child: GestureDetector(
           onTap: isDisabled ? null : onTap,
           child: Stack(
@@ -38,39 +38,34 @@ class SingleCardDisplay extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(1),
-                  color:
-                      isDisabled ? Colors.grey[500] : const Color(0xFFcbd75b),
+                  color: isHidden
+                      ? Colors.blueGrey
+                      : Color(
+                          cardKey.color.hexValue,
+                        ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: OwnText(
-                          text: cardKey.number.toString(),
-                          ellipsis: true,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Stack(
-                        alignment: Alignment.bottomLeft,
-                        children: [
-                          _buildCardStrengthIndicator(
-                            cardKey.number ?? 0,
-                          ),
-                        ],
-                      ),
-                    ],
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: 3,
+                    right: 3,
+                    bottom: 3,
+                  ),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: _buildNumberDisplay(size: 30),
                   ),
                 ),
               ),
-              if (isCrossedOut)
+              ..._getOverlayNumberWidgets(),
+              if (isDisabled)
                 Positioned.fill(
+                  top: 50,
                   child: FittedBox(
                     fit: BoxFit.fill,
                     child: Icon(
                       Icons.close,
-                      color: Colors.red[900],
+                      color: Colors.black.withOpacity(0.4),
                     ),
                   ),
                 ),
@@ -79,22 +74,26 @@ class SingleCardDisplay extends StatelessWidget {
         ),
       );
 
-  Widget _buildCardStrengthIndicator(int strength) => SizedBox(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          child: Row(
-            children: List.generate(strength, (index) => _starIcon()),
-          ),
+  List<Widget> _getOverlayNumberWidgets() => [
+        Alignment.topLeft,
+        Alignment.topRight,
+        Alignment.bottomRight,
+        Alignment.bottomLeft,
+      ]
+          .map(
+            (alignment) => Align(
+              alignment: alignment,
+              child: _buildNumberDisplay(size: 12),
+            ),
+          )
+          .toList();
+  Widget _buildNumberDisplay({double size = 15}) => Padding(
+        padding: const EdgeInsets.all(3),
+        child: OwnText(
+          translate: false,
+          text: isHidden ? '?' : cardKey.displayName,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: size),
         ),
-      );
-
-  Widget _starIcon({bool isElite = false}) => Icon(
-        Icons.star,
-        size: 15,
-        color: isElite ? Colors.amberAccent : Colors.white,
       );
 
   @override
@@ -104,6 +103,6 @@ class SingleCardDisplay extends StatelessWidget {
       ..add(DiagnosticsProperty<GameCard>('cardKey', cardKey))
       ..add(ObjectFlagProperty<void Function()?>.has('onTap', onTap))
       ..add(DiagnosticsProperty<bool>('isDisabled', isDisabled))
-      ..add(DiagnosticsProperty<bool>('isCrossedOut', isCrossedOut));
+      ..add(DiagnosticsProperty<bool>('isCrossedOut', isHidden));
   }
 }
