@@ -167,6 +167,10 @@ class Game extends YustDoc {
     return currentTrump?.color;
   }
 
+  bool get hasOverridingTrumpColor =>
+      CardColor.tryParse(getFlag<String>(_overridingTrumpColorKey) ?? '') !=
+      null;
+
   /// The players other than the user's player.
   List<Player> getOtherPlayers(YustUser? user) =>
       players.where((player) => player.id != user?.id).toList();

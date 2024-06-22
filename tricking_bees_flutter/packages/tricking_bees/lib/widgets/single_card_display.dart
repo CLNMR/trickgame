@@ -16,7 +16,7 @@ class SingleCardDisplay extends StatelessWidget {
   });
 
   /// The card key to display.
-  final GameCard cardKey;
+  final GameCard? cardKey;
 
   /// Whether the view of the card is disabled (untappable)
   final bool isDisabled;
@@ -27,49 +27,55 @@ class SingleCardDisplay extends StatelessWidget {
   /// The function to call when the card is tapped.
   final void Function()? onTap;
 
+  /// Whether gthe given card isn't known to the user.
+  bool get isUnknown => isHidden || cardKey == null;
+
   @override
-  Widget build(BuildContext context) => Tooltip(
-        message: isHidden ? '' : cardKey.name,
-        child: GestureDetector(
-          onTap: isDisabled ? null : onTap,
-          child: Stack(
-            children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(1),
-                  color: isHidden
-                      ? Colors.blueGrey
-                      : Color(
-                          cardKey.color.hexValue,
-                        ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                    left: 3,
-                    right: 3,
-                    bottom: 3,
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: isDisabled ? null : onTap,
+        child: SizedBox(
+          height: 100,
+          child: AspectRatio(
+            aspectRatio: 3 / 4,
+            child: Stack(
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(1),
+                    color: isUnknown
+                        ? Colors.blueGrey
+                        : Color(
+                            cardKey!.color.hexValue,
+                          ),
                   ),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: _buildNumberDisplay(size: 30),
-                  ),
-                ),
-              ),
-              ..._getOverlayNumberWidgets(),
-              if (isDisabled)
-                Positioned.fill(
-                  top: 50,
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.black.withOpacity(0.4),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 3,
+                      right: 3,
+                      bottom: 3,
+                    ),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: _buildNumberDisplay(size: 30),
                     ),
                   ),
                 ),
-            ],
+                ..._getOverlayNumberWidgets(),
+                if (isDisabled)
+                  Positioned.fill(
+                    top: 50,
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.black.withOpacity(0.7),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       );
@@ -91,7 +97,7 @@ class SingleCardDisplay extends StatelessWidget {
         padding: const EdgeInsets.all(3),
         child: OwnText(
           translate: false,
-          text: isHidden ? '?' : cardKey.displayName,
+          text: isUnknown ? '?' : cardKey!.displayName,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: size),
         ),
       );
@@ -103,6 +109,7 @@ class SingleCardDisplay extends StatelessWidget {
       ..add(DiagnosticsProperty<GameCard>('cardKey', cardKey))
       ..add(ObjectFlagProperty<void Function()?>.has('onTap', onTap))
       ..add(DiagnosticsProperty<bool>('isDisabled', isDisabled))
-      ..add(DiagnosticsProperty<bool>('isCrossedOut', isHidden));
+      ..add(DiagnosticsProperty<bool>('isCrossedOut', isHidden))
+      ..add(DiagnosticsProperty<bool>('isUnknown', isUnknown));
   }
 }

@@ -77,7 +77,7 @@ class _GameBoardState extends ConsumerState<GameBoard>
             .asMap()
             .entries
             .map((entry) {
-          const offset = 20.0;
+          const offset = 50.0;
           return Positioned(
             left: entry.key * offset / 2,
             top: entry.key * offset,
@@ -89,9 +89,9 @@ class _GameBoardState extends ConsumerState<GameBoard>
         }).toList(),
       );
 
-  Widget _buildWrappedCardDisplay(GameCard card, Player player) => SizedBox(
-        height: 150,
-        width: 80,
+  Widget _buildWrappedCardDisplay(GameCard card, Player player) =>
+      ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 150),
         child: Stack(
           children: [
             SingleCardDisplay(cardKey: card),

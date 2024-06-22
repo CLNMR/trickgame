@@ -122,12 +122,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildResumeTestGameButton(BuildContext context) => OwnButton(
         text: 'TestGame',
         onPressed: () async =>
-            context.push('${GameScreenRouting.path}/a5q26EMzpvjdhYteyEt4'),
+            context.push('${GameScreenRouting.path}/zsmD5ZObMLks91Q84yrC'),
       );
 
   Widget _buildTestWidget(BuildContext context) => Row(
         children: [
-          SelectableText('Current user: ${ref.user}'),
+          SelectableText('Current user: ${ref.user?.getName()}'),
           if (ref.user == null) const SizedBox(),
           // else
           //   OwnRichText(

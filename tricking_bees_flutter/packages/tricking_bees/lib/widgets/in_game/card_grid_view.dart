@@ -46,21 +46,6 @@ class CardGridView extends StatelessWidget {
         },
       );
 
-  // @override
-  // Widget build(BuildContext context) => SingleChildScrollView(
-  //       scrollDirection: Axis.horizontal,
-  //       child: Row(
-  //         children: cards
-  //             .map(
-  //               (card) => SingleCardDisplay(
-  //                 cardKey: card,
-  //                 onTap: () => onTap!(card),
-  //               ),
-  //             )
-  //             .toList(),
-  //       ),
-  //     );
-
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -72,25 +57,4 @@ class CardGridView extends StatelessWidget {
       ..add(IntProperty('rowNumber', rowNumber))
       ..add(DiagnosticsProperty<bool>('isDisabled', isDisabled));
   }
-
-  // SizedBox(
-  //       height: 170,
-  //       width: 400,
-  //       child: GridView.builder(
-  //         scrollDirection: Axis.horizontal,
-  //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //           crossAxisCount: 1,
-  //           mainAxisSpacing: 4,
-  //           crossAxisSpacing: 4,
-  //         ),
-  //         itemCount: cards.length,
-  //         itemBuilder: (context, index) => SizedBox(
-  //           width: 100,
-  //           child: SingleCardDisplay(
-  //             cardKey: cards[index],
-  //             onTap: () => onTap!(cards[index]),
-  //           ),
-  //         ),
-  //       ),
-  //     );
 }
