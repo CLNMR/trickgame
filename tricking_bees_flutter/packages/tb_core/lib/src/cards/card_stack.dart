@@ -49,6 +49,11 @@ class CardStack extends IterableBase<GameCard> {
   static int getHighestCardNumber(int playerNum) =>
       {6: 18, 5: 15, 4: 17, 3: 14}[playerNum] ?? 14;
 
+  /// The total amount of cards for the given number of players.
+  static int getTotalCardNumber(int playerNum) =>
+      (CardStack.getHighestCardNumber(playerNum) + 1) *
+      CardColor.getColorNumForPlayerNum(playerNum);
+
   /// Filters this card stack's cards for the given color, returning a new card
   /// stack.
   CardStack filterByColor(CardColor color, {required bool allowOtherQueens}) =>

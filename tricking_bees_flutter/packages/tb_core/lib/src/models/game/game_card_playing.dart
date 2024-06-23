@@ -6,23 +6,23 @@ extension GameCardExt on Game {
   CardColor? get compulsoryColor => currentTrick?.compulsoryColor;
 
   /// Determines whether the given user can currently any cards.
-  bool canPlayAnyCards(YustUser user) =>
+  bool canPlayAnyCards(Player player) =>
       gameState == GameState.playingTricks &&
       (inputRequirement == InputRequirement.cardOrSkip ||
           inputRequirement == InputRequirement.card) &&
-      isCurrentPlayer(user);
+      currentPlayer.id == player.id;
 
   /// Determines whether the given user can currently play the given card.
-  bool canPlayCard(GameCard card, YustUser user) =>
-      canPlayAnyCards(user) &&
-      getPlayer(user).canPlayCard(card, compulsoryColor);
+  bool canPlayCard(GameCard card, Player player) =>
+      canPlayAnyCards(player) && player.canPlayCard(card, compulsoryColor);
 
   /// Play the given card.
   Future<void> playCard(GameCard cardKey, YustUser user) async {
-    if (!canPlayCard(cardKey, user)) {
+    final player = getPlayer(user);
+    if (!canPlayCard(cardKey, player)) {
       return;
     }
-    getPlayer(user).playCard(cardKey);
+    player.playCard(cardKey);
     final playerIndex = getNormalOrderPlayerIndex(user);
     currentTrick!.addCard(cardKey, playerIndex);
     addLogEntry(

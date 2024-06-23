@@ -1,16 +1,16 @@
 /// The possible card colors.
 enum CardColor {
   /// Red.
-  red(0xFFFF0000),
+  red(0xFFEE220C),
 
   /// Green.
-  green(0xFF00FF00),
+  green(0xFF47D45A),
 
   /// Blue.
-  blue(0xFF0000FF),
+  blue(0xFF00A2FF),
 
   /// Yellow.
-  yellow(0xFFFFFF00),
+  yellow(0xFFFFD932),
 
   /// Violet.
   violet(0xFFFF00FF);

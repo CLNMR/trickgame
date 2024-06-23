@@ -121,8 +121,7 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
             child: SingleCardDisplay(
               cardKey: card,
               isHidden: false,
-              isDisabled: widget.player.id != widget.game.currentPlayer.id ||
-                  !widget.player.canPlayCard(card, widget.game.compulsoryColor),
+              isDisabled: !widget.game.canPlayCard(card, widget.player),
               onTap: () async =>
                   widget.game.playOtherPlayerCard(card, widget.player),
             ),
