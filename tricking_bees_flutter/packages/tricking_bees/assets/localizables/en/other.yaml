@@ -1,20 +1,4 @@
-ActionsLeftDisplay: 'Actions Left: {}'
 ArchivedGames: Archived Games
-CurrentFactionDisplay: 'Current Faction: {}'
 CurrentGames: Current Games
-Heaven: Heaven
-Hell: Hell
-Naught: Naught
-PLAYERINFO:CardsRemaining: ''
-PLAYERINFO:HeroesRemaining: ''
-PLAYERINFO:UnitsRemaining: ''
 RoundDisplay: 'Round: {}'
-UNIT:Any: ''
-UNIT:Hero: ''
-UNIT:Soldier: ''
-UNIT:Unknown: ''
-eliteSuffix: ''
-logBoxTitle: ''
-logDividerBeforeGameStart: ''
-logDividerRound: ''
-logFightTitle: ''
+logBoxTitle: Game log

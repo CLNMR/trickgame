@@ -1,0 +1,10 @@
+cardPlayed: '{player} spielt {card}.'
+roleChosen: '{player} wählt {role} für dieses Spiel.'
+roundStartPlayOrder: 'Runde {number} beginnt, in welcher die Reihenfolge der Spieler
+  wie folgt ist: {playerList}.'
+skipTurn: '{player} überspringt das Spielen einer Karte.'
+startOfGame: 'Starte ein {number}-Spieler-Spiel (ID: {gameId}) mit {playerList}. Wir
+  spielen daher mit {numberCardsTotal} Karten, wobei es {numberColors} Farben gibt,
+  bei denen {numberCards} die höchste Zahl ist.'
+subgameStarts: Die Karten für Spiel {number} von {numberTot} werden verteilt. {card}
+  wird als Trumpf aufgedeckt.
