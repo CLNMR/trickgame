@@ -80,6 +80,7 @@ flutter:
     - assets/fonts/
     - assets/localizables/de-DE.json
     - assets/localizables/en-US.json
+    - assets/images/roles/
     - assets/images/background.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

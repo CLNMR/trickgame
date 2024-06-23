@@ -1,0 +1,12 @@
+roleA: Du musst nicht legen, wenn du nicht möchtest.
+roleB: Vor Spielbeginn darfst du die Trumpffarbe bestimmen.
+roleC: Vor Spielbeginn erhältst du zwei zusätzliche Karten und musst zwei Karten abwerfen.
+roleD: Du spielst immer als Letztes, außer du spielst aus.
+roleE: Du kannst immer alle Karten spielen, egal welche Farbe sie haben.
+roleF: Vor Spielbeginn erhältst du einen weiteren Kartensatz. Wenn du spielst, musst
+  du zwei Karten spielen.
+roleG: Du spielst immer als Erstes aus.
+roleH: Vor Spielbeginn wählst du zwei Spieler, deren Mittelwert an Punkten du erhältst.
+roleI: Keine deiner Karten ist Trumpf.
+roleJ: Du spielst immer verdeckt, außer du spielst aus. Erst am Ende eines Stichs
+  wird deine Karte aufgedeckt.

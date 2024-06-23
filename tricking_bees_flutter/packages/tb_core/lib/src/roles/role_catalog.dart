@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
+import '../util/string_extension.dart';
 import 'no_role.dart';
 import 'role.dart';
 import 'role_a.dart';
@@ -32,6 +33,9 @@ enum RoleCatalog {
   /// The constructor of the role.
   final Role Function() roleConstructor;
 
+  static List<RoleCatalog> get allChoosableRoles =>
+      values.where((e) => e != RoleCatalog.noRole).toList();
+
   /// The localized name of the role.
   String get locName => 'ROLE:NAME:$name';
 
@@ -41,6 +45,6 @@ enum RoleCatalog {
   /// The localized description of the point scheme for the role.
   String get descPointScheme => 'ROLE:DESC:PTS:$name';
 
-  /// The image of the role. For BurningWall it's the same image for all sides.
-  String get imagePath => 'assets/images/events/$name.png';
+  /// The image of the role.
+  String get imagePath => 'assets/images/roles/${name.capitalize()}.PNG';
 }

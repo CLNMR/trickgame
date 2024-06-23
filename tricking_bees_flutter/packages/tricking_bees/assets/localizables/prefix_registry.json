@@ -1,10 +1,9 @@
 {
   "buttons": "BUT",
   "logging": "LOG",
-  "event_names": "EVENT:NAME",
-  "event_descs": "EVENT:DESC",
-  "card_names": "CARD:NAME",
-  "card_descs": "CARD:DESC",
+  "role_benefits": "ROLE:DESC:BEN",
+  "role_points": "ROLE:DESC:PTS",
+  "role_names": "ROLE:NAME",
   "header": "HEAD",
   "other": "",
   "status": "STATUS",

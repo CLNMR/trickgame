@@ -92,12 +92,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
             child: Column(
               children: [
                 Expanded(
-                  child: Stack(
-                    children: [
-                      widget.child,
-                      ..._buildPlayerOverlays(),
-                    ],
-                  ),
+                  child: _buildBoardAndPlayers(),
                 ),
                 PlayerInstructionsRow(game: widget.game),
                 Row(
@@ -162,19 +157,54 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
   // return AnimatedBuilder(
   //   animation: _controller,
   //   builder: (context, child) =>
-  Widget _buildBoardAndLog(WidgetRef ref) => Row(
+  Widget _buildBoardAndPlayers() => Column(
         children: [
+          _buildPlayersInTopRow(),
           Expanded(
-            child: Stack(
+            child: Row(
               children: [
-                widget.child,
-                ..._buildPlayerOverlays(),
+                _buildLeftPlayer(),
+                Expanded(child: widget.child),
+                _buildRightPlayer(),
               ],
             ),
           ),
-          _buildLog(),
         ],
       );
+
+  Widget _buildPlayersInTopRow() {
+    final otherPlayers = widget.game.getOtherPlayers(ref.user);
+    if (widget.game.playerNum != 3) {
+      otherPlayers
+        ..removeAt(0)
+        ..removeLast();
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: otherPlayers.map(_buildPlayerOverlay).toList(),
+    );
+  }
+
+  Widget _buildLeftPlayer() => (widget.game.playerNum == 3)
+      ? Container()
+      : Column(
+          children: [
+            _buildPlayerOverlay(
+              widget.game.getOtherPlayers(ref.user)[0],
+              rotation: 1,
+            ),
+          ],
+        );
+  Widget _buildRightPlayer() => (widget.game.playerNum == 3)
+      ? Container()
+      : Column(
+          children: [
+            _buildPlayerOverlay(
+              widget.game.getOtherPlayers(ref.user).last,
+              rotation: 3,
+            ),
+          ],
+        );
 
   Widget _buildLog() => Container(
         constraints: const BoxConstraints(maxWidth: 250),
@@ -246,80 +276,74 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
         // ),
       );
 
-  List<Widget> _buildPlayerOverlays() {
-    final players = widget.game.getOtherPlayers(ref.user);
-    final playerNum = widget.game.playerNum;
+  // List<Widget> _buildPlayerOverlays() {
+  //   final players = widget.game.getOtherPlayers(ref.user);
+  //   final playerNum = widget.game.playerNum;
 
-    if (playerNum == 3) {
-      return [
-        _buildPlayerOverlay(players[0], Alignment.topLeft),
-        _buildPlayerOverlay(players[1], Alignment.topRight),
-      ];
-    }
+  //   if (playerNum == 3) {
+  //     return [
+  //       _buildPlayerOverlay(players[0], Alignment.topLeft),
+  //       _buildPlayerOverlay(players[1], Alignment.topRight),
+  //     ];
+  //   }
 
-    if (playerNum == 4) {
-      return [
-        _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
-        _buildPlayerOverlay(players[1], Alignment.topCenter),
-        _buildPlayerOverlay(players[2], Alignment.centerRight, rotation: 3),
-      ];
-    }
+  //   if (playerNum == 4) {
+  //     return [
+  //       _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
+  //       _buildPlayerOverlay(players[1], Alignment.topCenter),
+  //       _buildPlayerOverlay(players[2], Alignment.centerRight, rotation: 3),
+  //     ];
+  //   }
 
-    if (playerNum == 5) {
-      return [
-        _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
-        _buildPlayerOverlay(players[1], Alignment.topLeft),
-        _buildPlayerOverlay(players[2], Alignment.topRight),
-        _buildPlayerOverlay(players[3], Alignment.centerRight, rotation: 3),
-      ];
-    }
-    return [
-      _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
-      _buildPlayerOverlay(players[1], Alignment.topLeft),
-      _buildPlayerOverlay(players[2], Alignment.topCenter),
-      _buildPlayerOverlay(players[3], Alignment.topRight),
-      _buildPlayerOverlay(players[4], Alignment.centerRight, rotation: 3),
-    ];
-  }
+  //   if (playerNum == 5) {
+  //     return [
+  //       _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
+  //       _buildPlayerOverlay(players[1], Alignment.topLeft),
+  //       _buildPlayerOverlay(players[2], Alignment.topRight),
+  //       _buildPlayerOverlay(players[3], Alignment.centerRight, rotation: 3),
+  //     ];
+  //   }
+  //   return [
+  //     _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
+  //     _buildPlayerOverlay(players[1], Alignment.topLeft),
+  //     _buildPlayerOverlay(players[2], Alignment.topCenter),
+  //     _buildPlayerOverlay(players[3], Alignment.topRight),
+  //     _buildPlayerOverlay(players[4], Alignment.centerRight, rotation: 3),
+  //   ];
+  // }
 
   Widget _buildPlayerOverlay(
-    Player player,
-    Alignment alignment, {
+    Player player, {
     int rotation = 2,
   }) =>
-      Align(
-        alignment: alignment,
-        child: DecoratedBox(
-          decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-          child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: rotation != 2
-                ? Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      PlayerInfoDisplay(
-                        player: player,
-                        hasCurrentTurn:
-                            player.id == widget.game.currentPlayer.id,
-                      ),
-                      Flexible(child: _buildPlayerCards(player, rotation)),
-                    ],
-                  )
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PlayerInfoDisplay(
-                        player: player,
-                        hasCurrentTurn:
-                            widget.game.currentPlayer.id == player.id,
-                      ),
-                      Flexible(child: _buildPlayerCards(player, rotation)),
-                    ],
-                  ),
-          ),
+      DecoratedBox(
+        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+        child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: rotation != 2
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    PlayerInfoDisplay(
+                      player: player,
+                      hasCurrentTurn: player.id == widget.game.currentPlayer.id,
+                    ),
+                    Flexible(child: _buildPlayerCards(player, rotation)),
+                  ],
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PlayerInfoDisplay(
+                      player: player,
+                      hasCurrentTurn: widget.game.currentPlayer.id == player.id,
+                    ),
+                    Flexible(child: _buildPlayerCards(player, rotation)),
+                  ],
+                ),
         ),
       );
 

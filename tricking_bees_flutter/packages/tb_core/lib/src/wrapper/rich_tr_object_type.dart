@@ -13,16 +13,13 @@ enum RichTrType {
   cardList(List<GameCard>),
 
   /// The special translation type for a game event.
-  event(RoleCatalog),
+  role(RoleCatalog),
 
   /// The special translation type for a player.
   player(int),
 
   /// The special translation type for a list of players.
   playerList(List<int>),
-
-  /// The special translation type for a faction.
-  role(int),
 
   /// The special translation type for a number.
   number(int),

@@ -122,7 +122,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildResumeTestGameButton(BuildContext context) => OwnButton(
         text: 'TestGame',
         onPressed: () async =>
-            context.push('${GameScreenRouting.path}/zsmD5ZObMLks91Q84yrC'),
+            context.push('${GameScreenRouting.path}/yf8OMtBaqbXd9xO0FgBx'),
       );
 
   Widget _buildTestWidget(BuildContext context) => Row(

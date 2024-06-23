@@ -44,7 +44,7 @@ extension UiRichTrObject on RichTrObject {
         );
       case RichTrType.playerList:
         return _getSpanForList(value, RichTrType.player, context, playerNames);
-      case RichTrType.event:
+      case RichTrType.role:
         return _getRoleSpan(value as RoleCatalog);
       default:
         return TextSpan(
@@ -80,7 +80,7 @@ extension UiRichTrObject on RichTrObject {
       );
 
   InlineSpan _getRoleSpan(RoleCatalog event) {
-    final eventSpan = TextSpan(
+    final roleSpan = TextSpan(
       text: tr(event.locName),
       style: TextStyle(
         color: Colors.teal[600],
@@ -95,7 +95,7 @@ extension UiRichTrObject on RichTrObject {
       TextSpan(
         children: [
           icon,
-          eventSpan,
+          roleSpan,
         ],
       ),
       tr(event.descBenefits),

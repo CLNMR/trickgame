@@ -111,7 +111,7 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RoleIcon(role: widget.player.role),
+              RoleIcon(roleKey: widget.player.role.key),
               IconWithNumber(
                 iconData: Icons.done_outline,
                 displayNum: widget.player.tricksWon,

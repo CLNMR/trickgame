@@ -64,7 +64,7 @@ extension BuildContextExtension on BuildContext {
     if (trObject.roleKey != null) {
       spans
         ..add(
-          RichTrObject(RichTrType.event, value: trObject.roleKey)
+          RichTrObject(RichTrType.role, value: trObject.roleKey)
               .getEnrichedSpan(this, []),
         )
         ..add(const TextSpan(text: ': '));

@@ -7,9 +7,9 @@ extension GameEventHandlingExt on Game {
 
   /// Assigns the given Role to the current player and advances the game to the
   /// next player.
-  Future<void> chooseRole(Role role) async {
-    _currentNormalOrderPlayer.role = role;
-    // TODO: Log role selection here
+  Future<void> chooseRole(RoleCatalog roleKey) async {
+    currentPlayer.role = Role.fromRoleCatalog(roleKey);
+    addLogEntry(LogRoleChosen(playerIndex: currentPlayerIndex, role: roleKey));
     incrementPlayerIndex();
     if (currentPlayerIsStartingPlayer) {
       await finishRoleSelection(firstTime: true);
@@ -17,6 +17,11 @@ extension GameEventHandlingExt on Game {
       await save();
     }
   }
+
+  /// Checks whether the current player can choose a role.
+  bool canChooseRole(Player player) =>
+      currentPlayer.id == player.id &&
+      inputRequirement == InputRequirement.selectRole;
 
   /// Finishes the role selection and goes through the remaining players to
   /// resolve their start-of-game effects.

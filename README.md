@@ -77,6 +77,9 @@ Wenn du nicht ausspielst, spielst du deine Karten verdeckt.
 Erst am Ende jedes Stichs wird die verdeckte Karte aufgedeckt.
 Punkte: Anzahl Stiche * 2
 
+Seher - K
+Vor Spielbeginn darfst du dir die Karten eines anderen Spielers anschauen.
+
 ## Spielstatistik
 
 F C G I - 5 6 3 6

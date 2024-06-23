@@ -10,7 +10,7 @@ LogRoundStartPlayOrder _$LogRoundStartPlayOrderFromJson(Map json) =>
     LogRoundStartPlayOrder(
       round: (json['round'] as num).toInt(),
       indentLevel: (json['indentLevel'] as num?)?.toInt(),
-      playOrder: (json['playOrder'] as List).cast<int>(),
+      playOrder: (json['playOrder'] as List).cast<int>().toList(),
     );
 
 Map<String, dynamic> _$LogRoundStartPlayOrderToJson(

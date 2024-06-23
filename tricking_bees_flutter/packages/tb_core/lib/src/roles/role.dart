@@ -18,7 +18,7 @@ class Role {
   Role({required this.key});
 
   /// Creates an [Role] from an [RoleCatalog].
-  factory Role.fromEventType(RoleCatalog roleType) =>
+  factory Role.fromRoleCatalog(RoleCatalog roleType) =>
       roleType.roleConstructor();
 
   /// Creates a [Role] from a JSON map.
