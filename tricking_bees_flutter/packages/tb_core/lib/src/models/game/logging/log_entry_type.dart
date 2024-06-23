@@ -1,9 +1,10 @@
 import 'card_played.dart';
-import 'faction_chosen.dart';
 import 'log_entry.dart';
-import 'round_start.dart';
+import 'role_chosen.dart';
+import 'round_start_play_order.dart';
 import 'skip_turn.dart';
 import 'start_of_game.dart';
+import 'subgame_starts.dart';
 import 'turn_start.dart';
 
 /// The different types of log entries we are allowing.
@@ -11,8 +12,11 @@ enum LogEntryType {
   /// Log the start of the game.
   startOfGame(LogStartOfGame.fromJson),
 
+  /// Log the start of the subgame.
+  subgameStarts(LogSubgameStarts.fromJson),
+
   /// Log the start of a new round and which event is revealed.
-  roundStart(LogRoundStart.fromJson),
+  roundStartPlayOrder(LogRoundStartPlayOrder.fromJson),
 
   /// Log the start of a new turn.
   turnStart(LogTurnStart.fromJson),
@@ -21,7 +25,7 @@ enum LogEntryType {
   cardPlayed(LogCardPlayed.fromJson),
 
   /// Log choosing a faction for e.g. Swamp or Truce.
-  factionChosen(LogFactionChosen.fromJson),
+  roleChosen(LogRoleChosen.fromJson),
 
   /// Log when a turn is skipped.
   skipTurn(LogSkipTurn.fromJson);

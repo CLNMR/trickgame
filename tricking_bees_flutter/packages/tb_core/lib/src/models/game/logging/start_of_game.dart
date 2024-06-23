@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../cards/card_color.dart';
+import '../../../cards/card_stack.dart';
 import '../../../wrapper/rich_tr_object.dart';
 import '../../../wrapper/rich_tr_object_type.dart';
 import '../../../wrapper/tr_object.dart';
@@ -35,12 +37,25 @@ class LogStartOfGame extends LogEntry {
   TrObject getDescription(Game game) => TrObject(
         localizedKey,
         richTrObjects: [
-          ...List.generate(game.playerNum, (index) => index).map(
-            (i) => RichTrObject(
-              RichTrType.player,
-              value: i,
-              keySuffix: '${i + 1}',
-            ),
+          RichTrObject(
+            RichTrType.playerList,
+            value: List.generate(game.playerNum, (index) => index),
+          ),
+          RichTrObject(RichTrType.number, value: game.playerNum),
+          RichTrObject(
+            RichTrType.number,
+            value: CardStack.getHighestCardNumber(game.playerNum),
+            keySuffix: 'Cards',
+          ),
+          RichTrObject(
+            RichTrType.number,
+            value: CardStack.getTotalCardNumber(game.playerNum),
+            keySuffix: 'CardsTotal',
+          ),
+          RichTrObject(
+            RichTrType.number,
+            value: CardColor.getColorNumForPlayerNum(game.playerNum),
+            keySuffix: 'Colors',
           ),
         ],
         namedArgs: {'gameId': game.gameId.toString()},

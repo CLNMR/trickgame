@@ -18,11 +18,11 @@ enum RichTrType {
   /// The special translation type for a player.
   player(int),
 
-  /// The special translation type for a faction.
-  faction(int),
+  /// The special translation type for a list of players.
+  playerList(List<int>),
 
-  /// Whenever we want to display a player together with their faction.
-  playerAndFaction(int),
+  /// The special translation type for a faction.
+  role(int),
 
   /// The special translation type for a number.
   number(int),

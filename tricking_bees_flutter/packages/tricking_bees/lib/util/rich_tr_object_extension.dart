@@ -7,8 +7,6 @@ extension UiRichTrObject on RichTrObject {
   /// Returns a [InlineSpan] that represents the rich translation object.
   InlineSpan getEnrichedSpan(BuildContext context, List<String> playerNames) {
     switch (trType) {
-      case RichTrType.playerAndFaction:
-        return _getPlayerAndFactionSpan(value as int, playerNames);
       case RichTrType.player:
         final index = value as int;
         return _getPlayerSpan(playerNames[index], index);
@@ -44,6 +42,8 @@ extension UiRichTrObject on RichTrObject {
               .toList()
             ..removeLast(),
         );
+      case RichTrType.playerList:
+        return _getSpanForList(value, RichTrType.player, context, playerNames);
       case RichTrType.event:
         return _getRoleSpan(value as RoleCatalog);
       default:
@@ -54,28 +54,30 @@ extension UiRichTrObject on RichTrObject {
     }
   }
 
+  /// Retrieve the TextSpan for a list of values of the same type.
+  TextSpan _getSpanForList(
+    List<dynamic> values,
+    RichTrType singularType,
+    BuildContext context,
+    List<String> playerNames,
+  ) =>
+      TextSpan(
+        children: values
+            .map(
+              (val) => RichTrObject(singularType, value: val)
+                  .getEnrichedSpan(context, playerNames),
+            )
+            .expand((span) => [span, const TextSpan(text: ', ')])
+            .toList()
+          ..removeLast(),
+      );
+
   InlineSpan _getPlayerSpan(String playerName, int factionIndex) => TextSpan(
         text: playerName,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
       );
-
-  InlineSpan _getPlayerAndFactionSpan(
-    int playerIndex,
-    List<String> playerNames,
-  ) {
-    const icon = WidgetSpan(
-      child: Icon(Icons.person, size: 8),
-      alignment: PlaceholderAlignment.middle,
-    );
-    return TextSpan(
-      children: [
-        icon,
-        _getPlayerSpan(playerNames[playerIndex], playerIndex),
-      ],
-    );
-  }
 
   InlineSpan _getRoleSpan(RoleCatalog event) {
     final eventSpan = TextSpan(

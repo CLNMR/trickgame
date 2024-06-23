@@ -14,9 +14,10 @@ Map<String, dynamic> _$LogEntryToJson(LogEntry instance) => <String, dynamic>{
 
 const _$LogEntryTypeEnumMap = {
   LogEntryType.startOfGame: 'startOfGame',
-  LogEntryType.roundStart: 'roundStart',
+  LogEntryType.roundStartPlayOrder: 'roundStartPlayOrder',
   LogEntryType.turnStart: 'turnStart',
   LogEntryType.cardPlayed: 'cardPlayed',
-  LogEntryType.factionChosen: 'factionChosen',
+  LogEntryType.roleChosen: 'roleChosen',
   LogEntryType.skipTurn: 'skipTurn',
+  LogEntryType.subgameStarts: 'subgameStarts',
 };

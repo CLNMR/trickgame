@@ -23,9 +23,10 @@ import '../player.dart';
 import 'game.service.dart';
 import 'logging/card_played.dart';
 import 'logging/log_entry.dart';
-import 'logging/round_start.dart';
+import 'logging/round_start_play_order.dart';
 import 'logging/skip_turn.dart';
 import 'logging/start_of_game.dart';
+import 'logging/subgame_starts.dart';
 
 part 'game.g.dart';
 part 'game_card_playing.dart';
@@ -227,6 +228,9 @@ class Game extends YustDoc {
     currentTrump = undealtCards.getRandomCard();
     gameState = GameState.roleSelection;
     inputRequirement = InputRequirement.selectRole;
+    addLogEntry(
+      LogSubgameStarts(subgame: currentSubgame, trumpCard: currentTrump!),
+    );
     await save(merge: false);
   }
 
@@ -261,7 +265,9 @@ class Game extends YustDoc {
     evaluateTrick();
     currentRound++;
     // TODO: Here we should log the current player order.
-    addLogEntry(LogRoundStart(round: currentRound), absoluteIndentLevel: 0);
+    addLogEntry(
+        LogRoundStartPlayOrder(round: currentRound, playOrder: playOrder ?? []),
+        absoluteIndentLevel: 0);
     currentTrick = Trick(cardMap: LinkedHashMap());
     currentPlayerIndex = 0;
     for (final handler in currentRoles) {

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../roles/role_catalog.dart';
 import '../../../wrapper/rich_tr_object.dart';
 import '../../../wrapper/rich_tr_object_type.dart';
 import '../../../wrapper/tr_object.dart';
@@ -7,34 +8,34 @@ import '../game.dart';
 import 'log_entry.dart';
 import 'log_entry_type.dart';
 
-part 'faction_chosen.g.dart';
+part 'role_chosen.g.dart';
 
 @JsonSerializable()
 
-/// Log a player choosing a faction for a card (e.g. for Swamp)
-class LogFactionChosen extends LogEntry {
-  /// Creates a [LogFactionChosen].
-  LogFactionChosen({
+/// Log a player choosing a role.
+class LogRoleChosen extends LogEntry {
+  /// Creates a [LogRoleChosen].
+  LogRoleChosen({
     required this.playerIndex,
-    required this.factionIndex,
+    required this.role,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.factionChosen,
+          entryType: LogEntryType.roleChosen,
           indentLevel: indentLevel ?? 0,
         );
 
-  /// Creates a [LogFactionChosen] from a JSON map.
-  factory LogFactionChosen.fromJson(Map<String, dynamic> json) =>
-      _$LogFactionChosenFromJson(json);
+  /// Creates a [LogRoleChosen] from a JSON map.
+  factory LogRoleChosen.fromJson(Map<String, dynamic> json) =>
+      _$LogRoleChosenFromJson(json);
 
-  /// The player that chooses the faction
+  /// The player that chooses the role
   final int playerIndex;
 
-  /// The faction that was chosen.
-  final int factionIndex;
+  /// The role that was chosen.
+  final RoleCatalog role;
 
   @override
-  Map<String, dynamic> toJson() => _$LogFactionChosenToJson(this)
+  Map<String, dynamic> toJson() => _$LogRoleChosenToJson(this)
     ..addEntries([
       MapEntry('entryType', entryType.name),
     ]);
@@ -47,7 +48,7 @@ class LogFactionChosen extends LogEntry {
             RichTrType.player,
             value: playerIndex,
           ),
-          RichTrObject(RichTrType.faction, value: factionIndex),
+          RichTrObject(RichTrType.role, value: role),
         ],
       );
 }
