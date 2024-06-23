@@ -52,18 +52,24 @@ class RoleIcon extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                width: 50,
-                height: 50,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(3),
-                  child: Image.asset(
-                    roleKey.imagePath,
-                    fit: BoxFit.fill,
-                    width: 50,
-                    height: 50,
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(3),
+                    child: Image.asset(
+                      roleKey.imagePath,
+                      fit: BoxFit.fill,
+                      width: 30,
+                      height: 30,
+                    ),
                   ),
-                ),
+                  if (!isChoosable)
+                    Icon(
+                      Icons.lock,
+                      color: Colors.deepOrangeAccent[700]!.withOpacity(0.7),
+                    ),
+                ],
               ),
             ],
           ),

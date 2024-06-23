@@ -2,3 +2,5 @@ ArchivedGames: Archived Games
 CurrentGames: Current Games
 RoundDisplay: 'Round: {}'
 logBoxTitle: Game log
+logDividerBeforeGameStart: ''
+logDividerRound: ''

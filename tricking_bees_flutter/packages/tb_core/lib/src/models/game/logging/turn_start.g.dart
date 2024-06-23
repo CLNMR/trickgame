@@ -6,12 +6,12 @@ part of 'turn_start.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-LogTurnStart _$LogTurnStartFromJson(Map json) => LogTurnStart(
+LogTrickWon _$LogTrickWonFromJson(Map json) => LogTrickWon(
       playerIndex: (json['playerIndex'] as num).toInt(),
       indentLevel: (json['indentLevel'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$LogTurnStartToJson(LogTurnStart instance) =>
+Map<String, dynamic> _$LogTrickWonToJson(LogTrickWon instance) =>
     <String, dynamic>{
       'indentLevel': instance.indentLevel,
       'playerIndex': instance.playerIndex,

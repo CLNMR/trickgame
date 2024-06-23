@@ -20,6 +20,7 @@
   "LOG:skipTurn": "{player} skips playing any cards.",
   "LOG:startOfGame": "Starting a {number}-player game (ID: {gameId}) with {playerList}. We therefore play with {numberCardsTotal} cards, where there are {numberColors} colors where {numberCards} is the highest number.",
   "LOG:subgameStarts": "",
+  "LOG:trickWon": "",
   "ROLE:DESC:BEN:roleA": "",
   "ROLE:DESC:BEN:roleB": "",
   "ROLE:DESC:BEN:roleC": "",
@@ -51,5 +52,7 @@
   "ROLE:NAME:roleI": "",
   "ROLE:NAME:roleJ": "",
   "RoundDisplay": "Round: {}",
-  "logBoxTitle": "Game log"
+  "logBoxTitle": "Game log",
+  "logDividerBeforeGameStart": "",
+  "logDividerRound": ""
 }

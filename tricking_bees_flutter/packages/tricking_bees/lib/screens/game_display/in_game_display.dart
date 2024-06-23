@@ -276,80 +276,43 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
         // ),
       );
 
-  // List<Widget> _buildPlayerOverlays() {
-  //   final players = widget.game.getOtherPlayers(ref.user);
-  //   final playerNum = widget.game.playerNum;
-
-  //   if (playerNum == 3) {
-  //     return [
-  //       _buildPlayerOverlay(players[0], Alignment.topLeft),
-  //       _buildPlayerOverlay(players[1], Alignment.topRight),
-  //     ];
-  //   }
-
-  //   if (playerNum == 4) {
-  //     return [
-  //       _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
-  //       _buildPlayerOverlay(players[1], Alignment.topCenter),
-  //       _buildPlayerOverlay(players[2], Alignment.centerRight, rotation: 3),
-  //     ];
-  //   }
-
-  //   if (playerNum == 5) {
-  //     return [
-  //       _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
-  //       _buildPlayerOverlay(players[1], Alignment.topLeft),
-  //       _buildPlayerOverlay(players[2], Alignment.topRight),
-  //       _buildPlayerOverlay(players[3], Alignment.centerRight, rotation: 3),
-  //     ];
-  //   }
-  //   return [
-  //     _buildPlayerOverlay(players[0], Alignment.centerLeft, rotation: 1),
-  //     _buildPlayerOverlay(players[1], Alignment.topLeft),
-  //     _buildPlayerOverlay(players[2], Alignment.topCenter),
-  //     _buildPlayerOverlay(players[3], Alignment.topRight),
-  //     _buildPlayerOverlay(players[4], Alignment.centerRight, rotation: 3),
-  //   ];
-  // }
-
   Widget _buildPlayerOverlay(
     Player player, {
     int rotation = 2,
   }) =>
-      DecoratedBox(
-        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-        child: Padding(
-          padding: const EdgeInsets.all(5),
-          child: rotation != 2
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PlayerInfoDisplay(
-                      player: player,
-                      hasCurrentTurn: player.id == widget.game.currentPlayer.id,
-                    ),
-                    Flexible(child: _buildPlayerCards(player, rotation)),
-                  ],
-                )
-              : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PlayerInfoDisplay(
-                      player: player,
-                      hasCurrentTurn: widget.game.currentPlayer.id == player.id,
-                    ),
-                    Flexible(child: _buildPlayerCards(player, rotation)),
-                  ],
-                ),
-        ),
+      Padding(
+        padding: const EdgeInsets.all(3),
+        child: rotation != 2
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  PlayerInfoDisplay(
+                    player: player,
+                    hasCurrentTurn: player.id == widget.game.currentPlayer.id,
+                  ),
+                  Flexible(child: _buildPlayerCards(player, rotation)),
+                ],
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PlayerInfoDisplay(
+                    player: player,
+                    hasCurrentTurn: widget.game.currentPlayer.id == player.id,
+                  ),
+                  Flexible(child: _buildPlayerCards(player, rotation)),
+                ],
+              ),
       );
 
-  Widget _buildPlayerCards(Player player, int rotation) => SizedBox(
-        width: rotation == 2 ? 200 : 100,
-        height: rotation == 2 ? 100 : 200,
+  Widget _buildPlayerCards(Player player, int rotation) => ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: rotation == 2 ? 200 : 100,
+          maxHeight: rotation == 2 ? 100 : 200,
+        ),
         child: RotatedBox(
           quarterTurns: rotation,
           child: PlayerCardsRow(

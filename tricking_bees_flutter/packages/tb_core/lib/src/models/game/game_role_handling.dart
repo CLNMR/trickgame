@@ -19,9 +19,11 @@ extension GameEventHandlingExt on Game {
   }
 
   /// Checks whether the current player can choose a role.
-  bool canChooseRole(Player player) =>
-      currentPlayer.id == player.id &&
-      inputRequirement == InputRequirement.selectRole;
+  bool canChooseRole(RoleCatalog role, YustUser? user) =>
+      (user != null) &&
+      currentPlayer.id == getPlayer(user).id &&
+      inputRequirement == InputRequirement.selectRole &&
+      !currentRoles.map((e) => e.key).contains(role);
 
   /// Finishes the role selection and goes through the remaining players to
   /// resolve their start-of-game effects.

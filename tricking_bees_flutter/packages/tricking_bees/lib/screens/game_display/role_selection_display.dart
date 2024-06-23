@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
+import '../../util/widget_ref_extension.dart';
 import '../../widgets/in_game/player_information/role_icon.dart';
 import '../../widgets/own_button.dart';
 
@@ -18,16 +19,16 @@ class RoleSelectionDisplay extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(child: _buildRoleButtonGrid(context)),
+            Expanded(child: _buildRoleButtonGrid(context, ref)),
             OwnButton(
               text: 'SkipOtherRoles',
-              onPressed: game.finishRoleSelection,
+              onPressed: () async => game.finishRoleSelection(firstTime: true),
             ),
           ],
         ),
       );
 
-  Widget _buildRoleButtonGrid(BuildContext context) {
+  Widget _buildRoleButtonGrid(BuildContext context, WidgetRef ref) {
     final choosableRoles = RoleCatalog.allChoosableRoles;
     return GridView.builder(
       shrinkWrap: true,
@@ -43,8 +44,11 @@ class RoleSelectionDisplay extends ConsumerWidget {
           height: 70,
           width: 100,
           child: GestureDetector(
-            onTap: () async => game.chooseRole(roleKey),
+            onTap: () async => (game.canChooseRole(roleKey, ref.user))
+                ? game.chooseRole(roleKey)
+                : null,
             child: RoleIcon(
+              isChoosable: game.canChooseRole(roleKey, ref.user),
               roleKey: roleKey,
             ),
           ),

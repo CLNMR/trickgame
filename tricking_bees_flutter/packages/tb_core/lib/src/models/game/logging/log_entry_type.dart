@@ -19,7 +19,7 @@ enum LogEntryType {
   roundStartPlayOrder(LogRoundStartPlayOrder.fromJson),
 
   /// Log the start of a new turn.
-  turnStart(LogTurnStart.fromJson),
+  trickWon(LogTrickWon.fromJson),
 
   /// Log someone playing a card.
   cardPlayed(LogCardPlayed.fromJson),

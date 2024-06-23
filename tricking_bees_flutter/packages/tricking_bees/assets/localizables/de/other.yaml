@@ -2,5 +2,5 @@ ArchivedGames: Archivierte Spiele
 CurrentGames: Aktive Spiele
 RoundDisplay: Runde {}
 logBoxTitle: Spielverlauf
-logDividerRound: Runde {}
 logDividerBeforeGameStart: Spielbeginn
+logDividerRound: Runde {}

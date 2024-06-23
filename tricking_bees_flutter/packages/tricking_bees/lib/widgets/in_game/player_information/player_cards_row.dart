@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
+import '../../../util/app_gradients.dart';
 import '../../single_card_display.dart';
 
 /// The widget displaying a player's remaining cards, and offering a skip turn
@@ -50,14 +51,7 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(5)),
               border: Border.all(color: Colors.black),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.indigo[600]!.withOpacity(0.5),
-                  Colors.yellow[50]!.withOpacity(0.5),
-                ],
-              ),
+              gradient: AppGradients.indigoToYellow,
             ),
             child: Center(
               child: _buildPlayerCards(),
@@ -101,7 +95,7 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
 
   Widget _buildPositionedCard(GameCard card, int index, double maxWidth) {
     final leftOffset =
-        (index + 0.5) * (maxWidth / (widget.player.cards.length + 2));
+        (index + 0.5) * (maxWidth / (widget.player.cards.length + 1));
     return Positioned(
       // Use AnimatedPositioned for smooth animation; Doesn't seem to work with
       // the way I'm reordering the cards...
@@ -109,15 +103,13 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
       left: leftOffset,
       top: 10,
       bottom: 10,
-      child: MouseRegion(
-        // Detect mouse hover
-        onEnter: (event) => setState(() => _hoveredCardIndex = index),
-        onExit: (event) => setState(() => _hoveredCardIndex = null),
-        child: Transform.rotate(
-          angle: Random(index).nextDouble() * 0.1 - 0.05,
-          child: Transform.scale(
-            // Scale up if hovered
-            scale: _hoveredCardIndex == index ? 1.15 : 1.0,
+      child: Transform.scale(
+        scale: _hoveredCardIndex == index ? 1.15 : 1.0,
+        child: MouseRegion(
+          onEnter: (event) => setState(() => _hoveredCardIndex = index),
+          onExit: (event) => setState(() => _hoveredCardIndex = null),
+          child: Transform.rotate(
+            angle: Random(index).nextDouble() * 0.1 - 0.05,
             child: SingleCardDisplay(
               cardKey: card,
               isHidden: false,

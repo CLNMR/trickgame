@@ -16,10 +16,11 @@
   "CurrentGames": "Aktive Spiele",
   "LOG:cardPlayed": "{player} spielt {card}.",
   "LOG:roleChosen": "{player} wählt {role} für dieses Spiel.",
-  "LOG:roundStartPlayOrder": "Runde {number} beginnt, in welcher die Reihenfolge der Spieler wie folgt ist: {playerList}.",
+  "LOG:roundStartPlayOrder": "Runde {number} beginnt mit der Reihenfolge {playerList}.",
   "LOG:skipTurn": "{player} überspringt das Spielen einer Karte.",
   "LOG:startOfGame": "Starte ein {number}-Spieler-Spiel (ID: {gameId}) mit {playerList}. Wir spielen daher mit {numberCardsTotal} Karten, wobei es {numberColors} Farben gibt, bei denen {numberCards} die höchste Zahl ist.",
   "LOG:subgameStarts": "Die Karten für Spiel {number} von {numberTot} werden verteilt. {card} wird als Trumpf aufgedeckt.",
+  "LOG:trickWon": "{player} gewinnt den Stich.",
   "ROLE:DESC:BEN:roleA": "Du musst nicht legen, wenn du nicht möchtest.",
   "ROLE:DESC:BEN:roleB": "Vor Spielbeginn darfst du die Trumpffarbe bestimmen.",
   "ROLE:DESC:BEN:roleC": "Vor Spielbeginn erhältst du zwei zusätzliche Karten und musst zwei Karten abwerfen.",
@@ -51,5 +52,7 @@
   "ROLE:NAME:roleI": "Ohne Trumpf",
   "ROLE:NAME:roleJ": "Versteckt Spielen",
   "RoundDisplay": "Runde {}",
-  "logBoxTitle": "Spielverlauf"
+  "logBoxTitle": "Spielverlauf",
+  "logDividerBeforeGameStart": "Spielbeginn",
+  "logDividerRound": "Runde {}"
 }

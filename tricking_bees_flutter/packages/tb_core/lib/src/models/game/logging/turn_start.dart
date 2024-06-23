@@ -12,25 +12,25 @@ part 'turn_start.g.dart';
 @JsonSerializable()
 
 ///
-class LogTurnStart extends LogEntry {
-  /// Creates a [LogTurnStart].
-  LogTurnStart({
+class LogTrickWon extends LogEntry {
+  /// Creates a [LogTrickWon].
+  LogTrickWon({
     required this.playerIndex,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.turnStart,
+          entryType: LogEntryType.trickWon,
           indentLevel: indentLevel ?? 1,
         );
 
-  /// Creates a [LogTurnStart] from a JSON map.
-  factory LogTurnStart.fromJson(Map<String, dynamic> json) =>
-      _$LogTurnStartFromJson(json);
+  /// Creates a [LogTrickWon] from a JSON map.
+  factory LogTrickWon.fromJson(Map<String, dynamic> json) =>
+      _$LogTrickWonFromJson(json);
 
-  /// The playerIndex of the player starting their turn.
+  /// The playerIndex of the player that won the trick.
   final int playerIndex;
 
   @override
-  Map<String, dynamic> toJson() => _$LogTurnStartToJson(this)
+  Map<String, dynamic> toJson() => _$LogTrickWonToJson(this)
     ..addEntries([
       MapEntry('entryType', entryType.name),
     ]);

@@ -7,3 +7,4 @@ startOfGame: 'Starting a {number}-player game (ID: {gameId}) with {playerList}. 
   therefore play with {numberCardsTotal} cards, where there are {numberColors} colors
   where {numberCards} is the highest number.'
 subgameStarts: ''
+trickWon: ''

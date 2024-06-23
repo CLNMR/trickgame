@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
+import '../../../util/app_gradients.dart';
 import '../../single_card_display.dart';
 
 /// The hexagonal board of the game.
@@ -60,7 +61,11 @@ class _GameBoardState extends ConsumerState<GameBoard>
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.grey,
+            border: Border.all(
+              color: Colors.black,
+              width: 2,
+            ),
+            gradient: AppGradients.indigoToYellow,
           ),
           child: Padding(
             padding: const EdgeInsets.all(30),
@@ -77,9 +82,9 @@ class _GameBoardState extends ConsumerState<GameBoard>
             .asMap()
             .entries
             .map((entry) {
-          const offset = 50.0;
+          const offset = 35.0;
           return Positioned(
-            left: entry.key * offset / 2,
+            left: entry.key * offset,
             top: entry.key * offset,
             child: _buildWrappedCardDisplay(
               entry.value.key,
@@ -93,21 +98,23 @@ class _GameBoardState extends ConsumerState<GameBoard>
       ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 150),
         child: Stack(
+          alignment: Alignment.topCenter,
           children: [
             SingleCardDisplay(cardKey: card),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text(
-                      player.displayName,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(2)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(3),
+                  child: Text(
+                    player.displayName,
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

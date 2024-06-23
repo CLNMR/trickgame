@@ -29,6 +29,7 @@ import 'logging/round_start_play_order.dart';
 import 'logging/skip_turn.dart';
 import 'logging/start_of_game.dart';
 import 'logging/subgame_starts.dart';
+import 'logging/turn_start.dart';
 
 part 'game.g.dart';
 part 'game_card_playing.dart';
@@ -266,7 +267,6 @@ class Game extends YustDoc {
     }
     evaluateTrick();
     currentRound++;
-    // TODO: Here we should log the current player order.
     addLogEntry(
         LogRoundStartPlayOrder(round: currentRound, playOrder: playOrder ?? []),
         absoluteIndentLevel: 0);
@@ -283,12 +283,13 @@ class Game extends YustDoc {
     if (winnerIndex == null) return;
     final winner = players[winnerIndex];
     winner.tricksWon++;
+    addLogEntry(LogTrickWon(playerIndex: winnerIndex));
     currentPlayerIndex = winnerIndex;
     playOrder = List.generate(
       playerNum,
       (index) => (index + currentPlayerIndex) % playerNum,
     );
-    // TODO: currently, this doesn't correctly consider interaction between the
+    // TODO: currently, the following doesn't correctly consider interaction between the
     // first- and last-player role if the latter is called first.
     // Maybe we need to add some sort of index to the roles to check the order
     // they'd be evaluated in?
