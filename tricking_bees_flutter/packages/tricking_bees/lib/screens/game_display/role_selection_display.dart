@@ -46,7 +46,8 @@ class RoleSelectionDisplay extends ConsumerWidget {
           child: GestureDetector(
             onTap: () async => (game.canChooseRole(roleKey, ref.user))
                 ? game.chooseRole(roleKey)
-                : null,
+                // : null,
+                : game.chooseRole(roleKey), // TODO: For testing purposes
             child: RoleIcon(
               isChoosable: game.canChooseRole(roleKey, ref.user),
               roleKey: roleKey,

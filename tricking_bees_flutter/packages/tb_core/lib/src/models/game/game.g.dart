@@ -50,6 +50,9 @@ Game _$GameFromJson(Map json) => Game(
       inputRequirement: $enumDecodeNullable(
               _$InputRequirementEnumMap, json['inputRequirement']) ??
           InputRequirement.card,
+      cardAndEventFlags: json['flags'] == null
+          ? null
+          : jsonDecode(json['flags']) as Map<String, dynamic>,
 
       /// WARNING: This has to be set manually, it's really annoying
       existingLogEntries: (json['logEntries'] as Map).map(
@@ -93,6 +96,7 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'currentTrump': instance.currentTrump?.toJson(),
       'currentTrick': instance.currentTrick?.toJson(),
       'inputRequirement': _$InputRequirementEnumMap[instance.inputRequirement]!,
+      'flags': jsonEncode(instance.flags),
       'logEntries': instance.logEntries.map(
           (k, e) => MapEntry(k.toString(), e.map((v) => v.toJson()).toList())),
     };

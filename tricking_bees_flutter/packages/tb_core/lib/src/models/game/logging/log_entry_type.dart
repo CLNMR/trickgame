@@ -1,5 +1,7 @@
 import 'card_played.dart';
+import 'end_of_game.dart';
 import 'log_entry.dart';
+import 'points_awarded.dart';
 import 'role_chosen.dart';
 import 'round_start_play_order.dart';
 import 'skip_turn.dart';
@@ -28,7 +30,13 @@ enum LogEntryType {
   roleChosen(LogRoleChosen.fromJson),
 
   /// Log when a turn is skipped.
-  skipTurn(LogSkipTurn.fromJson);
+  skipTurn(LogSkipTurn.fromJson),
+
+  /// Log the end of a subgame.
+  pointsAwarded(LogPointsAwarded.fromJson),
+
+  /// Log the end of the game.
+  endOfGame(LogEndOfGame.fromJson);
 
   const LogEntryType(this.fromJson);
 

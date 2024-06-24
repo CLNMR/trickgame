@@ -8,8 +8,7 @@ extension GameCardExt on Game {
   /// Determines whether the given user can currently any cards.
   bool canPlayAnyCards(Player player) =>
       gameState == GameState.playingTricks &&
-      (inputRequirement == InputRequirement.cardOrSkip ||
-          inputRequirement == InputRequirement.card) &&
+      (inputRequirement.isCard) &&
       currentPlayer.id == player.id;
 
   /// Determines whether the given user can currently play the given card.
@@ -32,6 +31,15 @@ extension GameCardExt on Game {
       ),
       absoluteIndentLevel: 2,
     );
+    if (inputRequirement == InputRequirement.twoCards) {
+      if (getFlag<bool>(_oneOfTwoCardsPlayedKey) ?? false) {
+        setFlag(_oneOfTwoCardsPlayedKey, false);
+      } else {
+        setFlag(_oneOfTwoCardsPlayedKey, true);
+        await save(merge: false);
+        return;
+      }
+    }
     // TODO: Implement TwoCard playing.
     await nextPlayer();
   }
@@ -39,9 +47,7 @@ extension GameCardExt on Game {
   /// Play a card for one of the other players.
   Future<void> playOtherPlayerCard(GameCard cardKey, Player player) async {
     print('Trying to play ${cardKey.name} for player ${player.displayName}');
-    if (gameState != GameState.playingTricks) return;
     if (currentPlayer.id != player.id) return;
-    if (inputRequirement != InputRequirement.card) return;
     if (!player.canPlayCard(cardKey, compulsoryColor)) return;
     player.playCard(cardKey);
     currentTrick!.addCard(cardKey, playOrder![currentPlayerIndex]);
@@ -52,6 +58,15 @@ extension GameCardExt on Game {
       ),
       absoluteIndentLevel: 2,
     );
+    if (inputRequirement == InputRequirement.twoCards) {
+      if (getFlag<bool>(_oneOfTwoCardsPlayedKey) ?? false) {
+        setFlag(_oneOfTwoCardsPlayedKey, false);
+      } else {
+        setFlag(_oneOfTwoCardsPlayedKey, true);
+        await save(merge: false);
+        return;
+      }
+    }
     await nextPlayer();
   }
 

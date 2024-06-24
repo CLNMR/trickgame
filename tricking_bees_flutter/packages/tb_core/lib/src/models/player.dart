@@ -6,6 +6,8 @@ import '../cards/card_stack.dart';
 import '../cards/game_card.dart';
 import '../roles/role.dart';
 import '../roles/role_catalog.dart';
+import 'game/game.dart';
+import 'game/logging/points_awarded.dart';
 
 part 'player.g.dart';
 
@@ -20,8 +22,8 @@ class Player {
     CardStack? cards,
     this.tricksWon = 0,
     this.pointTotal = 0,
-    Role? role,
-  })  : role = role ?? Role(key: RoleCatalog.noRole),
+    RoleCatalog? roleKey,
+  })  : roleKey = roleKey ?? RoleCatalog.noRole,
         cards = cards ?? CardStack();
 
   /// Creates a [Player] from a [YustUser].
@@ -49,7 +51,7 @@ class Player {
   CardStack cards;
 
   /// The role the player has currently chosen.
-  Role role = Role(key: RoleCatalog.noRole);
+  RoleCatalog roleKey;
 
   /// The amount of points this player has achieved.
   int pointTotal;
@@ -60,11 +62,28 @@ class Player {
     displayName: 'EMPTY',
   );
 
+  /// The role of the player.
+  Role get role => Role.fromRoleCatalog(roleKey);
+
+  /// Awards points to this player.
+  void awardPoints(Game game, int playerIndex) {
+    final points = role.calculatePoints(game, tricksWon);
+    pointTotal += points;
+    game.addLogEntry(
+      LogPointsAwarded(
+        playerIndex: playerIndex,
+        roleKey: roleKey,
+        points: points,
+        tricksWon: tricksWon,
+      ),
+    );
+  }
+
   /// Get this player ready for the new subgame.
   void resetForNewSubgame() {
     tricksWon = 0;
     cards = CardStack();
-    role = Role(key: RoleCatalog.noRole);
+    roleKey = RoleCatalog.noRole;
   }
 
   /// Deal this player the given cards.

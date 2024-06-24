@@ -14,9 +14,9 @@ Player _$PlayerFromJson(Map json) => Player(
           : CardStack.fromJson((json['cards'] as Map).cast<String, dynamic>()),
       tricksWon: (json['tricksWon'] as num?)?.toInt() ?? 0,
       pointTotal: (json['pointTotal'] as num?)?.toInt() ?? 0,
-      role: json['role'] == null
+      roleKey: json['roleKey'] == null
           ? null
-          : Role.fromJson((json['role'] as Map).cast<String, dynamic>()),
+          : $enumDecode(_$RoleCatalogEnumMap, json['roleKey']),
     );
 
 Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
@@ -24,7 +24,7 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
       'displayName': instance.displayName,
       'tricksWon': instance.tricksWon,
       'cards': instance.cards.toJson(),
-      'role': instance.role.toJson(),
+      'roleKey': _$RoleCatalogEnumMap[instance.roleKey]!,
       'pointTotal': instance.pointTotal,
     };
 

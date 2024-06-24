@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -23,6 +24,7 @@ import '../game_state.dart';
 import '../player.dart';
 import 'game.service.dart';
 import 'logging/card_played.dart';
+import 'logging/end_of_game.dart';
 import 'logging/log_entry.dart';
 import 'logging/role_chosen.dart';
 import 'logging/round_start_play_order.dart';
@@ -162,6 +164,8 @@ class Game extends YustDoc {
 
   final _overridingTrumpColorKey = 'overridingTrumpColor';
 
+  final _oneOfTwoCardsPlayedKey = 'oneOfTwoCardsPlayed';
+
   /// The current trump color, possibly overridden by a flag.
   CardColor? get currentTrumpColor {
     final overridingTrumpColor = getFlag<String>(_overridingTrumpColorKey);
@@ -171,6 +175,7 @@ class Game extends YustDoc {
     return currentTrump?.color;
   }
 
+  /// Whether the trump color has been overridden.
   bool get hasOverridingTrumpColor =>
       CardColor.tryParse(getFlag<String>(_overridingTrumpColorKey) ?? '') !=
       null;
@@ -188,40 +193,52 @@ class Game extends YustDoc {
       !useAuth || currentPlayer.id == user?.id;
 
   /// The player currently expected to do something.
-  Player get currentPlayer => gameState == GameState.roleSelection
-      ? _currentNormalOrderPlayer
-      : _currentTrickOrderPlayer;
+  Player get currentPlayer => players[actualCurrentPlayerIndex];
 
-  /// The current player of the normal order.
-  Player get _currentNormalOrderPlayer => players[currentPlayerIndex];
-
-  /// The current player of the trick order.
-  Player get _currentTrickOrderPlayer =>
-      players[playOrder?[currentPlayerIndex] ?? 0];
+  /// The player index referring to the list of players.
+  int get actualCurrentPlayerIndex => gameState == GameState.roleSelection
+      ? currentPlayerIndex
+      : playOrder?[currentPlayerIndex] ?? 0;
 
   /// Increments the player index.
   void incrementPlayerIndex() {
     currentPlayerIndex = (currentPlayerIndex + 1) % playerNum;
   }
 
+  /// The points for each player, indexed by their index.
+  Map<PlayerIndex, int> get playerPoints =>
+      players.map((e) => e.pointTotal).toList().asMap();
+
   /// The current player index corresponds to the player that starts a round.
   bool get currentPlayerIsStartingPlayer => gameState == GameState.roleSelection
       ? currentPlayerIndex == (currentSubgame - 1) % playerNum
       : currentPlayerIndex == 0;
 
-  /// Start a new subgame.
-  Future<void> startNewSubgame() async {
+  /// Finish a subgame and go to the end, or start a new subgame.
+  Future<void> finishSubgame() async {
     for (final role in currentRoles) {
       role.onEndOfSubgame(this);
     }
-    currentSubgame += 1;
-    currentRound = 0;
-    // The player that gets to choose first rotates with each subgame.
-    currentPlayerIndex = (currentSubgame - 1) % playerNum;
+    for (final entry in players.asMap().entries) {
+      entry.value.awardPoints(this, entry.key);
+    }
     // Reset trump color and trick.
     currentTrump = null;
     deleteFlag(_overridingTrumpColorKey);
     currentTrick = null;
+    if (currentSubgame == subgameNum) {
+      gameState = GameState.finished;
+      addLogEntry(LogEndOfGame());
+    } else {
+      await startNewSubgame();
+    }
+  }
+
+  /// Start a new subgame.
+  Future<void> startNewSubgame() async {
+    currentSubgame += 1;
+    // The player that gets to choose first rotates with each subgame.
+    currentPlayerIndex = (currentSubgame - 1) % playerNum;
     // Deal new cards and reset players.
     undealtCards = CardStack.initialDeck(playerNum: playerNum);
     for (var i = 0; i < playerNum; i++) {
@@ -251,12 +268,15 @@ class Game extends YustDoc {
     await save(merge: false);
   }
 
-  /// Advance the game to the next turn.
+  /// Advance the game to the next turn during the trick-playing phase.
   Future<void> goToNextTurn() async {
+    if (gameState == GameState.roleSelection) {
+      return;
+    }
     inputRequirement = InputRequirement.card;
 
-    for (final handler in currentRoles) {
-      await handler.onStartOfTurn(this);
+    for (final role in currentRoles) {
+      await role.onStartOfTurn(this);
     }
   }
 
@@ -267,9 +287,15 @@ class Game extends YustDoc {
     }
     evaluateTrick();
     currentRound++;
+    if (currentRound % 13 == 0) {
+      print('Finishing subgame...');
+      await finishSubgame();
+      return;
+    }
     addLogEntry(
-        LogRoundStartPlayOrder(round: currentRound, playOrder: playOrder ?? []),
-        absoluteIndentLevel: 0);
+      LogRoundStartPlayOrder(round: currentRound, playOrder: playOrder ?? []),
+      absoluteIndentLevel: 0,
+    );
     currentTrick = Trick(cardMap: LinkedHashMap());
     currentPlayerIndex = 0;
     for (final handler in currentRoles) {
@@ -331,5 +357,12 @@ enum InputRequirement {
   selectPlayer,
 
   /// The user has to select an extra card.
-  selectCardToRemove,
+  selectCardToRemove;
+
+  /// Whether card playing should be possible with this input requirement.
+  bool get isCard => this == card || this == cardOrSkip || this == twoCards;
+
+  /// The status key for the input requirement.
+  String getStatusKey({bool whileWaiting = false}) =>
+      'STATUS:INPUT:$name${whileWaiting ? ':WAITING' : ''}';
 }

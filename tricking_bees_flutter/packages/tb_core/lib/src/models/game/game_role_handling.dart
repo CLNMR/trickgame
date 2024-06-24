@@ -8,7 +8,7 @@ extension GameEventHandlingExt on Game {
   /// Assigns the given Role to the current player and advances the game to the
   /// next player.
   Future<void> chooseRole(RoleCatalog roleKey) async {
-    currentPlayer.role = Role.fromRoleCatalog(roleKey);
+    currentPlayer.roleKey = roleKey;
     addLogEntry(LogRoleChosen(playerIndex: currentPlayerIndex, role: roleKey));
     incrementPlayerIndex();
     if (currentPlayerIsStartingPlayer) {
@@ -34,7 +34,7 @@ extension GameEventHandlingExt on Game {
     // to do something at the start of the game.
     while (isFirstTime || !currentPlayerIsStartingPlayer) {
       isFirstTime = false;
-      _currentNormalOrderPlayer.role.onStartOfSubgame(this);
+      currentPlayer.role.onStartOfSubgame(this);
       if (inputRequirement != InputRequirement.selectRole) {
         await save();
         return;
@@ -61,8 +61,7 @@ extension GameEventHandlingExt on Game {
 
   /// Select a player.
   Future<void> selectPlayer(int selectedPlayerIndex) async {
-    await _currentNormalOrderPlayer.role
-        .onPlayerSelect(this, selectedPlayerIndex);
+    await currentPlayer.role.onPlayerSelect(this, selectedPlayerIndex);
   }
 
   /// Sets a flag for the current card or event.
@@ -96,7 +95,7 @@ extension GameEventHandlingExt on Game {
 
   /// Deletes a flag for the current card or event.
   void deleteFlag(String key) {
-    flags[key] = FieldValue.delete();
+    if (flags.containsKey(key)) flags[key] = FieldValue.delete();
   }
 
   /// Checks if a flag is currently registered.

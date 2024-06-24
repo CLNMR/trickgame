@@ -1,4 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:yust/yust.dart';
 
 import '../cards/card_color.dart';
@@ -8,24 +7,14 @@ import '../models/game/game.dart';
 import '../wrapper/tr_object.dart';
 import 'role_catalog.dart';
 
-part 'role.g.dart';
-
-@JsonSerializable()
-
 /// A role of the game.
-class Role {
+abstract class Role {
   /// Creates an [Role].
   Role({required this.key});
 
   /// Creates an [Role] from an [RoleCatalog].
   factory Role.fromRoleCatalog(RoleCatalog roleType) =>
       roleType.roleConstructor();
-
-  /// Creates a [Role] from a JSON map.
-  factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
-
-  /// Converts the [Role] to a JSON map.
-  Map<String, dynamic> toJson() => _$RoleToJson(this);
 
   /// The key of the role.
   final RoleCatalog key;

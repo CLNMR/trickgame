@@ -9,9 +9,11 @@ class RoleD extends Role {
 
   @override
   void transformPlayOrder(Game game, int playerIndex) {
-    if (game.playOrder == null || game.playOrder!.first == playerIndex) return;
+    if (game.playOrder == null ||
+        game.playOrder!.first == playerIndex ||
+        game.players[playerIndex].roleKey != key) return;
     game.playOrder!
       ..remove(playerIndex)
-      ..insert(playerIndex, game.playerNum - 1);
+      ..insert(game.playerNum - 1, playerIndex);
   }
 }

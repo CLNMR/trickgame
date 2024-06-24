@@ -17,5 +17,5 @@ Map<String, dynamic> _$LogSubgameStartsToJson(LogSubgameStarts instance) =>
     <String, dynamic>{
       'indentLevel': instance.indentLevel,
       'subgame': instance.subgame,
-      'trumpCard': instance.trumpCard,
+      'trumpCard': instance.trumpCard.toJson(),
     };

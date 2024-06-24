@@ -17,7 +17,9 @@ class RoleF extends Role {
 
   @override
   Future<void> onStartOfTurn(Game game) async {
-    game.inputRequirement = InputRequirement.twoCards;
+    if (game.currentPlayer.roleKey == RoleCatalog.roleF) {
+      game.inputRequirement = InputRequirement.twoCards;
+    }
   }
 
   @override
