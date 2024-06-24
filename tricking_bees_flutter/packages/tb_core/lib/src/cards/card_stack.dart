@@ -19,7 +19,7 @@ class CardStack extends IterableBase<GameCard> {
   factory CardStack.initialDeck({required int playerNum}) {
     final cards = <GameCard>[];
     final highestNumber = getHighestCardNumber(playerNum);
-    for (final color in CardColor.values) {
+    for (final color in CardColor.getColorsForPlayerNum(playerNum)) {
       cards.addAll(
         List.generate(
           highestNumber,
