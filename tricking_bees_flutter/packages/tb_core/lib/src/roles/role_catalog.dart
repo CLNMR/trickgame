@@ -45,6 +45,11 @@ enum RoleCatalog {
   /// The localized description of the point scheme for the role.
   String get descPointScheme => 'ROLE:DESC:PTS:$name';
 
-  /// The image of the role.
-  String get imagePath => 'assets/images/roles/${name.capitalize()}.PNG';
+  /// The image of the benefit description icon of the role.
+  String get imagePathBenefits =>
+      'assets/images/roles/${name.capitalize()}.PNG';
+
+  /// The image of the point description icon of the role.
+  String get imagePathPoints =>
+      'assets/images/roles/${name.capitalize()}Points.PNG';
 }
