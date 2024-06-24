@@ -1,0 +1,17 @@
+INPUT:card: It's your turn. Play a card.
+INPUT:card:WAITING: Waiting for {player} to play a card.
+INPUT:cardOrSkip: It's your turn. You may play a card or skip your turn.
+INPUT:cardOrSkip:WAITING: Waiting for {player} to play a card or end their turn.
+INPUT:selectCardToRemove: Choose a card to discard.
+INPUT:selectCardToRemove:WAITING: Waiting for {player} to discard a card.
+INPUT:selectPlayer: Choose a player.
+INPUT:selectPlayer:WAITING: Waiting for {player} to choose a player.
+INPUT:selectRole: Choose one of the available roles for the next game.
+INPUT:selectRole:WAITING: Waiting for {player} to choose a role.
+INPUT:selectTrump: Choose a suit as trump.
+INPUT:selectTrump:WAITING: Waiting for {player} to choose a trump suit.
+INPUT:twoCards: It's your turn. Play two cards.
+INPUT:twoCards:WAITING: Waiting for {player} to play two cards.
+gameIsFinished: The game is over! {playerWinner} has won with {numberWinner} points.
+  You have scored {numberPlayer} points, finishing in {numberRank} place.
+waitingForOtherPlayers: Waiting for {number} other players.

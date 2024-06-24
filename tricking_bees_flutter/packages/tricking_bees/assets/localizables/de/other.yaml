@@ -3,4 +3,4 @@ CurrentGames: Aktive Spiele
 RoundDisplay: Runde {}
 logBoxTitle: Spielverlauf
 logDividerBeforeGameStart: Spielbeginn
-logDividerRound: Runde {}
+logDividerRound: Runde {round}

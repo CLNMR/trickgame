@@ -1,0 +1,18 @@
+INPUT:card: Du bist am Zug. Spiele eine Karte.
+INPUT:card:WAITING: Warte darauf, dass {player} eine Karte spielt.
+INPUT:cardOrSkip: Du bist am Zug. Du darfst eine Karte spielen oder deinen Zug überspringen.
+INPUT:cardOrSkip:WAITING: Warte darauf, dass {player} eine Karte spielt oder den Zug
+  beendet.
+INPUT:selectCardToRemove: Wähle eine Karte aus, die du ablegen möchtest.
+INPUT:selectCardToRemove:WAITING: Warte darauf, dass {player} eine Karte ablegt.
+INPUT:selectPlayer: Wähle einen Spieler aus.
+INPUT:selectPlayer:WAITING: Warte darauf, dass {player} einen Spieler auswählt.
+INPUT:selectRole: Wähle eine der verfügbaren Rollen für das nächste Spiel.
+INPUT:selectRole:WAITING: Warte darauf, dass {player} eine Rolle wählt.
+INPUT:selectTrump: Wähle eine Farbe als Trumpf.
+INPUT:selectTrump:WAITING: Warte darauf, dass {player} eine Trumpffarbe wählt.
+INPUT:twoCards: Du bist am Zug. Spiele zwei Karten.
+INPUT:twoCards:WAITING: Warte darauf, dass {player} zwei Karten spielt.
+gameIsFinished: Das Spiel ist zu Ende! {playerWinner} hat mit {numberWinner} Punkten
+  gewonnen. Du hast mit {numberPlayer} Punkten den {numberRank}. Platz erzielt.
+waitingForOtherPlayers: Warte auf {number} andere Spieler.

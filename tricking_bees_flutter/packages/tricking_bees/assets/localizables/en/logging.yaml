@@ -1,4 +1,6 @@
 cardPlayed: '{player} plays {card}.'
+pointsAwarded: '{player} won {numberTricks} tricks. Due to their role {role} they
+  receive {numberPoints} points.'
 roleChosen: '{player} chooses to be {role} for this game.'
 roundStartPlayOrder: 'Round {number} starts where the players are ordered as follows:
   {playerList}.'
@@ -6,5 +8,6 @@ skipTurn: '{player} skips playing any cards.'
 startOfGame: 'Starting a {number}-player game (ID: {gameId}) with {playerList}. We
   therefore play with {numberCardsTotal} cards, where there are {numberColors} colors
   where {numberCards} is the highest number.'
-subgameStarts: ''
-trickWon: ''
+subgameStarts: The cards for game {number} of {numberTot} are distributed. {card}
+  is revealed to be the trump card this time.
+trickWon: '{player} wins the trick.'

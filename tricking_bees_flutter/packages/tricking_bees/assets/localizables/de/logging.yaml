@@ -1,4 +1,6 @@
 cardPlayed: '{player} spielt {card}.'
+pointsAwarded: '{player} hat {numberTricks} Stiche erzielt. Aufgrund der Rolle {role}
+  bekommt er/sie daher {numberPoints} Punkte.'
 roleChosen: '{player} wählt {role} für dieses Spiel.'
 roundStartPlayOrder: Runde {number} beginnt mit der Reihenfolge {playerList}.
 skipTurn: '{player} überspringt das Spielen einer Karte.'

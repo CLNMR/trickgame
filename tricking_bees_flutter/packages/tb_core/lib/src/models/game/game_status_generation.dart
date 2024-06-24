@@ -14,12 +14,7 @@ extension GameStatusGenerationExt on Game {
         return _getStatusMessagesForInProgress(user)
           ..insertAll(0, _getCurrentRoleStatuses(user));
       case GameState.finished:
-        return [
-          TrObject(
-            'STATUS:gameIsFinished',
-            // LATERTODO: List all involved factions, and the correct winners.
-          ),
-        ];
+        return _getGameFinishedStatus(user);
     }
   }
 
@@ -35,35 +30,58 @@ extension GameStatusGenerationExt on Game {
   List<TrObject> _getStatusMessagesForRoleSelection(YustUser user) => [
         if (isCurrentPlayer(user))
           TrObject(
-            'STATUS:whileRoleSelection',
+            'STATUS:whileRoleSelectionChoosing',
           )
         else
           TrObject(
-            'STATUS:whileRoleSelection',
-            richTrObjects: [
-              RichTrObject(RichTrType.player, value: currentPlayerIndex),
-            ],
+            'STATUS:whileRoleSelectionWaiting',
+            richTrObjects: [_getCurrentPlayerTrObject()],
           ),
       ];
 
-  List<TrObject> _getStatusMessagesForInProgress(YustUser user) {
-    switch (inputRequirement) {
-      case InputRequirement.card:
-        return _getStatusMessagesForCardInput(user);
-      case InputRequirement.twoCards:
-        return _getStatusMessagesForTwoCardsInput(user);
-      case InputRequirement.cardOrSkip:
-        return _getStatusMessagesForCardOrSkipInput(user);
-      case InputRequirement.selectTrump:
-        return [TrObject('TODO')];
-      case InputRequirement.selectPlayer:
-        return [TrObject('TODO')];
-      case InputRequirement.selectRole:
-        return [TrObject('TODO')];
-      case InputRequirement.selectCardToRemove:
-        return [TrObject('TODO')];
-    }
+  List<TrObject> _getGameFinishedStatus(YustUser user) {
+    // TODO: Currently handles same point amounts poorly
+    final sortedWinners = playerPoints.entries.toList()
+      ..sort((a, b) => a.value.compareTo(b.value));
+    final ownIndex = getNormalOrderPlayerIndex(user);
+    final ownRank = sortedWinners.indexWhere((e) => e.key == ownIndex);
+    final endObj = TrObject(
+      'STATUS:gameIsFinished',
+      richTrObjects: [
+        RichTrObject(
+          RichTrType.player,
+          value: sortedWinners.first.key,
+          keySuffix: 'Winner',
+        ),
+        RichTrObject(
+          RichTrType.number,
+          value: sortedWinners.first.value,
+          keySuffix: 'Winner',
+        ),
+        RichTrObject(
+          RichTrType.number,
+          value: playerPoints[ownIndex],
+          keySuffix: 'Player',
+        ),
+        RichTrObject(
+          RichTrType.number,
+          value: ownRank,
+          keySuffix: 'Rank',
+        ),
+      ],
+    );
+    return [endObj];
   }
+
+  List<TrObject> _getStatusMessagesForInProgress(YustUser user) =>
+      isCurrentPlayer(user)
+          ? [TrObject(inputRequirement.getStatusKey())]
+          : [
+              TrObject(
+                inputRequirement.getStatusKey(whileWaiting: true),
+                richTrObjects: [_getCurrentPlayerTrObject()],
+              ),
+            ];
 
   /// Retrieve the status messages for all active cards and events that do not
   /// occur during special input.
@@ -74,46 +92,6 @@ extension GameStatusGenerationExt on Game {
       .nonNulls
       .toList();
 
-  List<TrObject> _getStatusMessagesForCardInput(YustUser user) => [
-        if (isCurrentPlayer(user))
-          TrObject(
-            'STATUS:whileCardChoosing',
-            richTrObjects: [],
-          )
-        else
-          TrObject(
-            'STATUS:whileCardWaiting',
-            richTrObjects: [
-              RichTrObject(RichTrType.player, value: currentPlayerIndex),
-            ],
-          ),
-      ];
-
-  List<TrObject> _getStatusMessagesForCardOrSkipInput(YustUser user) => [
-        if (isCurrentPlayer(user))
-          TrObject(
-            'STATUS:whileCardOrSkipChoosing',
-          )
-        else
-          TrObject(
-            'STATUS:whileCardOrSkipWaiting',
-            richTrObjects: [
-              RichTrObject(RichTrType.player, value: currentPlayerIndex),
-            ],
-          ),
-      ];
-
-  List<TrObject> _getStatusMessagesForTwoCardsInput(YustUser user) => [
-        if (isCurrentPlayer(user))
-          TrObject(
-            'STATUS:whileTwoCardsChoosing',
-          )
-        else
-          TrObject(
-            'STATUS:whileTwoCardsWaiting',
-            richTrObjects: [
-              RichTrObject(RichTrType.player, value: currentPlayerIndex),
-            ],
-          ),
-      ];
+  RichTrObject _getCurrentPlayerTrObject() =>
+      RichTrObject(RichTrType.player, value: actualCurrentPlayerIndex);
 }
