@@ -98,8 +98,22 @@ Benötigt python 3.12 oder höher + pygame.
 
 Zeugs das aktuell noch offen ist:
 
-- [] Trumpffarbe loggen und anzeigen.
-- [] Rollenwahl visuell implementieren.
-- [] Log messages für Rollenwahl und Trumpfwahl.
-- [] Log messages überarbeiten; Unterscheidung Runde und Subgame.
-- [] Status messages überarbeiten.
+- [x] Trumpffarbe loggen und anzeigen.
+- [x] Log messages überarbeiten; Unterscheidung Runde und Subgame.
+- [ ] Rollenwahl visuell (schön) implementieren.
+- [ ] Status messages überarbeiten.
+  - [x] Rolle wählen
+  - [x] Aktuelle Rolle
+  - [x] Karten spielen
+  - [ ] Edge cases?
+- [ ] Log messages:
+  - [x] Rollenwahl
+  - [x] Verdecktes Spielen
+  - [x] Personenwahl
+  - [ ] Trumpfwahl
+  - [ ] Extrakarten austeilen
+- [ ] Basic Bot implementieren, der zufällige mögliche Aktion durchführt.
+- [ ] Vorherigen Stich anzeigen
+- [ ] Dev/Prod-Mode-Unterscheidung (sowohl build als auch flag im Spiel setzen)
+- [ ] Look at end-of-game: How is the final leaderboard displayed? How are players with the same amount of points handled?
+- [ ] Advanced Role selection: Implement that each player has to choose from a limited number of roles, and add selection capability for that mode
