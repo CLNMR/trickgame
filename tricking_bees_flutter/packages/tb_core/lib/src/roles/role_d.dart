@@ -5,11 +5,13 @@ import 'role_catalog.dart';
 /// They get to play their card last, unless they start the turn anyways.
 class RoleD extends Role {
   /// Creates a [RoleD].
-  RoleD() : super(key: RoleCatalog.roleD);
+  RoleD() : super(key: RoleCatalog.roleD, roleSortIndex: 10);
 
   @override
-  void transformPlayOrder(Game game, int playerIndex) {
+  void transformPlayOrder(Game game) {
+    final playerIndex = game.getFirstPlayerWithRole(key);
     if (game.playOrder == null ||
+        playerIndex == null ||
         game.playOrder!.first == playerIndex ||
         game.players[playerIndex].roleKey != key) return;
     game.playOrder!

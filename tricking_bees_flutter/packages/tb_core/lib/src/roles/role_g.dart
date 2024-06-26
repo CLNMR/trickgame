@@ -8,10 +8,16 @@ class RoleG extends Role {
   RoleG() : super(key: RoleCatalog.roleG);
 
   @override
-  void transformPlayOrder(Game game, int playerIndex) {
-    if (game.playOrder == null || game.playOrder!.first == playerIndex) return;
+  void transformPlayOrder(Game game) {
+    final playerIndex = game.getFirstPlayerWithRole(key);
+    if (game.playOrder == null ||
+        playerIndex == null ||
+        game.playOrder!.first == playerIndex) return;
     game.playOrder!
       ..remove(playerIndex)
-      ..insert(playerIndex, 0);
+      ..insert(0, playerIndex);
   }
+
+  @override
+  int calculatePoints(Game game, int tricksWon) => tricksWon;
 }

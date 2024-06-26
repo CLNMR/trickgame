@@ -184,6 +184,10 @@ class Game extends YustDoc {
   List<Player> getOtherPlayers(YustUser? user) =>
       players.where((player) => player.id != user?.id).toList();
 
+  /// Get the players that currently do not have the turn.
+  List<Player> getNonCurrentPlayers() =>
+      players.where((player) => player.id != currentPlayer.id).toList();
+
   /// Returns whether the given user is the current player.
   bool isCurrentlyChoosingRole(YustUser? user) =>
       !useAuth || getNormalOrderPlayerIndex(user) == currentPlayerIndex;
@@ -288,19 +292,32 @@ class Game extends YustDoc {
     evaluateTrick();
     currentRound++;
     if (currentRound % 13 == 0) {
-      print('Finishing subgame...');
       await finishSubgame();
       return;
     }
-    addLogEntry(
-      LogRoundStartPlayOrder(round: currentRound, playOrder: playOrder ?? []),
-      absoluteIndentLevel: 0,
-    );
+    setPlayOrder();
     currentTrick = Trick(cardMap: LinkedHashMap());
     currentPlayerIndex = 0;
     for (final handler in currentRoles) {
       await handler.onStartOfRound(this);
     }
+  }
+
+  /// Sets the play order.
+  void setPlayOrder() {
+    playOrder = List.generate(
+      playerNum,
+      (index) => (index + currentPlayerIndex) % playerNum,
+    );
+    final roles = currentRoles
+      ..sort((a, b) => a.roleSortIndex.compareTo(b.roleSortIndex));
+    for (final role in roles) {
+      role.transformPlayOrder(this);
+    }
+    addLogEntry(
+      LogRoundStartPlayOrder(round: currentRound, playOrder: playOrder ?? []),
+      absoluteIndentLevel: 0,
+    );
   }
 
   /// Evaluates the trick and reorders the players.
@@ -311,22 +328,15 @@ class Game extends YustDoc {
     winner.tricksWon++;
     addLogEntry(LogTrickWon(playerIndex: winnerIndex));
     currentPlayerIndex = winnerIndex;
-    playOrder = List.generate(
-      playerNum,
-      (index) => (index + currentPlayerIndex) % playerNum,
-    );
-    // TODO: currently, the following doesn't correctly consider interaction between the
-    // first- and last-player role if the latter is called first.
-    // Maybe we need to add some sort of index to the roles to check the order
-    // they'd be evaluated in?
-    for (var i = 0; i < playerNum; i++) {
-      players[i].role.transformPlayOrder(this, i);
-    }
   }
 
   /// Returns the index in the game for the given user given the normal order.
   int getNormalOrderPlayerIndex(YustUser? user) =>
       players.indexWhere((player) => player.id == user?.id);
+
+  /// Returns the index of the given player in the list of players.
+  int getNormalPlayerIndex(Player player) =>
+      players.indexWhere((other) => other.id == player.id);
 
   /// Returns the player associated with the given user.
   Player getPlayer(YustUser user) =>
@@ -360,7 +370,11 @@ enum InputRequirement {
   selectCardToRemove;
 
   /// Whether card playing should be possible with this input requirement.
-  bool get isCard => this == card || this == cardOrSkip || this == twoCards;
+  bool get isCard =>
+      this == card ||
+      this == cardOrSkip ||
+      this == twoCards ||
+      this == selectCardToRemove;
 
   /// The status key for the input requirement.
   String getStatusKey({bool whileWaiting = false}) =>

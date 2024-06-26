@@ -10,7 +10,7 @@ import 'role_catalog.dart';
 /// A role of the game.
 abstract class Role {
   /// Creates an [Role].
-  Role({required this.key});
+  Role({required this.key, this.roleSortIndex = 0});
 
   /// Creates an [Role] from an [RoleCatalog].
   factory Role.fromRoleCatalog(RoleCatalog roleType) =>
@@ -18,6 +18,9 @@ abstract class Role {
 
   /// The key of the role.
   final RoleCatalog key;
+
+  /// The index to determine an order of roles, if necessary.
+  final int roleSortIndex;
 
   /// Calculate the points achieved for this role, per default the number of
   /// tricks * 2.
@@ -37,6 +40,9 @@ abstract class Role {
 
   /// The base key for the status of the role.
   String get basicStatusKey => 'STATUS:SPECIAL:${key.name}';
+
+  /// Whether this role plays its cards hidden.
+  bool get playsCardHidden => false;
 
   /// Whether this event is currently active.
   /// If an event is active, its effects are currently needed to be considered.
@@ -59,7 +65,10 @@ abstract class Role {
   void onEndOfSubgame(Game game) {}
 
   /// Handle the selection of a player.
-  Future<void> onPlayerSelect(Game game, int selectedPlayerIndex) async {}
+  Future<void> selectPlayer(Game game, int selectedPlayerIndex) async {}
+
+  /// Check whether a player is selected by this role.
+  bool isPlayerSelected(Game game, int playerIndex) => false;
 
   /// Handle the selection of an extra card.
   Future<void> onSelectCardToRemove(Game game, GameCard card) async {}
@@ -69,7 +78,7 @@ abstract class Role {
 
   /// Manipulate the play order after it has been set, e.g. moving the player to
   /// the front etc.
-  void transformPlayOrder(Game game, int playerIndex) {}
+  void transformPlayOrder(Game game) {}
 
   /// Retrieve the status message displayed if this role has to fulfil a special
   /// action at the start of the game.
@@ -77,5 +86,6 @@ abstract class Role {
 
   /// Retrieve the status message that is displayed whenever this role is
   /// active during the trick playing phase.
-  TrObject? getStatusWhileActive(Game game, YustUser? user) => null;
+  TrObject getStatusWhileActive(Game game, YustUser? user) =>
+      TrObject(key.statusKey);
 }
