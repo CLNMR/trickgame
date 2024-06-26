@@ -1,6 +1,7 @@
 /// The core library for TrickingBees.
 library tb_core;
 
+export 'src/cards/card_color.dart';
 export 'src/cards/card_stack.dart';
 export 'src/cards/game_card.dart';
 export 'src/models/game/game.dart';

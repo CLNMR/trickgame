@@ -13,12 +13,18 @@ enum CardColor {
   yellow(0xFFFFD932),
 
   /// Violet.
-  violet(0xFFFF00FF);
+  violet(0xFFFF00FF),
+
+  /// No trump color.
+  noColor(0x00000000);
 
   const CardColor(this.hexValue);
 
   /// The color's corresponding hex value.
   final int hexValue;
+
+  /// The color's localized name.
+  String get locName => 'CARDCOLOR:$name';
 
   /// Retrieve the number of colors for a given number of players.
   static int getColorNumForPlayerNum(int playerNum) => playerNum == 2
