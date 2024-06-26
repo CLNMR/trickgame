@@ -1,0 +1,17 @@
+RoleJ: ''
+roleA: ''
+roleB: ''
+roleC: ''
+roleC:START:SelectOne: ''
+roleC:START:SelectTwo: ''
+roleC:START:Wait: ''
+roleD: ''
+roleE: ''
+roleF: ''
+roleG: ''
+roleH: ''
+roleH:START:SelectOne: So far, you have selected {player}. Select one more player
+  for the averaging.
+roleH:START:SelectTwo: Select two players whose points to average.
+roleH:START:Wait: Wait for {player} to choose players whose points to average.
+roleI: ''

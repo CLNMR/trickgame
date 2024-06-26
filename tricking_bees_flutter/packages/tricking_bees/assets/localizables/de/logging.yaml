@@ -1,4 +1,7 @@
 cardPlayed: '{player} spielt {card}.'
+cardPlayedHiddenBefore: '{player} spielt {card} (verdeckt).'
+cardPlayedHiddenThisRound: '{player} spielt eine Karte (verdeckt).'
+playerChosen: '{role}: {player} wählt {playerChosen}.'
 pointsAwarded: '{player} hat {numberTricks} Stiche erzielt. Aufgrund der Rolle {role}
   bekommt er/sie daher {numberPoints} Punkte.'
 roleChosen: '{player} wählt {role} für dieses Spiel.'

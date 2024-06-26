@@ -1,6 +1,15 @@
 ArchivedGames: Archivierte Spiele
+CARDCOLOR:blue: Blau
+CARDCOLOR:green: Grün
+CARDCOLOR:red: Rot
+CARDCOLOR:violet: Violett
+CARDCOLOR:yellow: Gelb
 CurrentGames: Aktive Spiele
+Queen: Königin
 RoundDisplay: Runde {}
+cardColorSuffix: e
+connectiveAnd: ' und '
 logBoxTitle: Spielverlauf
 logDividerBeforeGameStart: Spielbeginn
 logDividerRound: Runde {round}
+roleTargetsPlayer: Mit deiner Rolle {role} hast du diesen Spieler ausgewählt.

@@ -7,6 +7,6 @@
   "header": "HEAD",
   "other": "",
   "status": "STATUS",
-  "status_special": "STATUS:SPECIAL",
+  "role_status": "STATUS:ROLE",
   "snippets": "SNIPPET"
 }

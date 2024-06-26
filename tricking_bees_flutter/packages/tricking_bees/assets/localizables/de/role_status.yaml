@@ -1,0 +1,20 @@
+RoleJ: Deine Karten werden verdeckt gespielt, außer du spielst aus.
+roleA: Du darfst das Spielen einer Karte überspringen.
+roleB: Du hast {color} als Trumpffarbe gewählt.
+roleC: Zu Beginn des Spiels hast du {cardList} abgeworfen.
+roleC:START:SelectOne: Du hast bereits {card} abgeworfen. Wähle eine weitere deiner
+  Karten zum Abwerfen.
+roleC:START:SelectTwo: Wähle zwei deiner Karten zum Abwerfen.
+roleC:START:Wait: Warte auf {player}, um zwei Karten zum Abwerfen zu wählen.
+roleD: Du spielst immer als letztes, außer du gewinnst den Stich.
+roleE: Du hast keinen Farbzwang.
+roleF: Du musst stets zwei Karten spielen.
+roleG: Du beginnst stets mit dem Ausspielen.
+roleH: Am Ende des Spiels erhältst du den Durchschnitt der Punkte von {playerList}.
+roleH:START:SelectOne: Du hast {player} als ersten Spieler gewählt. Wähle nun einen
+  zweiten Spieler für den Mittelwert.
+roleH:START:SelectTwo: Wähle zwei Spieler, um den Mittelwert ihrer Punkte zu erhalten.
+roleH:START:Wait: Warte auf {player}, um zwei Spieler für den Mittelwert an Punkten
+  zu wählen.
+roleI: Versuche, so wenig Stiche wie möglich zu erhalten. {color} zählt für dich nicht
+  als Trumpffarbe.

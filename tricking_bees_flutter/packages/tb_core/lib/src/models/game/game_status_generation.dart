@@ -9,10 +9,14 @@ extension GameStatusGenerationExt on Game {
       case GameState.waitingForPlayers:
         return _getStatusMessagesForWaitingForPlayers(user);
       case GameState.roleSelection:
-        return _getStatusMessagesForRoleSelection(user);
+        return _getStatusMessagesForInProgress(user)
+          ..insert(
+            0,
+            _getStartOfGameRoleStatus(user) ?? TrObject(''),
+          );
       case GameState.playingTricks:
         return _getStatusMessagesForInProgress(user)
-          ..insertAll(0, _getCurrentRoleStatuses(user));
+          ..insert(0, _getCurrentRoleStatuses(user));
       case GameState.finished:
         return _getGameFinishedStatus(user);
     }
@@ -25,18 +29,6 @@ extension GameStatusGenerationExt on Game {
             RichTrObject(RichTrType.number, value: playerNum - players.length),
           ],
         ),
-      ];
-
-  List<TrObject> _getStatusMessagesForRoleSelection(YustUser user) => [
-        if (isCurrentPlayer(user))
-          TrObject(
-            'STATUS:whileRoleSelectionChoosing',
-          )
-        else
-          TrObject(
-            'STATUS:whileRoleSelectionWaiting',
-            richTrObjects: [_getCurrentPlayerTrObject()],
-          ),
       ];
 
   List<TrObject> _getGameFinishedStatus(YustUser user) {
@@ -83,14 +75,14 @@ extension GameStatusGenerationExt on Game {
               ),
             ];
 
-  /// Retrieve the status messages for all active cards and events that do not
-  /// occur during special input.
-  List<TrObject> _getCurrentRoleStatuses(YustUser user) => currentRoles
-      .map(
-        (e) => e.getStatusWhileActive(this, user),
-      )
-      .nonNulls
-      .toList();
+  /// Retrieve the status messages for roles at the start of the game.
+  TrObject? _getStartOfGameRoleStatus(YustUser user) =>
+      currentPlayer.role.getStatusAtStartOfGame(this, user);
+
+  /// Retrieve the status messages for roles at the start of the game.
+  TrObject _getCurrentRoleStatuses(YustUser user) =>
+      getPlayer(user).role.getStatusWhileActive(this, user)
+        ..roleKey = getPlayer(user).roleKey;
 
   RichTrObject _getCurrentPlayerTrObject() =>
       RichTrObject(RichTrType.player, value: actualCurrentPlayerIndex);

@@ -24,7 +24,7 @@ extension UiRichTrObject on RichTrObject {
       case RichTrType.card:
         final card = value as GameCard;
         return TextSpan(
-          text: tr(card.name),
+          text: card.translatedName,
           style: TextStyle(
             color: Color(card.color.hexValue),
             fontWeight: FontWeight.bold,
@@ -32,15 +32,11 @@ extension UiRichTrObject on RichTrObject {
         );
       case RichTrType.cardList:
         final cards = value as CardStack;
-        return TextSpan(
-          children: cards
-              .map(
-                (card) => RichTrObject(RichTrType.card, value: card)
-                    .getEnrichedSpan(context, playerNames),
-              )
-              .expand((span) => [span, const TextSpan(text: ', ')])
-              .toList()
-            ..removeLast(),
+        return _getSpanForList(
+          cards.toList(),
+          RichTrType.card,
+          context,
+          playerNames,
         );
       case RichTrType.playerList:
         return _getSpanForList(value, RichTrType.player, context, playerNames);
@@ -60,17 +56,23 @@ extension UiRichTrObject on RichTrObject {
     RichTrType singularType,
     BuildContext context,
     List<String> playerNames,
-  ) =>
-      TextSpan(
-        children: values
-            .map(
-              (val) => RichTrObject(singularType, value: val)
-                  .getEnrichedSpan(context, playerNames),
-            )
-            .expand((span) => [span, const TextSpan(text: ', ')])
-            .toList()
-          ..removeLast(),
-      );
+  ) {
+    final spans = values
+        .map(
+          (val) => RichTrObject(singularType, value: val)
+              .getEnrichedSpan(context, playerNames),
+        )
+        .expand((span) => [span, const TextSpan(text: ', ')])
+        .toList()
+      ..removeLast();
+
+    if (spans.length > 1) {
+      spans[spans.length - 2] = TextSpan(text: 'connectiveAnd'.tr());
+    }
+    return TextSpan(
+      children: spans,
+    );
+  }
 
   InlineSpan _getPlayerSpan(String playerName, int factionIndex) => TextSpan(
         text: playerName,
@@ -113,4 +115,14 @@ extension UiRichTrObject on RichTrObject {
           ),
         ),
       );
+}
+
+/// Extend the GameCard object to provide a localized name.
+extension GameCardTranslation on GameCard {
+  /// Returns the translated name of the card.
+  String get translatedName {
+    final colorStr = color.locName.tr() + 'cardColorSuffix'.tr();
+    final numberStr = number == null ? 'Queen'.tr() : number.toString();
+    return '$colorStr $numberStr';
+  }
 }

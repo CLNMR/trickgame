@@ -1,6 +1,15 @@
 ArchivedGames: Archived Games
+CARDCOLOR:blue: ''
+CARDCOLOR:green: ''
+CARDCOLOR:red: ''
+CARDCOLOR:violet: ''
+CARDCOLOR:yellow: ''
 CurrentGames: Current Games
+Queen: ''
 RoundDisplay: 'Round: {}'
+cardColorSuffix: ''
+connectiveAnd: ', and '
 logBoxTitle: Game log
 logDividerBeforeGameStart: ''
-logDividerRound: ''
+logDividerRound: Round {round}
+roleTargetsPlayer: With your role {role}, you have selected this player.

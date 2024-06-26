@@ -11,7 +11,7 @@ class RoleF extends Role {
   bool onStartOfSubgame(Game game) {
     // Deal the 12 additional cards.
     game.currentPlayer.dealCards(game.undealtCards.dealCards(cardNum: 12));
-    // TODO: Add log entry for this.
+    // TODO: Add log entry for this, something like LogExtraCardsDealt
     return false;
   }
 
