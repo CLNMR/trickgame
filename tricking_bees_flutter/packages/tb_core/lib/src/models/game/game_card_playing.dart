@@ -28,9 +28,11 @@ extension GameCardExt on Game {
       LogCardPlayed(
         cardKey: cardKey,
         playerIndex: playerIndex,
+        isHidden: playsCardHidden(player),
       ),
       absoluteIndentLevel: 2,
     );
+    // Handle two card playing:
     if (inputRequirement == InputRequirement.twoCards) {
       if (getFlag<bool>(_oneOfTwoCardsPlayedKey) ?? false) {
         setFlag(_oneOfTwoCardsPlayedKey, false);
@@ -40,14 +42,22 @@ extension GameCardExt on Game {
         return;
       }
     }
-    // TODO: Implement TwoCard playing.
     await nextPlayer();
   }
 
+  /// Whether the given player is able to remove a card.
+  bool canRemoveCard(Player player) =>
+      gameState == GameState.roleSelection &&
+      inputRequirement == InputRequirement.selectCardToRemove &&
+      currentPlayer.id == player.id;
+
   /// Play a card for one of the other players.
   Future<void> playOtherPlayerCard(GameCard cardKey, Player player) async {
-    print('Trying to play ${cardKey.name} for player ${player.displayName}');
     if (currentPlayer.id != player.id) return;
+    if (inputRequirement == InputRequirement.selectCardToRemove) {
+      await player.role.onSelectCardToRemove(this, cardKey);
+      return;
+    }
     if (!player.canPlayCard(cardKey, compulsoryColor)) return;
     player.playCard(cardKey);
     currentTrick!.addCard(cardKey, playOrder![currentPlayerIndex]);
@@ -55,6 +65,7 @@ extension GameCardExt on Game {
       LogCardPlayed(
         cardKey: cardKey,
         playerIndex: playOrder![currentPlayerIndex],
+        isHidden: playsCardHidden(player),
       ),
       absoluteIndentLevel: 2,
     );
@@ -69,6 +80,11 @@ extension GameCardExt on Game {
     }
     await nextPlayer();
   }
+
+  /// Whether this player is playing their card hidden.
+  bool playsCardHidden(Player player) =>
+      player.role.playsCardHidden &&
+      playOrder?.indexOf(getNormalPlayerIndex(player)) != 0;
 
   /// Method to skip the playing of a card.
   Future<void> skipCardPlay(YustUser? user) async {

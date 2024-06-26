@@ -1,5 +1,11 @@
+import 'package:yust/yust.dart';
+
 import '../models/game/game.dart';
 import '../models/game/game.service.dart';
+import '../models/game/logging/player_chosen.dart';
+import '../wrapper/rich_tr_object.dart';
+import '../wrapper/rich_tr_object_type.dart';
+import '../wrapper/tr_object.dart';
 import 'role.dart';
 import 'role_catalog.dart';
 
@@ -13,7 +19,7 @@ class RoleH extends Role {
 
   /// Get the players chosen so far.
   List<int> getChosenPlayers(Game game) =>
-      game.getFlagList<int>(_chosenPlayersKey) ?? [];
+      game.getFlagList<int>(_chosenPlayersKey) ?? <int>[];
 
   /// Add a player to the list of chosen players.
   void addSelectedPlayer(Game game, int selectedPlayerIndex) {
@@ -46,12 +52,19 @@ class RoleH extends Role {
 
   /// Select a player.
   @override
-  Future<void> onPlayerSelect(Game game, int selectedPlayerIndex) async {
+  Future<void> selectPlayer(Game game, int selectedPlayerIndex) async {
     if (game.inputRequirement != InputRequirement.selectPlayer) return;
-    final chosenPlayers = getChosenPlayers(game);
-    if (chosenPlayers.contains(selectedPlayerIndex)) return;
+    if (isPlayerSelected(game, selectedPlayerIndex)) return;
+    // A player cannot select themselves.
     if (selectedPlayerIndex == game.currentPlayerIndex) return;
     addSelectedPlayer(game, selectedPlayerIndex);
+    game.addLogEntry(
+      LogPlayerChosen(
+        playerIndex: game.currentPlayerIndex,
+        playerChosenIndex: selectedPlayerIndex,
+        roleKey: key,
+      ),
+    );
     if (getChosenPlayers(game).length >= 2) {
       game.incrementPlayerIndex();
       await game.finishRoleSelection();
@@ -61,6 +74,10 @@ class RoleH extends Role {
   }
 
   @override
+  bool isPlayerSelected(Game game, int playerIndex) =>
+      getChosenPlayers(game).contains(playerIndex);
+
+  @override
   int calculatePoints(Game game, int tricksWon) {
     final chosenPlayers = getChosenPlayers(game);
     if (chosenPlayers.length < 2) return 0;
@@ -68,4 +85,33 @@ class RoleH extends Role {
     final p2Num = game.players[chosenPlayers[1]].tricksWon;
     return ((p1Num + p2Num) / 2).ceil();
   }
+
+  @override
+  TrObject? getStatusAtStartOfGame(Game game, YustUser? user) {
+    final keyBase = '${key.statusKey}:START:';
+    final chosenPlayers = getChosenPlayers(game);
+    final keySuffix = chosenPlayers.isEmpty ? 'SelectTwo' : 'SelectOne';
+    return game.isCurrentPlayer(user)
+        ? TrObject(
+            '$keyBase$keySuffix',
+            richTrObjects: [
+              if (chosenPlayers.isNotEmpty)
+                RichTrObject(RichTrType.player, value: chosenPlayers.first),
+            ],
+          )
+        : TrObject(
+            '${keyBase}Wait',
+            richTrObjects: [
+              RichTrObject(RichTrType.player, value: game.currentPlayerIndex),
+            ],
+          );
+  }
+
+  @override
+  TrObject getStatusWhileActive(Game game, YustUser? user) => TrObject(
+        key.statusKey,
+        richTrObjects: [
+          RichTrObject(RichTrType.playerList, value: getChosenPlayers(game)),
+        ],
+      );
 }

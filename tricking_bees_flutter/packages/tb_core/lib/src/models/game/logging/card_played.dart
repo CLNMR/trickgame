@@ -18,6 +18,7 @@ class LogCardPlayed extends LogEntry {
   LogCardPlayed({
     required this.cardKey,
     required this.playerIndex,
+    this.isHidden = false,
     int? indentLevel,
   }) : super(
           entryType: LogEntryType.cardPlayed,
@@ -34,6 +35,9 @@ class LogCardPlayed extends LogEntry {
   /// The playerIndex of the player who played the card.
   final int playerIndex;
 
+  /// Whether playing of this card is hidden to the other players.
+  final bool isHidden;
+
   @override
   Map<String, dynamic> toJson() => _$LogCardPlayedToJson(this)
     ..addEntries([
@@ -41,14 +45,22 @@ class LogCardPlayed extends LogEntry {
     ]);
 
   @override
-  TrObject getDescription(Game game) => TrObject(
-        localizedKey,
-        richTrObjects: [
-          RichTrObject(
-            RichTrType.player,
-            value: playerIndex,
-          ),
-          RichTrObject(RichTrType.card, value: cardKey),
-        ],
-      );
+  TrObject getDescription(Game game) {
+    var trKey = localizedKey;
+    if (isHidden) {
+      final isPlayedThisRound =
+          game.logEntries[game.currentRound]?.contains(this) ?? false;
+      final suffix = isPlayedThisRound ? 'ThisRound' : 'Before';
+      trKey = '${localizedKey}Hidden$suffix';
+    }
+    return TrObject(trKey, richTrObjects: _getRichTrObjects());
+  }
+
+  List<RichTrObject> _getRichTrObjects() => [
+        RichTrObject(
+          RichTrType.player,
+          value: playerIndex,
+        ),
+        RichTrObject(RichTrType.card, value: cardKey),
+      ];
 }

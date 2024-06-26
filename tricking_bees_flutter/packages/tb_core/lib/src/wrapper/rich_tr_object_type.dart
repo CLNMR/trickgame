@@ -1,3 +1,5 @@
+import '../cards/card_color.dart';
+import '../cards/card_stack.dart';
 import '../cards/game_card.dart';
 import '../roles/role_catalog.dart';
 
@@ -10,7 +12,7 @@ enum RichTrType {
   card(GameCard),
 
   /// Display a list of game cards.
-  cardList(List<GameCard>),
+  cardList(CardStack),
 
   /// The special translation type for a game event.
   role(RoleCatalog),
@@ -25,7 +27,10 @@ enum RichTrType {
   number(int),
 
   /// The special translation type for a number with a + or - operator.
-  numberWithOperator(int);
+  numberWithOperator(int),
+
+  /// The special translation type for a color.
+  color(CardColor);
 
   const RichTrType(this.valueType);
 

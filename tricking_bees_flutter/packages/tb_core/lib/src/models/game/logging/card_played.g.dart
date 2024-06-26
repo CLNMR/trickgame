@@ -11,6 +11,7 @@ LogCardPlayed _$LogCardPlayedFromJson(Map json) => LogCardPlayed(
           GameCard.fromJson(Map<String, dynamic>.from(json['cardKey'] as Map)),
       playerIndex: (json['playerIndex'] as num).toInt(),
       indentLevel: (json['indentLevel'] as num?)?.toInt(),
+      isHidden: json['isHidden'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$LogCardPlayedToJson(LogCardPlayed instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$LogCardPlayedToJson(LogCardPlayed instance) =>
       'indentLevel': instance.indentLevel,
       'cardKey': instance.cardKey.toJson(),
       'playerIndex': instance.playerIndex,
+      'isHidden': instance.isHidden,
     };

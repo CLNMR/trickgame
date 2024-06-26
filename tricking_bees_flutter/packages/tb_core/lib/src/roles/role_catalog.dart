@@ -36,6 +36,9 @@ enum RoleCatalog {
   static List<RoleCatalog> get allChoosableRoles =>
       values.where((e) => e != RoleCatalog.noRole).toList();
 
+  /// The key for the status message while possessing this role.
+  String get statusKey => 'STATUS:ROLE:$name';
+
   /// The localized name of the role.
   String get locName => 'ROLE:NAME:$name';
 

@@ -48,7 +48,9 @@ extension GameEventHandlingExt on Game {
   Future<void> endRoleSelectionAndStartTrickGame() async {
     gameState = GameState.playingTricks;
     playOrder = List.generate(
-        playerNum, (index) => (index + currentSubgame - 1) % playerNum);
+      playerNum,
+      (index) => (index + currentSubgame - 1) % playerNum,
+    );
     await nextPlayer(doNotIncrement: true);
   }
 
@@ -59,10 +61,9 @@ extension GameEventHandlingExt on Game {
     await finishRoleSelection();
   }
 
-  /// Select a player.
-  Future<void> selectPlayer(int selectedPlayerIndex) async {
-    await currentPlayer.role.onPlayerSelect(this, selectedPlayerIndex);
-  }
+  /// Retrieve the first player with the given role.
+  int? getFirstPlayerWithRole(RoleCatalog roleKey) =>
+      players.indexWhere((e) => e.roleKey == roleKey);
 
   /// Sets a flag for the current card or event.
   void setFlag(String key, dynamic value) {
@@ -116,7 +117,8 @@ extension GameEventHandlingExt on Game {
         'Value must be a list, not ${flags[key].runtimeType}',
       );
     }
-    return (flags[key] as List).cast<T>();
+    return List<T>.from(flags[key]);
+    // (flags[key] as List).cast<T>();
   }
 
   /// Gets a flag for the current card or event.

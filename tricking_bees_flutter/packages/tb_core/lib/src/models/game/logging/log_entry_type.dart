@@ -1,6 +1,7 @@
 import 'card_played.dart';
 import 'end_of_game.dart';
 import 'log_entry.dart';
+import 'player_chosen.dart';
 import 'points_awarded.dart';
 import 'role_chosen.dart';
 import 'round_start_play_order.dart';
@@ -26,8 +27,11 @@ enum LogEntryType {
   /// Log someone playing a card.
   cardPlayed(LogCardPlayed.fromJson),
 
-  /// Log choosing a faction for e.g. Swamp or Truce.
+  /// Log choosing a role.
   roleChosen(LogRoleChosen.fromJson),
+
+  /// Log choosing a player.
+  playerChosen(LogPlayerChosen.fromJson),
 
   /// Log when a turn is skipped.
   skipTurn(LogSkipTurn.fromJson),

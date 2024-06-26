@@ -48,10 +48,13 @@ class Trick {
   /// The cards in the trick.
   CardStack get cards => CardStack(cards: cardMap.keys.toList());
 
+  /// The amount of cards currently in the trick.
+  int get length => cards.length;
+
   /// The compulsory color of the trick.
-  /// TODO: If queens are not setting compulsory color, this would be needed
-  /// to be considered here.
-  CardColor? get compulsoryColor => cards.isEmpty ? null : cards.first.color;
+  /// Queens are not setting compulsory color.
+  CardColor? get compulsoryColor =>
+      cards.isEmpty || cards.first.isQueen ? null : cards.first.color;
 
   /// Whether this trick contains a queen.
   bool get containsQueen => cards.any((card) => card.isQueen);
