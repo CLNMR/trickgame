@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tb_core/tb_core.dart';
+import 'package:yust/yust.dart';
 
 import '../codegen/annotations/screen.dart';
 import '../util/ui_helper.dart';
@@ -41,6 +43,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 _buildResumeGameButton(context),
                 _buildSettingButton(context),
                 if (kDebugMode) _buildResumeTestGameButton(context),
+                if (kDebugMode) _buildResumeLastGameButton(context),
                 _buildTestWidget(context),
               ],
             ),
@@ -122,7 +125,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildResumeTestGameButton(BuildContext context) => OwnButton(
         text: 'TestGame',
         onPressed: () async =>
-            context.push('${GameScreenRouting.path}/yf8OMtBaqbXd9xO0FgBx'),
+            context.push('${GameScreenRouting.path}/pJmDKQL6fjiDyrOq29Tq'),
+      );
+  Widget _buildResumeLastGameButton(BuildContext context) => OwnButton(
+        text: 'LastGame',
+        onPressed: () async {
+          final game = await GameService.getFirstFromDB(
+            orderBy: [
+              YustOrderBy(
+                field: 'createdAt',
+                descending: true,
+              ),
+            ],
+          );
+          if (game == null) return;
+          // print('Opening game: ${game.id}');
+          await context.push('${GameScreenRouting.path}/${game.id}');
+        },
       );
 
   Widget _buildTestWidget(BuildContext context) => Row(
