@@ -110,10 +110,11 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
           onExit: (event) => setState(() => _hoveredCardIndex = null),
           child: Transform.rotate(
             angle: Random(index).nextDouble() * 0.1 - 0.05,
-            child: SingleCardDisplay(
+            child: SingleCardDisplay.fromCardKey(
               cardKey: card,
               isHidden: false,
-              isDisabled: !widget.game.canPlayCard(card, widget.player),
+              isDisabled: !widget.game.canPlayCard(card, widget.player) &&
+                  !widget.game.canRemoveCard(widget.player),
               onTap: () async =>
                   widget.game.playOtherPlayerCard(card, widget.player),
             ),

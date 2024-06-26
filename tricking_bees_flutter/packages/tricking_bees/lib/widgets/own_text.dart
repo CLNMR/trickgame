@@ -33,6 +33,7 @@ class OwnText extends StatelessWidget {
     this.text,
     this.type = OwnTextType.body,
     this.style,
+    this.align,
     this.translate = true,
     this.trObject,
     this.trObjects,
@@ -50,6 +51,9 @@ class OwnText extends StatelessWidget {
 
   /// Whether to translate the text.
   final bool translate;
+
+  /// How the text should be aligned horizontally.
+  final TextAlign? align;
 
   /// The translation object for more complex translations.
   /// If this is set, [text] is ignored.
@@ -73,6 +77,7 @@ class OwnText extends StatelessWidget {
               ? context.tr(text ?? '')
               : listOfTrObjects.map(context.trFromObject).join('\n')
           : text ?? '',
+      textAlign: align,
       style: style ??
           TextStyle(
             color: Colors.black,
@@ -94,6 +99,7 @@ class OwnText extends StatelessWidget {
       ..add(DiagnosticsProperty<bool>('translate', translate))
       ..add(DiagnosticsProperty<TrObject?>('trObject', trObject))
       ..add(IterableProperty<TrObject>('trObjects', trObjects))
-      ..add(DiagnosticsProperty<bool>('ellipsis', ellipsis));
+      ..add(DiagnosticsProperty<bool>('ellipsis', ellipsis))
+      ..add(EnumProperty<TextAlign?>('align', align));
   }
 }

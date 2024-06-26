@@ -99,6 +99,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     PlayerInfoDisplay(
+                      game: widget.game,
                       player: player,
                       hasCurrentTurn: widget.game.currentPlayer.id == player.id,
                     ),
@@ -108,6 +109,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                         player: widget.game.getPlayer(ref.user!),
                       ),
                     ),
+                    _buildSkipButton(),
                     _buildTrumpDisplay(),
                   ],
                 ),
@@ -119,6 +121,22 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
       ),
     );
   }
+
+  Widget _buildSkipButton() => widget.game.canSkipTurn(ref.user)
+      ? Tooltip(
+          message: 'BUTTON:SkipCardPlay',
+          child: GestureDetector(
+            onTap: () async => widget.game.skipCardPlay(ref.user),
+            child: const Padding(
+              padding: EdgeInsets.all(3),
+              child: SingleCardDisplay(
+                cardColor: Colors.grey,
+                symbol: 'X',
+              ),
+            ),
+          ),
+        )
+      : const SizedBox();
 
   Widget _buildTrumpDisplay() => Container(
         height: 100,
@@ -135,19 +153,20 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                 text: 'Trump Card',
               ),
               Expanded(
-                child: SingleCardDisplay(
-                  cardKey: widget.game.currentTrump,
-                  isDisabled: widget.game.hasOverridingTrumpColor,
-                ),
+                child: widget.game.currentTrump != null
+                    ? SingleCardDisplay.fromCardKey(
+                        cardKey: widget.game.currentTrump!,
+                        isDisabled: widget.game.hasOverridingTrumpColor,
+                      )
+                    : const SingleCardDisplay(
+                        cardColor: Colors.black,
+                        symbol: '.',
+                      ),
               ),
               if (widget.game.hasOverridingTrumpColor)
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Color(widget.game.currentTrumpColor!.hexValue),
-                  ),
-                  child: const SizedBox(
-                    height: 30,
-                  ),
+                SingleCardDisplay(
+                  cardColor: Color(widget.game.currentTrumpColor!.hexValue),
+                  symbol: '.',
                 ),
             ],
           ),
@@ -289,6 +308,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   PlayerInfoDisplay(
+                    game: widget.game,
                     player: player,
                     hasCurrentTurn: player.id == widget.game.currentPlayer.id,
                   ),
@@ -300,6 +320,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   PlayerInfoDisplay(
+                    game: widget.game,
                     player: player,
                     hasCurrentTurn: widget.game.currentPlayer.id == player.id,
                   ),

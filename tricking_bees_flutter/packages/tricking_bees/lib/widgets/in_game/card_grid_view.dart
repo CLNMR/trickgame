@@ -38,7 +38,7 @@ class CardGridView extends StatelessWidget {
         itemCount: cards.length,
         itemBuilder: (context, index) {
           final card = cards[index];
-          return SingleCardDisplay(
+          return SingleCardDisplay.fromCardKey(
             cardKey: card,
             isDisabled: isDisabled,
             onTap: () => onTap?.call(card),

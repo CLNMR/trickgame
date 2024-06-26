@@ -9,26 +9,54 @@ class SingleCardDisplay extends StatelessWidget {
   /// Create a new [SingleCardDisplay].
   const SingleCardDisplay({
     super.key,
-    required this.cardKey,
+    required this.cardColor,
+    required this.symbol,
     this.onTap,
     this.isDisabled = false,
-    this.isHidden = false,
   });
 
-  /// The card key to display.
-  final GameCard? cardKey;
+  /// A card unknown to the user.
+  factory SingleCardDisplay.unknown({
+    void Function()? onTap,
+    bool isDisabled = false,
+  }) =>
+      SingleCardDisplay(
+        cardColor: Colors.blueGrey,
+        symbol: '?',
+        onTap: onTap,
+        isDisabled: isDisabled,
+      );
+
+  /// A card display from a given [cardKey].
+  factory SingleCardDisplay.fromCardKey({
+    required GameCard cardKey,
+    void Function()? onTap,
+    bool isDisabled = false,
+    bool isHidden = false,
+  }) =>
+      isHidden
+          ? SingleCardDisplay.unknown(
+              onTap: onTap,
+              isDisabled: isDisabled,
+            )
+          : SingleCardDisplay(
+              cardColor: Color(cardKey.color.hexValue),
+              symbol: cardKey.displayName,
+              onTap: onTap,
+              isDisabled: isDisabled,
+            );
+
+  /// The card color to display.
+  final Color cardColor;
+
+  /// The symbol to display.
+  final String symbol;
 
   /// Whether the view of the card is disabled (untappable)
   final bool isDisabled;
 
-  /// Whether the card is hidden.
-  final bool isHidden;
-
   /// The function to call when the card is tapped.
   final void Function()? onTap;
-
-  /// Whether gthe given card isn't known to the user.
-  bool get isUnknown => isHidden || cardKey == null;
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -43,11 +71,7 @@ class SingleCardDisplay extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(1),
-                    color: isUnknown
-                        ? Colors.blueGrey
-                        : Color(
-                            cardKey!.color.hexValue,
-                          ),
+                    color: cardColor,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -97,7 +121,7 @@ class SingleCardDisplay extends StatelessWidget {
         padding: const EdgeInsets.all(3),
         child: OwnText(
           translate: false,
-          text: isUnknown ? '?' : cardKey!.displayName,
+          text: symbol,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: size),
         ),
       );
@@ -106,10 +130,9 @@ class SingleCardDisplay extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<GameCard>('cardKey', cardKey))
       ..add(ObjectFlagProperty<void Function()?>.has('onTap', onTap))
       ..add(DiagnosticsProperty<bool>('isDisabled', isDisabled))
-      ..add(DiagnosticsProperty<bool>('isCrossedOut', isHidden))
-      ..add(DiagnosticsProperty<bool>('isUnknown', isUnknown));
+      ..add(StringProperty('symbol', symbol))
+      ..add(ColorProperty('cardColor', cardColor));
   }
 }

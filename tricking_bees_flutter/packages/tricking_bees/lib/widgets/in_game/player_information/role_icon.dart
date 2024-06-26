@@ -22,15 +22,16 @@ class RoleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Tooltip(
-        message:
-            '${roleKey.descBenefits.tr()}\n${roleKey.descPointScheme.tr()}',
+        message: roleKey.locName.tr(),
         child: Container(
+          width: 80,
           padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.5),
             borderRadius: BorderRadius.circular(3),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DecoratedBox(
                 decoration: BoxDecoration(
@@ -38,27 +39,28 @@ class RoleIcon extends StatelessWidget {
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(3),
                 ),
-                child: SizedBox(
-                  width: 80,
-                  child: Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: OwnText(
-                      text: roleKey.locName,
-                      ellipsis: true,
-                      style: const TextStyle(
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
-                      ),
+                child: Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: OwnText(
+                    text: roleKey.locName,
+                    align: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Stack(
                     alignment: Alignment.center,
                     children: [
-                      _buildSmallImage(roleKey.imagePathBenefits),
+                      _buildSmallImage(
+                        roleKey.imagePathBenefits,
+                        roleKey.descBenefits.tr(),
+                      ),
                       if (!isChoosable)
                         Icon(
                           Icons.lock,
@@ -66,7 +68,10 @@ class RoleIcon extends StatelessWidget {
                         ),
                     ],
                   ),
-                  _buildSmallImage(roleKey.imagePathPoints),
+                  _buildSmallImage(
+                    roleKey.imagePathPoints,
+                    roleKey.descPointScheme.tr(),
+                  ),
                 ],
               ),
             ],
@@ -74,13 +79,26 @@ class RoleIcon extends StatelessWidget {
         ),
       );
 
-  Widget _buildSmallImage(String imagePath) => ClipRRect(
-        borderRadius: BorderRadius.circular(3),
-        child: Image.asset(
-          imagePath,
-          fit: BoxFit.fill,
-          width: 35,
-          height: 35,
+  Widget _buildSmallImage(String imagePath, String tooltipMessage) => Tooltip(
+        message: tooltipMessage,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(2),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(3),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.fill,
+                width: 33,
+                height: 33,
+              ),
+            ),
+          ),
         ),
       );
   @override

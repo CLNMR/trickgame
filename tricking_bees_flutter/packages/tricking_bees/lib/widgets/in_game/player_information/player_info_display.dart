@@ -2,19 +2,25 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
+import '../../../util/widget_ref_extension.dart';
 import '../../own_text.dart';
 import 'role_icon.dart';
 
 /// A small widget displaying the player's status.
-class PlayerInfoDisplay extends StatefulWidget {
+class PlayerInfoDisplay extends ConsumerStatefulWidget {
   /// Creates a [PlayerInfoDisplay].
   const PlayerInfoDisplay({
     super.key,
+    required this.game,
     required this.player,
     required this.hasCurrentTurn,
   });
+
+  /// The game from which some extra info might be needed.
+  final Game game;
 
   /// The player to display info for.
   final Player player;
@@ -23,17 +29,18 @@ class PlayerInfoDisplay extends StatefulWidget {
   final bool hasCurrentTurn;
 
   @override
-  State<PlayerInfoDisplay> createState() => _PlayerInfoDisplayState();
+  ConsumerState<PlayerInfoDisplay> createState() => _PlayerInfoDisplayState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<Player>('player', player))
-      ..add(DiagnosticsProperty<bool>('hasCurrentTurn', hasCurrentTurn));
+      ..add(DiagnosticsProperty<bool>('hasCurrentTurn', hasCurrentTurn))
+      ..add(DiagnosticsProperty<Game>('game', game));
   }
 }
 
-class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
+class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -93,6 +100,7 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
   Widget _buildHeader() => Flexible(
         child: Row(
           children: [
+            _buildTargetIcon(),
             OwnText(text: widget.player.displayName, translate: false),
             const Spacer(),
             IconWithNumber(
@@ -103,6 +111,27 @@ class _PlayerInfoDisplayState extends State<PlayerInfoDisplay>
           ],
         ),
       );
+
+  Widget _buildTargetIcon() {
+    final userPlayer = widget.game.getPlayer(ref.user!);
+    if (!userPlayer.role.isPlayerSelected(
+      widget.game,
+      widget.game.getNormalPlayerIndex(widget.player),
+    )) {
+      return const SizedBox();
+    }
+    return Tooltip(
+      message: 'roleTargetsPlayer'
+          .tr(namedArgs: {'role': userPlayer.roleKey.locName.tr()}),
+      child: const Padding(
+        padding: EdgeInsets.only(right: 5),
+        child: Icon(
+          Icons.center_focus_strong,
+          color: Colors.redAccent,
+        ),
+      ),
+    );
+  }
 
   Widget _buildStatusInfo() => Flexible(
         child: Padding(

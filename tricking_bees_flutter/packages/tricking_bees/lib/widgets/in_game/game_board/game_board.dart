@@ -100,7 +100,10 @@ class _GameBoardState extends ConsumerState<GameBoard>
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            SingleCardDisplay(cardKey: card),
+            SingleCardDisplay.fromCardKey(
+              cardKey: card,
+              isHidden: widget.game.playsCardHidden(player),
+            ),
             Padding(
               padding: const EdgeInsets.only(bottom: 5),
               child: DecoratedBox(
