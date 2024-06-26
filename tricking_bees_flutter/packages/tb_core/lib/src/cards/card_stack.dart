@@ -70,8 +70,11 @@ class CardStack extends IterableBase<GameCard> {
   Map<int, GameCard> asMap() => _cards.asMap();
 
   /// Check whether the stack contains a card of the given color.
-  bool containsColor(CardColor color) =>
-      _cards.any((card) => card.color == color);
+  /// If [considerQueens] is true, queens are also considered to be of the
+  /// color.
+  bool containsColor(CardColor color, {bool considerQueens = false}) => _cards
+      .where((e) => considerQueens || !e.isQueen)
+      .any((card) => card.color == color);
 
   /// Check whether the stack contains the given card.
   bool containsCard(GameCard card) => _cards.contains(card);
