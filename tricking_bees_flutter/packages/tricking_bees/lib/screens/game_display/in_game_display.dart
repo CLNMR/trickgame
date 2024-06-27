@@ -92,7 +92,12 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
             child: Column(
               children: [
                 Expanded(
-                  child: _buildBoardAndPlayers(),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: _buildBoardAndPlayers(),
+                    ),
+                  ),
                 ),
                 PlayerInstructionsRow(game: widget.game),
                 Row(

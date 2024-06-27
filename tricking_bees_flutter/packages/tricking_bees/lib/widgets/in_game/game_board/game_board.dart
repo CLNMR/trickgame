@@ -5,7 +5,7 @@ import 'package:tb_core/tb_core.dart';
 
 import '../../../util/app_gradients.dart';
 import '../../own_text.dart';
-import '../../single_card_display.dart';
+import 'trick_display.dart';
 
 /// The hexagonal board of the game.
 class GameBoard extends ConsumerStatefulWidget {
@@ -22,6 +22,10 @@ class GameBoard extends ConsumerStatefulWidget {
   /// What should happen if a hex is tapped.
   final Function(Card) handleCardTap;
 
+  /// The display names of the players.
+  List<String> get playerNames =>
+      game.players.map((e) => e.displayName).toList();
+
   @override
   ConsumerState<GameBoard> createState() => _GameBoardState();
   @override
@@ -34,148 +38,102 @@ class GameBoard extends ConsumerStatefulWidget {
           'handleCardTap',
           handleCardTap,
         ),
-      );
+      )
+      ..add(IterableProperty<String>('playerNames', playerNames));
   }
 }
 
 class _GameBoardState extends ConsumerState<GameBoard>
     with SingleTickerProviderStateMixin {
   @override
-  Widget build(BuildContext context) => Center(
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.black,
+            width: 2,
+          ),
+          gradient: AppGradients.indigoToYellow,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(15),
-          child: _buildPlayArea(),
-        ),
-      );
-
-  Widget _buildPlayArea() => Center(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: Colors.black,
-              width: 2,
-            ),
-            gradient: AppGradients.indigoToYellow,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: widget.game.currentTrick != null
-                ? Row(
-                    children: [
-                      Flexible(
-                        flex: 2,
-                        child: _buildTrickGrid(),
-                      ),
+          child: widget.game.currentTrick != null
+              ? Row(
+                  children: [
+                    if (widget.game.previousTrick != null) ...[
                       Flexible(child: _buildPreviousTrickGrid()),
+                      const SizedBox(width: 5),
                     ],
-                  )
-                : const SizedBox(),
-          ),
+                    Flexible(
+                      flex: 2,
+                      child: _buildCurrentTrickGrid(),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
         ),
-      );
-
-  Widget _buildTrickGrid() => Stack(
-        children:
-            widget.game.currentTrick!.enumeratedCards.entries.map((entry) {
-          const offset = 35.0;
-          return Positioned(
-            left: entry.key * offset,
-            top: entry.key * offset,
-            child: _buildWrappedCardDisplay(
-              entry.value.key,
-              widget.game.players[entry.value.value],
-            ),
-          );
-        }).toList(),
       );
 
   Widget _buildPreviousTrickGrid() {
-    final previousTrick = widget.game.previousTrick;
-    if (previousTrick == null) return const SizedBox();
+    final previousTrick = widget.game.previousTrick!;
     final winningCard =
         previousTrick.getWinningCard(widget.game.currentTrumpColor);
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-      ),
-      padding: const EdgeInsets.all(5),
-      child: Column(
-        children: [
-          const OwnText(text: 'PreviousTrick'),
-          const Divider(
-            color: Colors.black,
-          ),
-          Expanded(
-            child: Stack(
-              children: previousTrick.enumeratedCards.entries.map((e) {
-                const offset = 20.0;
-                return Positioned(
-                  left: e.key * offset,
-                  top: e.key * offset * 1.5,
-                  child: _buildWrappedCardDisplay(
-                    e.value.key,
-                    widget.game.players[e.value.value],
-                    maxHeight: 80,
-                    isPrevious: true,
-                    isHighlighted: e.value.key == winningCard,
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
+    return _ContainerWithHeading(
+      headingKey: 'previousTrick',
+      child: TrickDisplay(
+        previousTrick,
+        winningCard: winningCard,
+        playerNames: widget.playerNames,
+        maxCardHeight: 80,
       ),
     );
   }
 
-  Widget _buildWrappedCardDisplay(
-    GameCard card,
-    Player player, {
-    double maxHeight = 150,
-    bool isPrevious = false,
-    bool isHighlighted = false,
-  }) =>
-      Container(
-        decoration: isHighlighted
-            ? BoxDecoration(
-                border: Border.all(color: Colors.white, width: 3),
-                borderRadius: const BorderRadius.all(Radius.circular(2)),
-              )
-            : null,
-        padding: EdgeInsets.zero, // Needed in order to let the decoration know
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: maxHeight),
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              SingleCardDisplay.fromCardKey(
-                cardKey: card,
-                isHidden: !isPrevious && widget.game.playsCardHidden(player),
-              ),
-              Positioned(
-                top: 2,
-                right: 2,
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(1)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: Text(
-                      player.displayName,
-                      style: const TextStyle(
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+  Widget _buildCurrentTrickGrid() => _ContainerWithHeading(
+        headingKey: 'currentTrick',
+        child: TrickDisplay(
+          widget.game.currentTrick!,
+          playerNames: widget.playerNames,
+          hiddenPlayers: widget.game.players
+              .asMap()
+              .entries
+              .where((e) => e.value.role.playsCardHidden)
+              .map((e) => e.key)
+              .toList(),
         ),
       );
+}
+
+class _ContainerWithHeading extends StatelessWidget {
+  const _ContainerWithHeading({
+    required this.headingKey,
+    required this.child,
+  });
+
+  final String headingKey;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        padding: const EdgeInsets.all(5),
+        child: Column(
+          children: [
+            OwnText(text: headingKey),
+            const Divider(
+              color: Colors.black,
+            ),
+            Expanded(child: child),
+          ],
+        ),
+      );
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('headingKey', headingKey));
+  }
 }
