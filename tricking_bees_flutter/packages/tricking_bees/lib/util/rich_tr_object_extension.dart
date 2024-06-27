@@ -38,6 +38,15 @@ extension UiRichTrObject on RichTrObject {
           context,
           playerNames,
         );
+      case RichTrType.color:
+        final color = value as CardColor;
+        return TextSpan(
+          text: color.locName.tr(),
+          style: TextStyle(
+            color: Color(color.hexValue),
+            fontWeight: FontWeight.bold,
+          ),
+        );
       case RichTrType.playerList:
         return _getSpanForList(value, RichTrType.player, context, playerNames);
       case RichTrType.role:

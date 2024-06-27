@@ -25,7 +25,7 @@ class RoleB extends Role {
         richTrObjects: [
           RichTrObject(
             RichTrType.color,
-            value: game.currentTrumpColor ?? CardColor.blue,
+            value: game.currentTrumpColor ?? CardColor.noColor,
           ),
         ],
       );

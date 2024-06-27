@@ -153,21 +153,27 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                 text: 'Trump Card',
               ),
               Expanded(
-                child: widget.game.currentTrump != null
-                    ? SingleCardDisplay.fromCardKey(
+                child: Row(
+                  children: [
+                    if (widget.game.currentTrump != null)
+                      SingleCardDisplay.fromCardKey(
                         cardKey: widget.game.currentTrump!,
                         isDisabled: widget.game.hasOverridingTrumpColor,
                       )
-                    : const SingleCardDisplay(
+                    else
+                      const SingleCardDisplay(
                         cardColor: Colors.black,
-                        symbol: '.',
+                        symbol: '!',
                       ),
-              ),
-              if (widget.game.hasOverridingTrumpColor)
-                SingleCardDisplay(
-                  cardColor: Color(widget.game.currentTrumpColor!.hexValue),
-                  symbol: '.',
+                    if (widget.game.hasOverridingTrumpColor)
+                      SingleCardDisplay(
+                        cardColor:
+                            Color(widget.game.currentTrumpColor!.hexValue),
+                        symbol: '!',
+                      ),
+                  ],
                 ),
+              ),
             ],
           ),
         ),

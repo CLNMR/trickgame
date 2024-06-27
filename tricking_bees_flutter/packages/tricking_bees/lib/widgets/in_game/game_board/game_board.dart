@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
 import '../../../util/app_gradients.dart';
+import '../../own_text.dart';
 import '../../single_card_display.dart';
 
 /// The hexagonal board of the game.
@@ -40,20 +41,10 @@ class GameBoard extends ConsumerStatefulWidget {
 class _GameBoardState extends ConsumerState<GameBoard>
     with SingleTickerProviderStateMixin {
   @override
-  Widget build(BuildContext context) => InteractiveViewer(
-        minScale: 0.2,
-        maxScale: 4,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Align(
-              child: FractionallySizedBox(
-                heightFactor: 0.7,
-                widthFactor: 0.5,
-                child: _buildPlayArea(),
-              ),
-            ),
-          ],
+  Widget build(BuildContext context) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: _buildPlayArea(),
         ),
       );
 
@@ -68,20 +59,25 @@ class _GameBoardState extends ConsumerState<GameBoard>
             gradient: AppGradients.indigoToYellow,
           ),
           child: Padding(
-            padding: const EdgeInsets.all(30),
+            padding: const EdgeInsets.all(15),
             child: widget.game.currentTrick != null
-                ? _buildTrickGrid()
+                ? Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: _buildTrickGrid(),
+                      ),
+                      Flexible(child: _buildPreviousTrickGrid()),
+                    ],
+                  )
                 : const SizedBox(),
           ),
         ),
       );
 
   Widget _buildTrickGrid() => Stack(
-        children: widget.game.currentTrick!.cardMap.entries
-            .toList()
-            .asMap()
-            .entries
-            .map((entry) {
+        children:
+            widget.game.currentTrick!.enumeratedCards.entries.map((entry) {
           const offset = 35.0;
           return Positioned(
             left: entry.key * offset,
@@ -94,36 +90,92 @@ class _GameBoardState extends ConsumerState<GameBoard>
         }).toList(),
       );
 
-  Widget _buildWrappedCardDisplay(GameCard card, Player player) =>
-      ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 150),
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            SingleCardDisplay.fromCardKey(
-              cardKey: card,
-              isHidden: widget.game.playsCardHidden(player),
+  Widget _buildPreviousTrickGrid() {
+    final previousTrick = widget.game.previousTrick;
+    if (previousTrick == null) return const SizedBox();
+    final winningCard =
+        previousTrick.getWinningCard(widget.game.currentTrumpColor);
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
+      padding: const EdgeInsets.all(5),
+      child: Column(
+        children: [
+          const OwnText(text: 'PreviousTrick'),
+          const Divider(
+            color: Colors.black,
+          ),
+          Expanded(
+            child: Stack(
+              children: previousTrick.enumeratedCards.entries.map((e) {
+                const offset = 20.0;
+                return Positioned(
+                  left: e.key * offset,
+                  top: e.key * offset * 1.5,
+                  child: _buildWrappedCardDisplay(
+                    e.value.key,
+                    widget.game.players[e.value.value],
+                    maxHeight: 80,
+                    isPrevious: true,
+                    isHighlighted: e.value.key == winningCard,
+                  ),
+                );
+              }).toList(),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(2)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(3),
-                  child: Text(
-                    player.displayName,
-                    style: const TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWrappedCardDisplay(
+    GameCard card,
+    Player player, {
+    double maxHeight = 150,
+    bool isPrevious = false,
+    bool isHighlighted = false,
+  }) =>
+      Container(
+        decoration: isHighlighted
+            ? BoxDecoration(
+                border: Border.all(color: Colors.white, width: 3),
+                borderRadius: const BorderRadius.all(Radius.circular(2)),
+              )
+            : null,
+        padding: EdgeInsets.zero, // Needed in order to let the decoration know
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: maxHeight),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              SingleCardDisplay.fromCardKey(
+                cardKey: card,
+                isHidden: !isPrevious && widget.game.playsCardHidden(player),
+              ),
+              Positioned(
+                top: 2,
+                right: 2,
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(1)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: Text(
+                      player.displayName,
+                      style: const TextStyle(
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 }

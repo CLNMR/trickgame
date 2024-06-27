@@ -33,6 +33,10 @@ class Trick {
   /// The player index corresponds to the normal play order.
   final LinkedHashMap<GameCard, PlayerIndex> cardMap;
 
+  /// Map the positions of cards to the cards.
+  Map<int, MapEntry<GameCard, PlayerIndex>> get enumeratedCards =>
+      cardMap.entries.toList().asMap();
+
   /// Converts the [Trick] to a JSON map. This implementation ensures the order
   /// of the linked hash map.
   Map<String, dynamic> toJson() {

@@ -180,6 +180,24 @@ class Game extends YustDoc {
       CardColor.tryParse(getFlag<String>(_overridingTrumpColorKey) ?? '') !=
       null;
 
+  /// The player currently expected to do something.
+  Player get currentPlayer => players[actualCurrentPlayerIndex];
+
+  /// The player index referring to the list of players.
+  int get actualCurrentPlayerIndex => gameState == GameState.roleSelection
+      ? currentPlayerIndex
+      : playOrder?[currentPlayerIndex] ?? 0;
+
+  /// The trick of the previous round, inferred from the cardPlay log entries.
+  Trick? get previousTrick {
+    if (currentRound == 0) return null;
+    final trickLogEntries =
+        getLogEntries<LogCardPlayed>(round: currentRound - 1)
+            .map((e) => MapEntry(e.cardKey, e.playerIndex));
+    if (trickLogEntries.isEmpty) return null;
+    return Trick(cardMap: LinkedHashMap.fromEntries(trickLogEntries));
+  }
+
   /// The players other than the user's player.
   List<Player> getOtherPlayers(YustUser? user) =>
       players.where((player) => player.id != user?.id).toList();
@@ -195,14 +213,6 @@ class Game extends YustDoc {
   /// Returns whether the given user is the current player.
   bool isCurrentPlayer(YustUser? user) =>
       !useAuth || currentPlayer.id == user?.id;
-
-  /// The player currently expected to do something.
-  Player get currentPlayer => players[actualCurrentPlayerIndex];
-
-  /// The player index referring to the list of players.
-  int get actualCurrentPlayerIndex => gameState == GameState.roleSelection
-      ? currentPlayerIndex
-      : playOrder?[currentPlayerIndex] ?? 0;
 
   /// Increments the player index.
   void incrementPlayerIndex() {

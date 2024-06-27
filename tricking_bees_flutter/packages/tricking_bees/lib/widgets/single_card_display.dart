@@ -89,6 +89,17 @@ class SingleCardDisplay extends StatelessWidget {
                 ..._getOverlayNumberWidgets(),
                 if (isDisabled)
                   Positioned.fill(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(1),
+                        color: Colors.grey.withOpacity(0.4),
+                      ),
+                      child: const SizedBox(),
+                    ),
+                  ),
+                if (isDisabled)
+                  Positioned.fill(
                     top: 50,
                     child: FittedBox(
                       fit: BoxFit.fill,
