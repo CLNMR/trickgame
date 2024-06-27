@@ -28,24 +28,27 @@ extension GameEventHandlingExt on Game {
   /// Finishes the role selection and goes through the remaining players to
   /// resolve their start-of-game effects.
   Future<void> finishRoleSelection({bool firstTime = false}) async {
-    if (!firstTime) incrementTurnIndex();
-    inputRequirement = InputRequirement.selectRole;
-    // Iterate through the players and see whether the roles require the player
-    // to do something at the start of the game.
-    while (currentTurnIndex != 0) {
-      currentPlayer.role.onStartOfSubgame(this);
-      if (inputRequirement != InputRequirement.selectRole) {
-        await save();
-        return;
-      }
+    if (!firstTime) {
       incrementTurnIndex();
     }
-    await endRoleSelectionAndStartTrickGame();
+    if (!firstTime && currentTurnIndex == 0) {
+      await endRoleSelectionAndStartTrickGame();
+      return;
+    }
+    inputRequirement = InputRequirement.selectRole;
+    currentPlayer.role.onStartOfSubgame(this);
+    if (inputRequirement != InputRequirement.selectRole) {
+      await save();
+      return;
+    }
+    // Call the function recursively.
+    await finishRoleSelection();
   }
 
   /// Finishes the role selection and advances the game to the next player.
   Future<void> endRoleSelectionAndStartTrickGame() async {
     gameState = GameState.playingTricks;
+    inputRequirement = InputRequirement.card;
     playOrder = List.generate(
       playerNum,
       (index) => (index + currentSubgame - 1) % playerNum,
@@ -56,6 +59,9 @@ extension GameEventHandlingExt on Game {
   /// Select a trump color.
   Future<void> selectTrumpColor(CardColor trump) async {
     setFlag(_overridingTrumpColorKey, trump.toString());
+    addLogEntry(
+      LogTrumpChosen(playerIndex: currentPlayerIndex, chosenColor: trump),
+    );
     await finishRoleSelection();
   }
 

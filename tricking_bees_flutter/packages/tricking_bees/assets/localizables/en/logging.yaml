@@ -1,6 +1,7 @@
 cardPlayed: '{player} plays {card}.'
 cardPlayedHiddenBefore: ''
 cardPlayedHiddenThisRound: ''
+cardsDealt: ''
 playerChosen: ''
 pointsAwarded: '{player} won {numberTricks} tricks. Due to their role {role} they
   receive {numberPoints} points.'
@@ -14,3 +15,4 @@ startOfGame: 'Starting a {number}-player game (ID: {gameId}) with {playerList}. 
 subgameStarts: The cards for game {number} of {numberTot} are distributed. {card}
   is revealed to be the trump card this time.
 trickWon: '{player} wins the trick.'
+trumpChosen: ''

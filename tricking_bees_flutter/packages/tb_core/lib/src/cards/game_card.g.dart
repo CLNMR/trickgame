@@ -24,4 +24,5 @@ const _$CardColorEnumMap = {
   CardColor.blue: 'blue',
   CardColor.yellow: 'yellow',
   CardColor.violet: 'violet',
+  CardColor.noColor: 'noColor',
 };

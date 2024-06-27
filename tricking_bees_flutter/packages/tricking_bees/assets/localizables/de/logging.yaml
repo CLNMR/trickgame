@@ -1,6 +1,7 @@
 cardPlayed: '{player} spielt {card}.'
 cardPlayedHiddenBefore: '{player} spielt {card} (verdeckt).'
 cardPlayedHiddenThisRound: '{player} spielt eine Karte (verdeckt).'
+cardsDealt: '{player} werden {number} zusätzliche Karten zugeteilt.'
 playerChosen: '{role}: {player} wählt {playerChosen}.'
 pointsAwarded: '{player} hat {numberTricks} Stiche erzielt. Aufgrund der Rolle {role}
   bekommt er/sie daher {numberPoints} Punkte.'
@@ -13,3 +14,4 @@ startOfGame: 'Starte ein {number}-Spieler-Spiel (ID: {gameId}) mit {playerList}.
 subgameStarts: Die Karten für Spiel {number} von {numberTot} werden verteilt. {card}
   wird als Trumpf aufgedeckt.
 trickWon: '{player} gewinnt den Stich.'
+trumpChosen: '{player} wählt {color} als neue Trumpffarbe.'

@@ -1,8 +1,10 @@
 import '../models/game/game.dart';
+import '../models/game/logging/cards_dealt.dart';
 import 'role.dart';
 import 'role_catalog.dart';
 
-/// They get 20 cards to play with and always have to play two.
+/// They get double the amount of cards to play with and always have to play two
+/// during their turns.
 class RoleF extends Role {
   /// Creates a [RoleF].
   RoleF() : super(key: RoleCatalog.roleF);
@@ -11,7 +13,9 @@ class RoleF extends Role {
   bool onStartOfSubgame(Game game) {
     // Deal the 12 additional cards.
     game.currentPlayer.dealCards(game.undealtCards.dealCards(cardNum: 12));
-    // TODO: Add log entry for this, something like LogExtraCardsDealt
+    game.addLogEntry(
+      LogCardsDealt(cardAmount: 12, playerIndex: game.currentPlayerIndex),
+    );
     return false;
   }
 

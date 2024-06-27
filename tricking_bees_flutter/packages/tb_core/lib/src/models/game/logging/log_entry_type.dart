@@ -1,4 +1,5 @@
 import 'card_played.dart';
+import 'cards_dealt.dart';
 import 'end_of_game.dart';
 import 'log_entry.dart';
 import 'player_chosen.dart';
@@ -8,6 +9,7 @@ import 'round_start_play_order.dart';
 import 'skip_turn.dart';
 import 'start_of_game.dart';
 import 'subgame_starts.dart';
+import 'trump_chosen.dart';
 import 'turn_start.dart';
 
 /// The different types of log entries we are allowing.
@@ -27,11 +29,17 @@ enum LogEntryType {
   /// Log someone playing a card.
   cardPlayed(LogCardPlayed.fromJson),
 
+  /// Log a player being dealt additional cards.
+  cardsDealt(LogCardsDealt.fromJson),
+
   /// Log choosing a role.
   roleChosen(LogRoleChosen.fromJson),
 
   /// Log choosing a player.
   playerChosen(LogPlayerChosen.fromJson),
+
+  /// Log choosing a trump color.
+  trumpChosen(LogTrumpChosen.fromJson),
 
   /// Log when a turn is skipped.
   skipTurn(LogSkipTurn.fromJson),

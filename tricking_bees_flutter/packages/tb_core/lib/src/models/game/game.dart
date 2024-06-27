@@ -31,6 +31,7 @@ import 'logging/round_start_play_order.dart';
 import 'logging/skip_turn.dart';
 import 'logging/start_of_game.dart';
 import 'logging/subgame_starts.dart';
+import 'logging/trump_chosen.dart';
 import 'logging/turn_start.dart';
 
 part 'game.g.dart';

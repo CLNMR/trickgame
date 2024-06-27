@@ -4,6 +4,7 @@ import '../cards/card_stack.dart';
 import '../cards/game_card.dart';
 import '../models/game/game.dart';
 import '../models/game/game.service.dart';
+import '../models/game/logging/cards_dealt.dart';
 import '../wrapper/rich_tr_object.dart';
 import '../wrapper/rich_tr_object_type.dart';
 import '../wrapper/tr_object.dart';
@@ -22,8 +23,9 @@ class RoleC extends Role {
   bool onStartOfSubgame(Game game) {
     game.inputRequirement = InputRequirement.selectCardToRemove;
     game.currentPlayer.dealCards(game.undealtCards.dealCards(cardNum: 2));
-    // TODO: Log the dealing of these cards, and maybe notify the player getting
-    // them.
+    game.addLogEntry(
+      LogCardsDealt(cardAmount: 2, playerIndex: game.currentPlayerIndex),
+    );
     return true;
   }
 

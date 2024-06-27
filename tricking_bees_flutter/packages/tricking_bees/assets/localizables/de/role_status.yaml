@@ -4,7 +4,8 @@ roleB: Du hast {color} als Trumpffarbe gewählt.
 roleC: Zu Beginn des Spiels hast du {cardList} abgeworfen.
 roleC:START:SelectOne: Du hast bereits {card} abgeworfen. Wähle eine weitere deiner
   Karten zum Abwerfen.
-roleC:START:SelectTwo: Wähle zwei deiner Karten zum Abwerfen.
+roleC:START:SelectTwo: Dir wurden zwei weitere Karten zugeteilt. Wähle nun zwei Karten
+  zum Abwerfen.
 roleC:START:Wait: Warte auf {player}, um zwei Karten zum Abwerfen zu wählen.
 roleD: Du spielst immer als letztes, außer du gewinnst den Stich.
 roleE: Du hast keinen Farbzwang.
