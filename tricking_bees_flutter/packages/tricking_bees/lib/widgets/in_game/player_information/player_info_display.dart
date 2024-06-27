@@ -7,6 +7,7 @@ import 'package:tb_core/tb_core.dart';
 
 import '../../../util/widget_ref_extension.dart';
 import '../../own_text.dart';
+import 'player_icon.dart';
 import 'role_icon.dart';
 
 /// A small widget displaying the player's status.
@@ -101,6 +102,12 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
         child: Row(
           children: [
             _buildTargetIcon(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: PlayerIcon(
+                index: widget.game.getNormalPlayerIndex(widget.player),
+              ),
+            ),
             OwnText(text: widget.player.displayName, translate: false),
             const Spacer(),
             IconWithNumber(
