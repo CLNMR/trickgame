@@ -80,7 +80,7 @@ class RoleC extends Role {
         : TrObject(
             '${keyBase}Wait',
             richTrObjects: [
-              RichTrObject(RichTrType.player, value: game.currentPlayerIndex),
+              RichTrObject(RichTrType.player, value: game.currentTurnIndex),
             ],
           );
   }

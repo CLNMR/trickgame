@@ -66,10 +66,10 @@ class Game extends YustDoc {
     this.gameState = GameState.waitingForPlayers,
     this.currentSubgame = 0,
     this.currentRound = 0,
-    this.currentPlayerIndex = 0,
+    this.currentTurnIndex = 0,
     this.currentTrump,
     this.currentTrick,
-    this.playOrder,
+    List<int>? playOrder,
     CardStack? undealtCards,
     this.inputRequirement = InputRequirement.card,
     Map<RoundNumber, List<LogEntry>>? existingLogEntries,
@@ -78,6 +78,7 @@ class Game extends YustDoc {
         players = players ?? [],
         undealtCards =
             undealtCards ?? CardStack.initialDeck(playerNum: playerNum),
+        playOrder = playOrder ?? List.generate(playerNum, (index) => index),
         flags = cardAndEventFlags ?? {} {
     logEntries = existingLogEntries ?? {};
     if (logEntries.isEmpty) addLogEntry(LogStartOfGame(indentLevel: 0));
@@ -122,23 +123,18 @@ class Game extends YustDoc {
   /// The current round during the Subgame. 0 denotes the role selection phase.
   RoundNumber currentRound;
 
-  /// The player who has the current turn.
-  /// Its meaning is **two-fold**:
-  /// During the role selection phase, it denotes the
-  /// player currently choosing the role and corresponds to the normal player
-  /// order.
-  /// During the trick playing phase, it denotes the player currently
-  /// playing a card and corresponds to the current play order.
-  PlayerIndex currentPlayerIndex;
+  /// The index of the current player WITH RESPECT TO the current [playOrder].
+  /// Does NOT necessarily correspond to the list of players!
+  TurnNumber currentTurnIndex;
+
+  /// The current play order, where the entries are player indices.
+  List<PlayerIndex> playOrder;
 
   /// The current trump card.
   GameCard? currentTrump;
 
   /// The current trick.
   Trick? currentTrick;
-
-  /// The current play order.
-  List<int>? playOrder;
 
   /// Which input is required from the users.
   InputRequirement inputRequirement;
@@ -180,13 +176,15 @@ class Game extends YustDoc {
       CardColor.tryParse(getFlag<String>(_overridingTrumpColorKey) ?? '') !=
       null;
 
-  /// The player currently expected to do something.
-  Player get currentPlayer => players[actualCurrentPlayerIndex];
+  /// The index of the current player with respect to the [players] list.
+  PlayerIndex get currentPlayerIndex => playOrder[currentTurnIndex];
 
-  /// The player index referring to the list of players.
-  int get actualCurrentPlayerIndex => gameState == GameState.roleSelection
-      ? currentPlayerIndex
-      : playOrder?[currentPlayerIndex] ?? 0;
+  /// The index of the player that starts the current subgame.
+  PlayerIndex get subgameStartingPlayerIndex =>
+      (currentSubgame - 1) % playerNum;
+
+  /// The player currently expected to do something.
+  Player get currentPlayer => players[currentPlayerIndex];
 
   /// The trick of the previous round, inferred from the cardPlay log entries.
   Trick? get previousTrick {
@@ -207,26 +205,17 @@ class Game extends YustDoc {
       players.where((player) => player.id != currentPlayer.id).toList();
 
   /// Returns whether the given user is the current player.
-  bool isCurrentlyChoosingRole(YustUser? user) =>
-      !useAuth || getNormalOrderPlayerIndex(user) == currentPlayerIndex;
-
-  /// Returns whether the given user is the current player.
   bool isCurrentPlayer(YustUser? user) =>
       !useAuth || currentPlayer.id == user?.id;
-
-  /// Increments the player index.
-  void incrementPlayerIndex() {
-    currentPlayerIndex = (currentPlayerIndex + 1) % playerNum;
-  }
 
   /// The points for each player, indexed by their index.
   Map<PlayerIndex, int> get playerPoints =>
       players.map((e) => e.pointTotal).toList().asMap();
 
-  /// The current player index corresponds to the player that starts a round.
-  bool get currentPlayerIsStartingPlayer => gameState == GameState.roleSelection
-      ? currentPlayerIndex == (currentSubgame - 1) % playerNum
-      : currentPlayerIndex == 0;
+  /// Increments the player index.
+  void incrementTurnIndex() {
+    currentTurnIndex = (currentTurnIndex + 1) % playerNum;
+  }
 
   /// Finish a subgame and go to the end, or start a new subgame.
   Future<void> finishSubgame() async {
@@ -252,7 +241,9 @@ class Game extends YustDoc {
   Future<void> startNewSubgame() async {
     currentSubgame += 1;
     // The player that gets to choose first rotates with each subgame.
-    currentPlayerIndex = (currentSubgame - 1) % playerNum;
+    currentTurnIndex = 0;
+    playOrder =
+        List.generate(playerNum, (index) => subgameStartingPlayerIndex + index);
     // Deal new cards and reset players.
     undealtCards = CardStack.initialDeck(playerNum: playerNum);
     for (var i = 0; i < playerNum; i++) {
@@ -273,8 +264,8 @@ class Game extends YustDoc {
     for (final handler in currentRoles) {
       handler.onEndOfTurn(this);
     }
-    if (!doNotIncrement) incrementPlayerIndex();
-    if (currentPlayerIsStartingPlayer) {
+    if (!doNotIncrement) incrementTurnIndex();
+    if (currentTurnIndex == 0) {
       await goToNextRound();
     }
     await goToNextTurn();
@@ -299,25 +290,34 @@ class Game extends YustDoc {
     for (final handler in currentRoles) {
       handler.onEndOfRound(this);
     }
-    evaluateTrick();
+    final previousWinnerIndex = evaluateTrick();
     currentRound++;
     if (currentRound % 13 == 0) {
       await finishSubgame();
       return;
     }
-    setPlayOrder();
+    setPlayOrder(previousWinnerIndex);
     currentTrick = Trick(cardMap: LinkedHashMap());
-    currentPlayerIndex = 0;
     for (final handler in currentRoles) {
       await handler.onStartOfRound(this);
     }
   }
 
-  /// Sets the play order.
-  void setPlayOrder() {
+  /// Evaluates the trick and reorders the players.
+  PlayerIndex evaluateTrick() {
+    final winnerIndex = currentTrick?.getWinningIndex(currentTrumpColor);
+    if (winnerIndex == null) return 0;
+    final winner = players[winnerIndex];
+    winner.tricksWon++;
+    addLogEntry(LogTrickWon(playerIndex: winnerIndex));
+    return winnerIndex;
+  }
+
+  /// Sets the play order, starting with the winner of the previous turn.
+  void setPlayOrder(PlayerIndex previousWinnerIndex) {
     playOrder = List.generate(
       playerNum,
-      (index) => (index + currentPlayerIndex) % playerNum,
+      (index) => (index + previousWinnerIndex) % playerNum,
     );
     final roles = currentRoles
       ..sort((a, b) => a.roleSortIndex.compareTo(b.roleSortIndex));
@@ -325,19 +325,9 @@ class Game extends YustDoc {
       role.transformPlayOrder(this);
     }
     addLogEntry(
-      LogRoundStartPlayOrder(round: currentRound, playOrder: playOrder ?? []),
+      LogRoundStartPlayOrder(round: currentRound, playOrder: playOrder),
       absoluteIndentLevel: 0,
     );
-  }
-
-  /// Evaluates the trick and reorders the players.
-  void evaluateTrick() {
-    final winnerIndex = currentTrick?.getWinningIndex(currentTrumpColor);
-    if (winnerIndex == null) return;
-    final winner = players[winnerIndex];
-    winner.tricksWon++;
-    addLogEntry(LogTrickWon(playerIndex: winnerIndex));
-    currentPlayerIndex = winnerIndex;
   }
 
   /// Returns the index in the game for the given user given the normal order.

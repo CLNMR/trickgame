@@ -9,9 +9,9 @@ extension GameEventHandlingExt on Game {
   /// next player.
   Future<void> chooseRole(RoleCatalog roleKey) async {
     currentPlayer.roleKey = roleKey;
-    addLogEntry(LogRoleChosen(playerIndex: currentPlayerIndex, role: roleKey));
-    incrementPlayerIndex();
-    if (currentPlayerIsStartingPlayer) {
+    addLogEntry(LogRoleChosen(playerIndex: currentTurnIndex, role: roleKey));
+    incrementTurnIndex();
+    if (currentTurnIndex == 0) {
       await finishRoleSelection(firstTime: true);
     } else {
       await save();
@@ -28,18 +28,17 @@ extension GameEventHandlingExt on Game {
   /// Finishes the role selection and goes through the remaining players to
   /// resolve their start-of-game effects.
   Future<void> finishRoleSelection({bool firstTime = false}) async {
-    var isFirstTime = firstTime;
+    if (!firstTime) incrementTurnIndex();
     inputRequirement = InputRequirement.selectRole;
     // Iterate through the players and see whether the roles require the player
     // to do something at the start of the game.
-    while (isFirstTime || !currentPlayerIsStartingPlayer) {
-      isFirstTime = false;
+    while (currentTurnIndex != 0) {
       currentPlayer.role.onStartOfSubgame(this);
       if (inputRequirement != InputRequirement.selectRole) {
         await save();
         return;
       }
-      incrementPlayerIndex();
+      incrementTurnIndex();
     }
     await endRoleSelectionAndStartTrickGame();
   }
@@ -57,7 +56,6 @@ extension GameEventHandlingExt on Game {
   /// Select a trump color.
   Future<void> selectTrumpColor(CardColor trump) async {
     setFlag(_overridingTrumpColorKey, trump.toString());
-    incrementPlayerIndex();
     await finishRoleSelection();
   }
 

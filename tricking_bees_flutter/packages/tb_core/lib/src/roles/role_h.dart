@@ -35,7 +35,7 @@ class RoleH extends Role {
     // automatically the other two players and no selection is needed.
     if (game.playerNum == 3) {
       List.generate(3, (i) => i)
-        ..remove(game.currentPlayerIndex)
+        ..remove(game.currentTurnIndex)
         ..forEach((element) {
           addSelectedPlayer(game, element);
         });
@@ -56,17 +56,16 @@ class RoleH extends Role {
     if (game.inputRequirement != InputRequirement.selectPlayer) return;
     if (isPlayerSelected(game, selectedPlayerIndex)) return;
     // A player cannot select themselves.
-    if (selectedPlayerIndex == game.currentPlayerIndex) return;
+    if (selectedPlayerIndex == game.currentTurnIndex) return;
     addSelectedPlayer(game, selectedPlayerIndex);
     game.addLogEntry(
       LogPlayerChosen(
-        playerIndex: game.currentPlayerIndex,
+        playerIndex: game.currentTurnIndex,
         playerChosenIndex: selectedPlayerIndex,
         roleKey: key,
       ),
     );
     if (getChosenPlayers(game).length >= 2) {
-      game.incrementPlayerIndex();
       await game.finishRoleSelection();
     } else {
       await game.save();
@@ -102,7 +101,7 @@ class RoleH extends Role {
         : TrObject(
             '${keyBase}Wait',
             richTrObjects: [
-              RichTrObject(RichTrType.player, value: game.currentPlayerIndex),
+              RichTrObject(RichTrType.player, value: game.currentTurnIndex),
             ],
           );
   }

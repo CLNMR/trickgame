@@ -27,8 +27,8 @@ class RoleSelectionDisplay extends ConsumerWidget {
         return _buildPlayerSelectGrid(context, ref);
       case InputRequirement.selectTrump:
         return _buildTrumpSelectGrid(context, ref);
-      // case InputRequirement.selectCardToRemove:
-      //   return _buildCardRemovalArea();
+      case InputRequirement.selectCardToRemove:
+        return const Text('CardRemovalPlaceholder'); // _buildCardRemovalArea();
       default:
         return Center(
           child: Column(

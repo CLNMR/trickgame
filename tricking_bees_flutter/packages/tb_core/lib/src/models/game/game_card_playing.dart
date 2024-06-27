@@ -60,11 +60,11 @@ extension GameCardExt on Game {
     }
     if (!player.canPlayCard(cardKey, compulsoryColor)) return;
     player.playCard(cardKey);
-    currentTrick!.addCard(cardKey, playOrder![currentPlayerIndex]);
+    currentTrick!.addCard(cardKey, currentPlayerIndex);
     addLogEntry(
       LogCardPlayed(
         cardKey: cardKey,
-        playerIndex: playOrder![currentPlayerIndex],
+        playerIndex: currentPlayerIndex,
         isHidden: playsCardHidden(player),
       ),
       absoluteIndentLevel: 2,
@@ -84,7 +84,7 @@ extension GameCardExt on Game {
   /// Whether this player is playing their card hidden.
   bool playsCardHidden(Player player) =>
       player.role.playsCardHidden &&
-      playOrder?.indexOf(getNormalPlayerIndex(player)) != 0;
+      playOrder.indexOf(getNormalPlayerIndex(player)) != 0;
 
   /// Method to skip the playing of a card.
   Future<void> skipCardPlay(YustUser? user) async {

@@ -10,11 +10,10 @@ class RoleD extends Role {
   @override
   void transformPlayOrder(Game game) {
     final playerIndex = game.getFirstPlayerWithRole(key);
-    if (game.playOrder == null ||
-        playerIndex == null ||
-        game.playOrder!.first == playerIndex ||
+    if (playerIndex == null ||
+        game.playOrder.first == playerIndex ||
         game.players[playerIndex].roleKey != key) return;
-    game.playOrder!
+    game.playOrder
       ..remove(playerIndex)
       ..insert(game.playerNum - 1, playerIndex);
   }

@@ -35,7 +35,7 @@ Game _$GameFromJson(Map json) => Game(
           GameState.waitingForPlayers,
       currentSubgame: (json['currentSubgame'] as num?)?.toInt() ?? 0,
       currentRound: (json['currentRound'] as num?)?.toInt() ?? 0,
-      currentPlayerIndex: (json['currentPlayerIndex'] as num?)?.toInt() ?? 0,
+      currentTurnIndex: (json['currentTurnIndex'] as num?)?.toInt() ?? 0,
       currentTrump: json['currentTrump'] == null
           ? null
           : GameCard.fromJson(
@@ -92,7 +92,7 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'cards': instance.undealtCards.toJson(),
       'currentSubgame': instance.currentSubgame,
       'currentRound': instance.currentRound,
-      'currentPlayerIndex': instance.currentPlayerIndex,
+      'currentTurnIndex': instance.currentTurnIndex,
       'currentTrump': instance.currentTrump?.toJson(),
       'currentTrick': instance.currentTrick?.toJson(),
       'inputRequirement': _$InputRequirementEnumMap[instance.inputRequirement]!,

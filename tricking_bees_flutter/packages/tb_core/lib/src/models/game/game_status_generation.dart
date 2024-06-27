@@ -71,7 +71,9 @@ extension GameStatusGenerationExt on Game {
           : [
               TrObject(
                 inputRequirement.getStatusKey(whileWaiting: true),
-                richTrObjects: [_getCurrentPlayerTrObject()],
+                richTrObjects: [
+                  RichTrObject(RichTrType.player, value: currentPlayerIndex),
+                ],
               ),
             ];
 
@@ -83,7 +85,4 @@ extension GameStatusGenerationExt on Game {
   TrObject _getCurrentRoleStatuses(YustUser user) =>
       getPlayer(user).role.getStatusWhileActive(this, user)
         ..roleKey = getPlayer(user).roleKey;
-
-  RichTrObject _getCurrentPlayerTrObject() =>
-      RichTrObject(RichTrType.player, value: actualCurrentPlayerIndex);
 }
