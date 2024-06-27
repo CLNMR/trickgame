@@ -71,19 +71,7 @@ class _GameBoardState extends ConsumerState<GameBoard>
                       child: _buildCurrentTrickGrid(),
                     ),
                     const SizedBox(width: 5),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.arrow_downward),
-                        ...widget.game.playOrder.map(
-                          (i) => PlayerIcon(
-                            index: i,
-                            tooltip: widget.game.players[i].displayName,
-                            isHighlighted: widget.game.currentPlayerIndex == i,
-                          ),
-                        ),
-                      ],
-                    ),
+                    PlayerOrderColumn(game: widget.game),
                   ],
                 )
               : const SizedBox(),
@@ -95,7 +83,7 @@ class _GameBoardState extends ConsumerState<GameBoard>
     final winningCard =
         previousTrick.getWinningCard(widget.game.currentTrumpColor);
     return _ContainerWithHeading(
-      headingKey: 'previousTrick',
+      headingKey: 'GAMEUI:previousTrick',
       child: TrickDisplay(
         previousTrick,
         winningCard: winningCard,
@@ -106,7 +94,7 @@ class _GameBoardState extends ConsumerState<GameBoard>
   }
 
   Widget _buildCurrentTrickGrid() => _ContainerWithHeading(
-        headingKey: 'currentTrick',
+        headingKey: 'GAMEUI:currentTrick',
         child: TrickDisplay(
           widget.game.currentTrick!,
           playerNames: widget.playerNames,
@@ -120,6 +108,45 @@ class _GameBoardState extends ConsumerState<GameBoard>
       );
 }
 
+/// A display for the current player order.
+class PlayerOrderColumn extends StatelessWidget {
+  /// Creates a [PlayerOrderColumn].
+  const PlayerOrderColumn({
+    super.key,
+    required this.game,
+  });
+
+  /// The game for which to display the player order
+  final Game game;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ...game.playOrder
+              .map(
+            (i) => [
+              const Icon(Icons.arrow_downward),
+              Padding(
+                padding: const EdgeInsets.all(2),
+                child: PlayerIcon(
+                  index: i,
+                  tooltip: game.players[i].displayName,
+                  isHighlighted: game.currentPlayerIndex == i,
+                ),
+              ),
+            ],
+          )
+              .fold([], (v1, v2) => [...v1, ...v2]),
+        ],
+      );
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Game>('game', game));
+  }
+}
+
 class _ContainerWithHeading extends StatelessWidget {
   const _ContainerWithHeading({
     required this.headingKey,
@@ -131,11 +158,7 @@ class _ContainerWithHeading extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
+  Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.all(5),
         child: Column(
           children: [

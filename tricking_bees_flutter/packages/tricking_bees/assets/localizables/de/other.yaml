@@ -13,3 +13,5 @@ logBoxTitle: Spielverlauf
 logDividerBeforeGameStart: Spielbeginn
 logDividerRound: Runde {round}
 roleTargetsPlayer: Mit deiner Rolle {role} hast du diesen Spieler ausgewählt.
+GAMEUI:previousTrick: Vorheriger Stich
+GAMEUI:currentTrick: Aktueller Stich

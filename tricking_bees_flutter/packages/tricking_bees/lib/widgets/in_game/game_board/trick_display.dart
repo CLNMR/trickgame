@@ -75,20 +75,11 @@ class TrickDisplay extends StatelessWidget {
                     hiddenPlayers.contains(playerIndex),
               ),
               Positioned(
-                top: 2,
-                right: 2,
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(1)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: PlayerIcon(
-                      index: playerIndex,
-                      tooltip: playerNames[playerIndex],
-                    ),
-                  ),
+                top: 3,
+                right: 3,
+                child: PlayerIcon(
+                  index: playerIndex,
+                  tooltip: playerNames[playerIndex],
                 ),
               ),
             ],
