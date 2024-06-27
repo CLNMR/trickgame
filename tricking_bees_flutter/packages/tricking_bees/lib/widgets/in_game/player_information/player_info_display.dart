@@ -29,6 +29,9 @@ class PlayerInfoDisplay extends ConsumerStatefulWidget {
   /// Whether the given player is currently required to input an action.
   final bool hasCurrentTurn;
 
+  /// The current player's index.
+  PlayerIndex get playerIndex => game.getNormalPlayerIndex(player);
+
   @override
   ConsumerState<PlayerInfoDisplay> createState() => _PlayerInfoDisplayState();
   @override
@@ -37,7 +40,8 @@ class PlayerInfoDisplay extends ConsumerStatefulWidget {
     properties
       ..add(DiagnosticsProperty<Player>('player', player))
       ..add(DiagnosticsProperty<bool>('hasCurrentTurn', hasCurrentTurn))
-      ..add(DiagnosticsProperty<Game>('game', game));
+      ..add(DiagnosticsProperty<Game>('game', game))
+      ..add(IntProperty('playerIndex', playerIndex));
   }
 }
 
@@ -105,7 +109,9 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2),
               child: PlayerIcon(
-                index: widget.game.getNormalPlayerIndex(widget.player),
+                index: widget.playerIndex,
+                isHighlighted:
+                    widget.game.currentPlayerIndex == widget.playerIndex,
               ),
             ),
             OwnText(text: widget.player.displayName, translate: false),

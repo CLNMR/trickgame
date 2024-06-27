@@ -66,6 +66,7 @@ extension UiRichTrObject on RichTrObject {
     BuildContext context,
     List<String> playerNames,
   ) {
+    if (values.isEmpty) return const TextSpan();
     final spans = values
         .map(
           (val) => RichTrObject(singularType, value: val)

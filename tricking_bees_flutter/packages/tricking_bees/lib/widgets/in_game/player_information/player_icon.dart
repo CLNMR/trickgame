@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tb_core/tb_core.dart';
@@ -5,13 +7,21 @@ import 'package:tb_core/tb_core.dart';
 /// A small icon representing the player in the normal order.
 class PlayerIcon extends StatelessWidget {
   /// Creates a [PlayerIcon].
-  const PlayerIcon({super.key, required this.index, this.tooltip});
+  const PlayerIcon({
+    super.key,
+    required this.index,
+    this.tooltip,
+    this.isHighlighted = false,
+  });
 
   /// The player index of this player.
   final PlayerIndex index;
 
   /// A tooltip to be displayed.
   final String? tooltip;
+
+  /// Whether this player's icon is highlighted.
+  final bool isHighlighted;
 
   /// The catalog entry corresponding to this player
   PlayerOrderCatalog get player => PlayerOrderCatalog.fromIndex(index);
@@ -22,15 +32,22 @@ class PlayerIcon extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: player.color,
-            border: Border.all(color: Colors.black),
-            borderRadius: const BorderRadius.all(
-              Radius.elliptical(3, 1),
+            border: Border.all(
+              color: isHighlighted
+                  ? const Color.fromARGB(255, 186, 2, 2)
+                  : Colors.black,
+              width: 2,
             ),
+            borderRadius: const BorderRadius.all(Radius.circular(3)),
           ),
           padding: const EdgeInsets.all(3),
-          child: Text(
-            player.playerLetter,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          child: SizedBox(
+            width: 15,
+            child: Text(
+              player.playerLetter,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       );
@@ -41,7 +58,8 @@ class PlayerIcon extends StatelessWidget {
     properties
       ..add(IntProperty('index', index))
       ..add(EnumProperty<PlayerOrderCatalog>('player', player))
-      ..add(StringProperty('tooltip', tooltip));
+      ..add(StringProperty('tooltip', tooltip))
+      ..add(DiagnosticsProperty<bool>('isHighlighted', isHighlighted));
   }
 }
 
@@ -49,7 +67,7 @@ class PlayerIcon extends StatelessWidget {
 enum PlayerOrderCatalog {
   player1(Color.fromRGBO(255, 130, 143, 1)),
   player2(Color.fromRGBO(146, 206, 255, 1)),
-  player3(Color.fromRGBO(139, 195, 74, 1)),
+  player3(Color.fromRGBO(192, 255, 120, 1)),
   player4(Color.fromRGBO(175, 129, 207, 1)),
   player5(Color.fromRGBO(255, 245, 152, 1)),
   player6(Color.fromRGBO(255, 172, 99, 1));

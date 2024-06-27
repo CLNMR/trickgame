@@ -5,6 +5,7 @@ import 'package:tb_core/tb_core.dart';
 
 import '../../../util/app_gradients.dart';
 import '../../own_text.dart';
+import '../player_information/player_icon.dart';
 import 'trick_display.dart';
 
 /// The hexagonal board of the game.
@@ -59,6 +60,7 @@ class _GameBoardState extends ConsumerState<GameBoard>
           padding: const EdgeInsets.all(15),
           child: widget.game.currentTrick != null
               ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (widget.game.previousTrick != null) ...[
                       Flexible(child: _buildPreviousTrickGrid()),
@@ -67,6 +69,20 @@ class _GameBoardState extends ConsumerState<GameBoard>
                     Flexible(
                       flex: 2,
                       child: _buildCurrentTrickGrid(),
+                    ),
+                    const SizedBox(width: 5),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.arrow_downward),
+                        ...widget.game.playOrder.map(
+                          (i) => PlayerIcon(
+                            index: i,
+                            tooltip: widget.game.players[i].displayName,
+                            isHighlighted: widget.game.currentPlayerIndex == i,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 )
