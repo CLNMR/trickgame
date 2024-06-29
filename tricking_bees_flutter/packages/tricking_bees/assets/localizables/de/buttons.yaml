@@ -1,13 +1,16 @@
 CreateAccount: Account Erstellen
 JoinGame: Spiel Beitreten
+LastGame: Spiel Fortsetzen
 Login: Einloggen
 NewGame: Neues Spiel
 Offline: Offline
 Online: Online
+PlayWithoutRoles: Ohne Rollen spielen
 Private: Privat
 Public: Öffentlich
 ResumeGame: Spiel Fortsetzen
-ResumeTestGame: Testspiel
+ResumeTestGame: ''
 Setting: Einstellungen
 SkipCardPlay: Zug Überspringen
 StartGame: Spiel Starten
+TestGame: Testspiel beitreten

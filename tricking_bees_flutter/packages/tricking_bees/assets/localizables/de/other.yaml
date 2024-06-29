@@ -5,6 +5,12 @@ CARDCOLOR:red: Rot
 CARDCOLOR:violet: Violett
 CARDCOLOR:yellow: Gelb
 CurrentGames: Aktive Spiele
+GAMEUI:currentTrick: Aktueller Stich
+GAMEUI:previousTrick: Letzter Stich
+HEAD:appTitle: Bienenstich!
+HEAD:trumpDisplay: Trumpf
+PLAYERINFO:totalPoints: Punkte
+PLAYERINFO:tricksWon: Anzahl gewonnener Stiche
 Queen: Königin
 RoundDisplay: Runde {}
 cardColorSuffix: e
@@ -13,5 +19,4 @@ logBoxTitle: Spielverlauf
 logDividerBeforeGameStart: Spielbeginn
 logDividerRound: Runde {round}
 roleTargetsPlayer: Mit deiner Rolle {role} hast du diesen Spieler ausgewählt.
-GAMEUI:previousTrick: Vorheriger Stich
-GAMEUI:currentTrick: Aktueller Stich
+trumpDisplayTooltip: In diesem Spiel kannst du mit {color} auftrumpfen.

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tb_core/tb_core.dart';
 import 'package:yust/yust.dart';
 
 import '../codegen/annotations/screen.dart';
@@ -31,6 +32,16 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   String _email = '';
   String _password = '';
 
@@ -44,6 +55,7 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildHeading(),
+                if (noAuth) _buildQuickLogin(context),
                 _buildLoginWithEmailPw(context),
                 _buildCreateAccountButton(context),
                 Row(
@@ -66,13 +78,21 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
       );
 
   Widget _buildHeading() => const OwnText(
-        text: 'TrickingBees',
+        text: 'HEAD:appTitle',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 40,
           color: Colors.white,
         ),
-        translate: false,
+      );
+
+  Widget _buildQuickLogin(BuildContext context) => OwnButton(
+        text: 'Quick Dev Login',
+        onPressed: () async {
+          _email = '1@xxx.xxx';
+          _password = 'xxxxxx';
+          await _tryLogin();
+        },
       );
 
   Widget _buildCreateAccountButton(BuildContext context) => OwnButton(
@@ -88,35 +108,60 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
         child: Column(
           children: [
             OwnTextField(
+              controller: _emailController,
               label: 'Email',
-              onChanged: (text) => _email = text,
+              onChanged: (text) {
+                setState(() {
+                  _email = text;
+                });
+              },
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
             ),
             const SizedBox(height: 16),
             OwnTextField(
+              controller: _passwordController,
               label: 'Password',
-              onChanged: (text) => _password = text,
+              onChanged: (text) {
+                setState(() {
+                  _password = text;
+                });
+              },
               obscureText: true,
               autocorrect: false,
+              onEditingComplete: _tryLogin,
             ),
             const SizedBox(height: 16),
             OwnButton(
               text: 'Login',
-              onPressed: () async {
-                try {
-                  await Yust.authService.signIn(_email, _password);
-                  if (context.mounted) context.go('/');
-                } on Exception catch (e) {
-                  if (kDebugMode) {
-                    print(e);
-                  }
-                }
-              },
+              onPressed: isLoginDisabled ? null : _tryLogin,
             ),
           ],
         ),
       );
+
+  /// Whether the login button should be disabled.
+  bool get isLoginDisabled => _email.isEmpty || _password.isEmpty;
+
+  /// Tries to log in the user.
+  Future<void> _tryLogin() async {
+    if (isLoginDisabled) return;
+    try {
+      await Yust.authService.signIn(_email, _password);
+      if (context.mounted) context.go('/');
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<bool>('isLoginDisabled', isLoginDisabled));
+  }
 
   // LaterTODO: Show mask to choose alias, save alias in first name instead of
   // real name

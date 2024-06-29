@@ -9,6 +9,7 @@ class OwnTextField extends StatelessWidget {
     this.placeholder,
     TextEditingController? controller,
     this.onChanged,
+    this.onEditingComplete,
     String? initialText,
     this.label = '',
     this.obscureText = false,
@@ -24,6 +25,9 @@ class OwnTextField extends StatelessWidget {
 
   /// The callback when the text is changed.
   final Function(String text)? onChanged;
+
+  /// The Callback when the text is submitted.
+  final Function()? onEditingComplete;
 
   /// The label of the text field.
   final String label;
@@ -48,6 +52,7 @@ class OwnTextField extends StatelessWidget {
         obscureText: obscureText,
         autocorrect: autocorrect,
         keyboardType: keyboardType,
+        onEditingComplete: onEditingComplete,
       );
 
   @override
@@ -64,6 +69,12 @@ class OwnTextField extends StatelessWidget {
       ..add(StringProperty('label', label))
       ..add(DiagnosticsProperty<bool>('obscureText', obscureText))
       ..add(DiagnosticsProperty<bool>('autocorrect', autocorrect))
-      ..add(DiagnosticsProperty<TextInputType?>('keyboardType', keyboardType));
+      ..add(DiagnosticsProperty<TextInputType?>('keyboardType', keyboardType))
+      ..add(
+        ObjectFlagProperty<Function()?>.has(
+          'onEditingComplete',
+          onEditingComplete,
+        ),
+      );
   }
 }

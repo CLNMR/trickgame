@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,9 +41,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 _buildJoinGameButton(context),
                 _buildResumeGameButton(context),
                 _buildSettingButton(context),
-                if (kDebugMode) _buildResumeTestGameButton(context),
-                if (kDebugMode) _buildResumeLastGameButton(context),
-                _buildTestWidget(context),
+                if (noAuth) _buildResumeTestGameButton(context),
+                _buildResumeLastGameButton(context),
               ],
             ),
           ),
@@ -129,6 +127,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
   Widget _buildResumeLastGameButton(BuildContext context) => OwnButton(
         text: 'LastGame',
+        // TODO: Disable if no games by user exist, and debug filters which
+        // didn't work.
         onPressed: () async {
           final game = await GameService.getFirstFromDB(
             orderBy: [
@@ -137,6 +137,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 descending: true,
               ),
             ],
+            // filters: [
+            //   YustFilter(
+            //     field: 'playerNames',
+            //     comparator: YustFilterComparator.arrayContains,
+            //     value: ref.user!.id,
+            //   ),
+            //   YustFilter(
+            //     field: 'gameState',
+            //     comparator: YustFilterComparator.notEqual,
+            //     value: GameState.finished.toJson(),
+            //   ),
+            // ],
           );
           if (game == null) return;
           // print('Opening game: ${game.id}');
@@ -144,105 +156,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
       );
 
-  Widget _buildTestWidget(BuildContext context) => Row(
-        children: [
-          SelectableText('Current user: ${ref.user?.getName()}'),
-          if (ref.user == null) const SizedBox(),
-          // else
-          //   OwnRichText(
-          //     trObject: TrObject(
-          //       'LOG:unitMoves',
-          //       richTrObjects: [
-          //         RichTrObject(
-          //           RichTrType.coordinate,
-          //           value: Coordinates(0, 0),
-          //           keySuffix: 'From',
-          //         ),
-          //         RichTrObject(
-          //           RichTrType.coordinate,
-          //           value: Coordinates(0, 1),
-          //           keySuffix: 'To',
-          //         ),
-          //         RichTrObject(RichTrType.player, value: 1),
-          //       ],
-          //     ),
-          //     playerNames: ['A', 'B', 'C'],
-          //   ),
-        ],
-      );
-
   VoidCallback _goToSettingScreen(BuildContext context) =>
       () async => context.push(SettingScreenRouting.path);
 }
-
-// class OwnRichText extends ConsumerWidget {
-//   const OwnRichText({
-//     super.key,
-//     required this.trObject,
-//     required this.playerNames,
-//   });
-
-//   final TrObject trObject;
-//   final List<String> playerNames;
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) => RichText(
-//         text: TextSpan(
-//           children: [
-//             trFromObjectToTextSpan(context, ref, trObject, playerNames),
-//           ],
-//         ),
-//       );
-
-//   /// Translates a [TrObject] to a stylized [TextSpan].
-//   TextSpan trFromObjectToTextSpan(BuildContext context, WidgetRef ref,
-//       TrObject trObject, List<String> playerNames) {
-//     final translation = context.trFromObject(trObject);
-//     if (trObject.richTrObjects == null || trObject.richTrObjects!.isEmpty) {
-//       return TextSpan(text: translation);
-//     }
-//     final richMap =
-//         Map.fromEntries(trObject.richTrObjects!.map((e) => 
-//MapEntry(e.key, e)));
-//     // Search for all remaining named arguments in the translated text, and
-//     // replace them manually with the corresponding TextSpan.
-//     final exp = RegExp(r'\{(.+?)\}');
-//     final spans = <InlineSpan>[];
-//     translation.splitMapJoin(
-//       exp,
-//       onMatch: (m) {
-//         final key = m.group(1);
-//         if (key != null && richMap.containsKey(key)) {
-//           spans.add(richMap[key]!.getEnrichedSpan(this, ref, playerNames));
-//         }
-//         return '';
-//       },
-//       onNonMatch: (m) {
-//         spans.add(
-//           TextSpan(
-//             text: m,
-//           ),
-//         );
-//         return '';
-//       },
-//     );
-//     if (trObject.cardKey != null) {
-//       spans
-//         ..insert(
-//           0,
-//           RichTrObject(RichTrType.card, value: trObject.cardKey)
-//               .getEnrichedSpan(this, playerNames),
-//         )
-//         ..insert(1, const TextSpan(text: ': '));
-//     }
-//     if (trObject.eventKey != null) {
-//       spans
-//         ..insert(
-//           0,
-//           RichTrObject(RichTrType.event, value: trObject.eventKey)
-//               .getEnrichedSpan(this, playerNames),
-//         )
-//         ..insert(1, const TextSpan(text: ': '));
-//     }
-//     return TextSpan(children: spans);
-//   }
-// }

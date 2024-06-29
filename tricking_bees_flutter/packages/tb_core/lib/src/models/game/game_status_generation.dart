@@ -10,13 +10,10 @@ extension GameStatusGenerationExt on Game {
         return _getStatusMessagesForWaitingForPlayers(user);
       case GameState.roleSelection:
         return _getStatusMessagesForInProgress(user)
-          ..insert(
-            0,
-            _getStartOfGameRoleStatus(user) ?? TrObject(''),
-          );
+          ..add(_getStartOfGameRoleStatus(user) ?? TrObject(''));
       case GameState.playingTricks:
         return _getStatusMessagesForInProgress(user)
-          ..insert(0, _getCurrentRoleStatuses(user));
+          ..add(_getCurrentRoleStatuses(user));
       case GameState.finished:
         return _getGameFinishedStatus(user);
     }

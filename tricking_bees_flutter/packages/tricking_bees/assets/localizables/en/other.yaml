@@ -5,6 +5,12 @@ CARDCOLOR:red: ''
 CARDCOLOR:violet: ''
 CARDCOLOR:yellow: ''
 CurrentGames: Current Games
+GAMEUI:currentTrick: ''
+GAMEUI:previousTrick: ''
+HEAD:appTitle: ''
+HEAD:trumpDisplay: ''
+PLAYERINFO:totalPoints: ''
+PLAYERINFO:tricksWon: ''
 Queen: ''
 RoundDisplay: 'Round: {}'
 cardColorSuffix: ''
@@ -13,3 +19,4 @@ logBoxTitle: Game log
 logDividerBeforeGameStart: ''
 logDividerRound: Round {round}
 roleTargetsPlayer: With your role {role}, you have selected this player.
+trumpDisplayTooltip: ''

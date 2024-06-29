@@ -16,7 +16,6 @@ class EndDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => GameBoard(
         game: game,
-        handleCardTap: (_) {},
       );
 
   @override

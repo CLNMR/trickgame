@@ -206,8 +206,7 @@ class Game extends YustDoc {
       players.where((player) => player.id != currentPlayer.id).toList();
 
   /// Returns whether the given user is the current player.
-  bool isCurrentPlayer(YustUser? user) =>
-      !useAuth || currentPlayer.id == user?.id;
+  bool isCurrentPlayer(YustUser? user) => currentPlayer.id == user?.id;
 
   /// The points for each player, indexed by their index.
   Map<PlayerIndex, int> get playerPoints =>
@@ -345,6 +344,10 @@ class Game extends YustDoc {
 
   /// Copies the game.
   Game copy() => Game.fromJson(toJson());
+
+  /// Whether the user is a mere spectator of the given game.
+  bool isSpectator(YustUser? user) =>
+      !players.map((e) => e.id).contains(user?.id);
 }
 
 /// The input requirement for the user.

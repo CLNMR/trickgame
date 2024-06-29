@@ -51,9 +51,10 @@ class RoleSelectionDisplay extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(child: _buildRoleButtonGrid(context, ref)),
-          if (!game.currentRoles.any((e) => e.key != RoleCatalog.noRole))
+          if (noAuth &&
+              !game.currentRoles.any((e) => e.key != RoleCatalog.noRole))
             OwnButton(
-              text: 'SkipOtherRoles',
+              text: 'PlayWithoutRoles',
               onPressed: () async => game.finishRoleSelection(firstTime: true),
             ),
         ],

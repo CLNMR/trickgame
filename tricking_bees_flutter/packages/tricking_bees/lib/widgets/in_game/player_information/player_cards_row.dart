@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
 import '../../../util/app_gradients.dart';
+import '../../../util/widget_ref_extension.dart';
 import '../../single_card_display.dart';
 
 /// The widget displaying a player's remaining cards, and offering a skip turn
@@ -96,6 +97,13 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
   Widget _buildPositionedCard(GameCard card, int index, double maxWidth) {
     final leftOffset =
         (index + 0.5) * (maxWidth / (widget.player.cards.length + 1));
+    final isSpectator = widget.game.isSpectator(ref.user);
+    // For now, we want to hide the individual cards from spectators.
+    final cardIsHidden =
+        !isAuthenticatedPlayer(ref.user, widget.player) || isSpectator;
+    final cardIsDisabled = !cardIsHidden &&
+        !widget.game.canPlayCard(card, widget.player) &&
+        !widget.game.canRemoveCard(widget.player);
     return Positioned(
       // Use AnimatedPositioned for smooth animation; Doesn't seem to work with
       // the way I'm reordering the cards...
@@ -112,11 +120,12 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
             angle: Random(index).nextDouble() * 0.1 - 0.05,
             child: SingleCardDisplay.fromCardKey(
               cardKey: card,
-              isHidden: false,
-              isDisabled: !widget.game.canPlayCard(card, widget.player) &&
-                  !widget.game.canRemoveCard(widget.player),
-              onTap: () async =>
-                  widget.game.playOtherPlayerCard(card, widget.player),
+              isHidden: cardIsHidden,
+              isDisabled: cardIsDisabled,
+              onTap: cardIsHidden
+                  ? null
+                  : () async =>
+                      widget.game.handleCardTap(card, widget.player, ref.user),
             ),
           ),
         ),

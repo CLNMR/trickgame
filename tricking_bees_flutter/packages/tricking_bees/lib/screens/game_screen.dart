@@ -5,7 +5,8 @@ import 'package:tb_core/tb_core.dart';
 import 'package:yust_ui/yust_ui.dart';
 
 import '../codegen/annotations/screen.dart';
-import '../widgets/in_game/game_board/game_board_in_progress_display.dart';
+import '../widgets/in_game/game_board/game_board.dart';
+import '../widgets/own_text.dart';
 import 'game_display/end_display.dart';
 import 'game_display/in_game_display.dart';
 import 'game_display/role_selection_display.dart';
@@ -37,8 +38,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text('TrickingBees'),
-          actions: useAuth ? null : _changeStateButtons(),
+          title: const OwnText(text: 'HEAD:appTitle', type: OwnTextType.title),
+          actions: noAuth ? _changeStateButtons() : null,
           backgroundColor: Colors.black26,
           foregroundColor: Colors.white,
         ),
@@ -65,7 +66,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   case GameState.playingTricks:
                     return InGameDisplay(
                       game: game,
-                      child: GameBoardInProgressDisplay(game: game),
+                      child: GameBoard(game: game),
                     );
                   case GameState.finished:
                     return InGameDisplay(

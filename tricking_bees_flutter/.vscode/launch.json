@@ -5,11 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Flutter Prod-App",
+            "name": "Launch Prod",
             "type": "dart",
             "request": "launch",
             "program": "packages/tricking_bees/lib/main.dart",
             "toolArgs": ["--dart-define", "environment=prod"]
+        },
+        {
+            "name": "Launch Dev",
+            "type": "dart",
+            "request": "launch",
+            "program": "packages/tricking_bees/lib/main.dart",
+            "toolArgs": ["--dart-define", "noAuth=true", "environment=prod"]
         },
     ]
 }

@@ -9,41 +9,11 @@ extension GameCardExt on Game {
   bool canPlayAnyCards(Player player) =>
       gameState == GameState.playingTricks &&
       (inputRequirement.isCard) &&
-      currentPlayer.id == player.id;
+      (currentPlayer.id == player.id);
 
-  /// Determines whether the given user can currently play the given card.
+  /// Determines whether the given player can currently play the given card.
   bool canPlayCard(GameCard card, Player player) =>
       canPlayAnyCards(player) && player.canPlayCard(card, compulsoryColor);
-
-  /// Play the given card.
-  Future<void> playCard(GameCard cardKey, YustUser user) async {
-    final player = getPlayer(user);
-    if (!canPlayCard(cardKey, player)) {
-      return;
-    }
-    player.playCard(cardKey);
-    final playerIndex = getNormalOrderPlayerIndex(user);
-    currentTrick!.addCard(cardKey, playerIndex);
-    addLogEntry(
-      LogCardPlayed(
-        cardKey: cardKey,
-        playerIndex: playerIndex,
-        isHidden: playsCardHidden(player),
-      ),
-      absoluteIndentLevel: 2,
-    );
-    // Handle two card playing:
-    if (inputRequirement == InputRequirement.twoCards) {
-      if (getFlag<bool>(_oneOfTwoCardsPlayedKey) ?? false) {
-        setFlag(_oneOfTwoCardsPlayedKey, false);
-      } else {
-        setFlag(_oneOfTwoCardsPlayedKey, true);
-        await save(merge: false);
-        return;
-      }
-    }
-    await nextPlayer();
-  }
 
   /// Whether the given player is able to remove a card.
   bool canRemoveCard(Player player) =>
@@ -51,10 +21,15 @@ extension GameCardExt on Game {
       inputRequirement == InputRequirement.selectCardToRemove &&
       currentPlayer.id == player.id;
 
-  /// Play a card for one of the other players.
-  Future<void> playOtherPlayerCard(GameCard cardKey, Player player) async {
-    if (currentPlayer.id != player.id) return;
+  /// Play a card for a player, or remove it if required.
+  Future<void> handleCardTap(
+    GameCard cardKey,
+    Player player,
+    YustUser? user,
+  ) async {
+    if (!isAuthenticatedPlayer(user, player)) return;
     if (inputRequirement == InputRequirement.selectCardToRemove) {
+      if (!canRemoveCard(player)) return;
       await player.role.onSelectCardToRemove(this, cardKey);
       return;
     }
@@ -67,7 +42,7 @@ extension GameCardExt on Game {
         playerIndex: currentPlayerIndex,
         isHidden: playsCardHidden(player),
       ),
-      absoluteIndentLevel: 2,
+      absoluteIndentLevel: 1,
     );
     if (inputRequirement == InputRequirement.twoCards) {
       if (getFlag<bool>(_oneOfTwoCardsPlayedKey) ?? false) {

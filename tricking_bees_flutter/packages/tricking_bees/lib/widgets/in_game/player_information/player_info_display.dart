@@ -119,7 +119,7 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
             IconWithNumber(
               iconData: Icons.emoji_events,
               displayNum: widget.player.pointTotal,
-              tooltip: 'PLAYERINFO:TotalPoints',
+              tooltip: 'PLAYERINFO:totalPoints',
             ),
           ],
         ),
@@ -157,7 +157,7 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
               IconWithNumber(
                 iconData: Icons.done_outline,
                 displayNum: widget.player.tricksWon,
-                tooltip: 'PLAYERINFO:TricksWon',
+                tooltip: 'PLAYERINFO:tricksWon',
               ),
             ],
           ),

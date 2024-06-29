@@ -5,7 +5,7 @@ import 'package:tb_core/tb_core.dart';
 
 import '../../../util/app_gradients.dart';
 import '../../own_text.dart';
-import '../player_information/player_icon.dart';
+import 'player_order_column.dart';
 import 'trick_display.dart';
 
 /// The hexagonal board of the game.
@@ -14,14 +14,10 @@ class GameBoard extends ConsumerStatefulWidget {
   const GameBoard({
     super.key,
     required this.game,
-    required this.handleCardTap,
   });
 
   /// The game to be displayed.
   final Game game;
-
-  /// What should happen if a hex is tapped.
-  final Function(Card) handleCardTap;
 
   /// The display names of the players.
   List<String> get playerNames =>
@@ -34,12 +30,6 @@ class GameBoard extends ConsumerStatefulWidget {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<Game>('game', game))
-      ..add(
-        ObjectFlagProperty<Function(Card p1)>.has(
-          'handleCardTap',
-          handleCardTap,
-        ),
-      )
       ..add(IterableProperty<String>('playerNames', playerNames));
   }
 }
@@ -108,45 +98,7 @@ class _GameBoardState extends ConsumerState<GameBoard>
       );
 }
 
-/// A display for the current player order.
-class PlayerOrderColumn extends StatelessWidget {
-  /// Creates a [PlayerOrderColumn].
-  const PlayerOrderColumn({
-    super.key,
-    required this.game,
-  });
-
-  /// The game for which to display the player order
-  final Game game;
-
-  @override
-  Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ...game.playOrder
-              .map(
-            (i) => [
-              const Icon(Icons.arrow_downward),
-              Padding(
-                padding: const EdgeInsets.all(2),
-                child: PlayerIcon(
-                  index: i,
-                  tooltip: game.players[i].displayName,
-                  isHighlighted: game.currentPlayerIndex == i,
-                ),
-              ),
-            ],
-          )
-              .fold([], (v1, v2) => [...v1, ...v2]),
-        ],
-      );
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Game>('game', game));
-  }
-}
-
+/// A plain container with a heading.
 class _ContainerWithHeading extends StatelessWidget {
   const _ContainerWithHeading({
     required this.headingKey,
