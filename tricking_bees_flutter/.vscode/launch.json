@@ -16,7 +16,7 @@
             "type": "dart",
             "request": "launch",
             "program": "packages/tricking_bees/lib/main.dart",
-            "toolArgs": ["--dart-define", "noAuth=true", "environment=prod"]
+            "toolArgs": ["--dart-define", "environment=prod", "--dart-define", "noAuth=true"]
         },
     ]
 }

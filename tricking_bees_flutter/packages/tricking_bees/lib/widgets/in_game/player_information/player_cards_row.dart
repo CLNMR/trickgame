@@ -50,7 +50,7 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
           ),
           child: DecoratedBox(
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              borderRadius: BorderRadius.circular(5),
               border: Border.all(color: Colors.black),
               gradient: AppGradients.indigoToYellow,
             ),
@@ -64,7 +64,7 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
   Widget _buildPlayerCards() => DecoratedBox(
         decoration: BoxDecoration(border: Border.all(color: Colors.black)),
         child: SizedBox(
-          height: 100,
+          height: 120,
           child: LayoutBuilder(
             builder: (context, constraints) => Stack(
               children: getOrderedCards()

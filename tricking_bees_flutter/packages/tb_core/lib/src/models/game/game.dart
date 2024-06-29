@@ -330,17 +330,13 @@ class Game extends YustDoc {
     );
   }
 
-  /// Returns the index in the game for the given user given the normal order.
-  int getNormalOrderPlayerIndex(YustUser? user) =>
-      players.indexWhere((player) => player.id == user?.id);
-
-  /// Returns the index of the given player in the list of players.
-  int getNormalPlayerIndex(Player player) =>
-      players.indexWhere((other) => other.id == player.id);
-
   /// Returns the player associated with the given user.
   Player getPlayer(YustUser user) =>
       players.firstWhere((player) => player.id == user.id);
+
+  /// Returns the index of the given player in the list of players.
+  int getPlayerIndex(Player player) =>
+      players.indexWhere((other) => other.id == player.id);
 
   /// Copies the game.
   Game copy() => Game.fromJson(toJson());

@@ -30,6 +30,9 @@ class PlayerIcon extends StatelessWidget {
   Widget build(BuildContext context) => Tooltip(
         message: tooltip ?? '',
         child: Container(
+          width: 20,
+          height: 25,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: player.color,
             border: Border.all(
@@ -38,16 +41,13 @@ class PlayerIcon extends StatelessWidget {
                   : Colors.black,
               width: 2,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(3)),
+            borderRadius: BorderRadius.circular(3),
           ),
-          padding: const EdgeInsets.all(3),
-          child: SizedBox(
-            width: 15,
-            child: Text(
-              player.playerLetter,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
+          padding: const EdgeInsets.all(1),
+          child: Text(
+            player.playerLetter,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
         ),
       );

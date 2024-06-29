@@ -32,7 +32,7 @@ extension GameStatusGenerationExt on Game {
     // TODO: Currently handles same point amounts poorly
     final sortedWinners = playerPoints.entries.toList()
       ..sort((a, b) => a.value.compareTo(b.value));
-    final ownIndex = getNormalOrderPlayerIndex(user);
+    final ownIndex = getPlayerIndex(getPlayer(user));
     final ownRank = sortedWinners.indexWhere((e) => e.key == ownIndex);
     final endObj = TrObject(
       'STATUS:gameIsFinished',

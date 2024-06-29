@@ -59,14 +59,14 @@ extension GameCardExt on Game {
   /// Whether this player is playing their card hidden.
   bool playsCardHidden(Player player) =>
       player.role.playsCardHidden &&
-      playOrder.indexOf(getNormalPlayerIndex(player)) != 0;
+      playOrder.indexOf(getPlayerIndex(player)) != 0;
 
   /// Method to skip the playing of a card.
   Future<void> skipCardPlay(YustUser? user) async {
     if (!canSkipTurn(user)) return;
     addLogEntry(
       LogSkipTurn(
-        playerIndex: getNormalOrderPlayerIndex(user),
+        playerIndex: currentPlayerIndex,
         isCardSkip: true,
       ),
     );

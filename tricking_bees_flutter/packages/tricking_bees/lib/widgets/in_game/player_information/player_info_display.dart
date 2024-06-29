@@ -30,7 +30,7 @@ class PlayerInfoDisplay extends ConsumerStatefulWidget {
   final bool hasCurrentTurn;
 
   /// The current player's index.
-  PlayerIndex get playerIndex => game.getNormalPlayerIndex(player);
+  PlayerIndex get playerIndex => game.getPlayerIndex(player);
 
   @override
   ConsumerState<PlayerInfoDisplay> createState() => _PlayerInfoDisplayState();
@@ -70,34 +70,29 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
   Widget build(BuildContext context) => AnimatedBuilder(
         animation: _controller,
         builder: (context, child) => Container(
-          width: 150,
+          width: 120,
+          height: 100,
           decoration: BoxDecoration(
             border: Border.all(
               color: widget.hasCurrentTurn
                   ? Colors.redAccent[700]!.withOpacity(_controller.value)
-                  : Colors.white,
+                  : PlayerOrderCatalog.fromIndex(
+                      widget.game.getPlayerIndex(widget.player),
+                    ).color,
               width: widget.hasCurrentTurn ? 5 : 3,
             ),
             color: Colors.white.lighten(20),
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Padding(
-            padding: EdgeInsets.all(widget.hasCurrentTurn ? 3 : 5),
-            child: Row(
-              children: [
-                Flexible(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHeader(),
-                      const Divider(height: 2, thickness: 1),
-                      _buildStatusInfo(),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          padding: EdgeInsets.all(widget.hasCurrentTurn ? 1 : 2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(),
+              const Divider(height: 3, thickness: 1),
+              _buildStatusInfo(),
+            ],
           ),
         ),
       );
@@ -107,7 +102,7 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
           children: [
             _buildTargetIcon(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 1),
               child: PlayerIcon(
                 index: widget.playerIndex,
                 isHighlighted:
@@ -120,6 +115,7 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
               iconData: Icons.emoji_events,
               displayNum: widget.player.pointTotal,
               tooltip: 'PLAYERINFO:totalPoints',
+              iconSize: 20,
             ),
           ],
         ),
@@ -129,7 +125,7 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
     final userPlayer = widget.game.getPlayer(ref.user!);
     if (!userPlayer.role.isPlayerSelected(
       widget.game,
-      widget.game.getNormalPlayerIndex(widget.player),
+      widget.game.getPlayerIndex(widget.player),
     )) {
       return const SizedBox();
     }
@@ -146,22 +142,30 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
     );
   }
 
-  Widget _buildStatusInfo() => Flexible(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 5),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+  Widget _buildStatusInfo() => Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(child: RoleIcon(roleKey: widget.player.roleKey)),
+          const SizedBox(width: 2),
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RoleIcon(roleKey: widget.player.roleKey),
               IconWithNumber(
                 iconData: Icons.done_outline,
                 displayNum: widget.player.tricksWon,
                 tooltip: 'PLAYERINFO:tricksWon',
+                iconSize: 20,
+              ),
+              IconWithNumber(
+                iconData: Icons.new_releases_outlined,
+                displayNum: widget.player.calculateCurrentPoints(widget.game),
+                tooltip: 'PLAYERINFO:currentPoints',
+                iconSize: 20,
               ),
             ],
           ),
-        ),
+        ],
       );
 }
 

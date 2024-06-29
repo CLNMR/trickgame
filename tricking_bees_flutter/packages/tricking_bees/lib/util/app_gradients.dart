@@ -7,8 +7,8 @@ class AppGradients {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      const Color.fromARGB(255, 98, 107, 164).withOpacity(0.6),
-      Colors.yellow[50]!.withOpacity(0.6),
+      const Color.fromARGB(255, 98, 107, 164).withOpacity(0.7),
+      Colors.yellow[50]!.withOpacity(0.7),
     ],
   );
 }

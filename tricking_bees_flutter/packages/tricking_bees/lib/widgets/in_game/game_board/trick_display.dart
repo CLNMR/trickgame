@@ -60,7 +60,7 @@ class TrickDisplay extends StatelessWidget {
         decoration: isHighlighted
             ? BoxDecoration(
                 border: Border.all(color: Colors.white, width: 3),
-                borderRadius: const BorderRadius.all(Radius.circular(2)),
+                borderRadius: BorderRadius.circular(2),
               )
             : null,
         padding: EdgeInsets.zero, // Needed in order to let the decoration know

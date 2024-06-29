@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
+import '../../util/app_gradients.dart';
 import '../../util/context_extension.dart';
 import '../../util/widget_ref_extension.dart';
 import '../../widgets/in_game/log_entry_list_display.dart';
@@ -40,6 +42,7 @@ class InGameDisplay extends ConsumerStatefulWidget {
 }
 
 class _GameDisplayState extends ConsumerState<InGameDisplay> {
+  bool _skipIsHovered = false;
   @override
   Widget build(BuildContext context) {
     final player = widget.game.getPlayer(ref.user!);
@@ -52,7 +55,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                 Expanded(
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(15),
+                      padding: const EdgeInsets.all(5),
                       child: _buildBoardAndPlayers(),
                     ),
                   ),
@@ -66,13 +69,13 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                       player: player,
                       hasCurrentTurn: widget.game.currentPlayer.id == player.id,
                     ),
+                    _buildSkipButton(),
                     Flexible(
                       child: PlayerCardsRow(
                         game: widget.game,
                         player: widget.game.getPlayer(ref.user!),
                       ),
                     ),
-                    _buildSkipButton(),
                     _buildTrumpDisplay(),
                   ],
                 ),
@@ -87,15 +90,38 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
 
   Widget _buildSkipButton() => widget.game.canSkipTurn(ref.user)
       ? Tooltip(
-          message: 'BUTTON:SkipCardPlay',
-          child: GestureDetector(
-            onTap: () async => widget.game.skipCardPlay(ref.user),
-            child: const Padding(
-              padding: EdgeInsets.all(3),
-              child: SingleCardDisplay(
-                cardColor: Colors.grey,
-                symbol: 'X',
-              ),
+          message: 'BUTTON:SkipCardPlay'.tr(),
+          child: Container(
+            height: 100,
+            width: 80,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(),
+              gradient: AppGradients.indigoToYellow,
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  bottom: 10,
+                  child: Transform.scale(
+                    scale: _skipIsHovered ? 1.15 : 1.0,
+                    child: MouseRegion(
+                      onEnter: (event) => setState(() => _skipIsHovered = true),
+                      onExit: (event) => setState(() => _skipIsHovered = false),
+                      child: Transform.rotate(
+                        angle: -0.02,
+                        child: SingleCardDisplay(
+                          cardColor: Colors.grey,
+                          symbol: 'X',
+                          onTap: () async => widget.game.skipCardPlay(ref.user),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         )
@@ -140,7 +166,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
           height: 100,
           decoration: BoxDecoration(
             border: Border.all(),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            borderRadius: BorderRadius.circular(5),
             color: Colors.white.withOpacity(0.5),
           ),
           child: Padding(
@@ -187,12 +213,29 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
             child: Row(
               children: [
                 _buildLeftPlayer(),
-                Expanded(child: widget.child),
+                Expanded(child: _buildGameArea()),
                 _buildRightPlayer(),
               ],
             ),
           ),
         ],
+      );
+
+  /// The actual game area.
+  Widget _buildGameArea() => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.black,
+            width: 2,
+          ),
+          gradient: AppGradients.indigoToYellow,
+        ),
+        padding: const EdgeInsets.all(5),
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: widget.child,
+        ),
       );
 
   Widget _buildPlayersInTopRow() {
@@ -266,13 +309,13 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
         ),
       );
 
-  Widget _buildPlayerCards(Player player, int rotation) => ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: rotation == 2 ? 200 : 100,
-          maxHeight: rotation == 2 ? 100 : 200,
-        ),
-        child: RotatedBox(
-          quarterTurns: rotation,
+  Widget _buildPlayerCards(Player player, int rotation) => RotatedBox(
+        quarterTurns: rotation,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: rotation == 2 ? 100 : 120,
+            maxWidth: 200,
+          ),
           child: PlayerCardsRow(
             game: widget.game,
             player: player,

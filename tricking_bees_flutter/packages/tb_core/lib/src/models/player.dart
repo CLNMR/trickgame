@@ -67,7 +67,7 @@ class Player {
 
   /// Awards points to this player.
   void awardPoints(Game game, int playerIndex) {
-    final points = role.calculatePoints(game, tricksWon);
+    final points = calculateCurrentPoints(game);
     pointTotal += points;
     game.addLogEntry(
       LogPointsAwarded(
@@ -99,4 +99,8 @@ class Player {
   void playCard(GameCard card) {
     cards.removeCard(card);
   }
+
+  /// Calculates the points this player achieved in the current subgame.
+  int calculateCurrentPoints(Game game) =>
+      role.calculatePoints(game, tricksWon);
 }

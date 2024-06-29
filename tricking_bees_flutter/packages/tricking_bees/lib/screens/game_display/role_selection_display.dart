@@ -8,7 +8,7 @@ import '../../widgets/in_game/player_information/role_icon.dart';
 import '../../widgets/own_button.dart';
 import '../../widgets/single_card_display.dart';
 
-/// The display screen of the bidding.
+/// The display screen during role selection.
 class RoleSelectionDisplay extends ConsumerWidget {
   /// Creates a [RoleSelectionDisplay].
   const RoleSelectionDisplay({super.key, required this.game});
@@ -134,7 +134,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
         ),
         itemBuilder: (context, index) {
           final player = players[index];
-          final playerIndex = game.getNormalPlayerIndex(player);
+          final playerIndex = game.getPlayerIndex(player);
           final isAlreadySelected =
               selectingPlayer.role.isPlayerSelected(game, playerIndex);
           return SizedBox(

@@ -25,6 +25,7 @@ class RoleIcon extends StatelessWidget {
         message: roleKey.locName.tr(),
         child: Container(
           width: 80,
+          height: 60,
           padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.5),
@@ -32,27 +33,28 @@ class RoleIcon extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              DecoratedBox(
+              Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(3),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: OwnText(
-                    text: roleKey.locName,
-                    align: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                    ),
+                padding: const EdgeInsets.all(1),
+                child: OwnText(
+                  text: roleKey.locName,
+                  align: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Stack(
                     alignment: Alignment.center,
@@ -81,22 +83,20 @@ class RoleIcon extends StatelessWidget {
 
   Widget _buildSmallImage(String imagePath, String tooltipMessage) => Tooltip(
         message: tooltipMessage,
-        child: DecoratedBox(
+        child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(3),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(2),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(3),
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.fill,
-                width: 33,
-                height: 33,
-              ),
+          padding: const EdgeInsets.all(2),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.fill,
+              width: 25,
+              height: 25,
             ),
           ),
         ),

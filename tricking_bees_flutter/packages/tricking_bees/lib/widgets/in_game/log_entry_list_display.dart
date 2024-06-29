@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
+import '../../util/app_gradients.dart';
 import '../../util/context_extension.dart';
 import '../own_text.dart';
 
@@ -67,8 +68,9 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
   @override
   Widget build(BuildContext context) => DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.blueGrey,
           borderRadius: BorderRadius.circular(5),
+          border: Border.all(),
+          gradient: AppGradients.indigoToYellow,
         ),
         child: _isMinimized ? _buildMaximizeButton() : _buildMaximizedLog(),
       );
@@ -174,7 +176,7 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(2),
-              color: Colors.white24,
+              color: Colors.white,
             ),
             child: Padding(
               padding: const EdgeInsets.all(3),
