@@ -92,7 +92,8 @@ class RoleSelectionDisplay extends ConsumerWidget {
 
   Widget _buildTrumpSelectGrid(BuildContext context, WidgetRef ref) {
     final availColors = CardColor.getColorsForPlayerNum(game.playerNum);
-    final isSelecting = game.currentPlayer.id == game.getPlayer(ref.user!).id;
+    final isSelecting =
+        noAuth || game.currentPlayer.id == game.getPlayer(ref.user!).id;
     return Center(
       child: GridView.builder(
         itemCount: availColors.length,
