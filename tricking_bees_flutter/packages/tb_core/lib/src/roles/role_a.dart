@@ -9,6 +9,10 @@ class RoleA extends Role {
 
   @override
   Future<void> onStartOfTurn(Game game) async {
+    if (game.currentPlayer.roleKey != RoleCatalog.roleA) return;
     game.inputRequirement = InputRequirement.cardOrSkip;
   }
+
+  @override
+  bool get canSkipTurn => true;
 }

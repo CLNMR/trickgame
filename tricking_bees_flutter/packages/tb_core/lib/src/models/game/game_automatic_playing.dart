@@ -41,6 +41,7 @@ extension GameAutoPlayExt on Game {
     // Skipping is as likely as playing one of the cards.
     if (allowSkip && Random().nextInt(cards.length + 1) == 0) {
       await skipCardPlay(user);
+      return;
     }
     final index = Random().nextInt(cards.length);
     await handleCardTap(cards[index], player, user);

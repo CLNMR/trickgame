@@ -11,6 +11,7 @@ import '../../widgets/in_game/log_entry_list_display.dart';
 import '../../widgets/in_game/player_information/player_cards_row.dart';
 import '../../widgets/in_game/player_information/player_info_display.dart';
 import '../../widgets/in_game/player_information/player_instructions_row.dart';
+import '../../widgets/own_button.dart';
 import '../../widgets/own_text.dart';
 import '../../widgets/single_card_display.dart';
 
@@ -88,7 +89,8 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
     );
   }
 
-  Widget _buildSkipButton() => widget.game.canSkipTurn(ref.user)
+  Widget _buildSkipButton() => ref.user != null &&
+          widget.game.getPlayer(ref.user!).role.canSkipTurn
       ? Tooltip(
           message: 'BUTTON:SkipCardPlay'.tr(),
           child: Container(
@@ -115,6 +117,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                         child: SingleCardDisplay(
                           cardColor: Colors.grey,
                           symbol: 'X',
+                          isDisabled: !widget.game.canSkipTurn(ref.user),
                           onTap: () async => widget.game.skipCardPlay(ref.user),
                         ),
                       ),
@@ -143,6 +146,13 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                 Tooltip(
                   message: widget.game.flags.toString(),
                   child: Text(widget.game.inputRequirement.toString()),
+                ),
+              if (noAuth)
+                OwnButton(
+                  text: 'ProceedRandomly',
+                  onPressed: () async {
+                    await widget.game.performRandomPossibleAction();
+                  },
                 ),
             ],
           ),

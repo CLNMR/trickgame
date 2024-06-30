@@ -110,6 +110,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
             child: SingleCardDisplay(
               cardColor: Color(color.hexValue),
               symbol: '!',
+              isDisabled: !isSelecting,
               onTap: () async {
                 if (!isSelecting) return;
                 await game.selectTrumpColor(color);

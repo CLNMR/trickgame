@@ -60,13 +60,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: _buildAvatar(),
             ),
             const OwnText(
-              text: 'TrickingBees',
+              text: 'HEAD:appTitle',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 40,
                 color: Colors.white,
               ),
-              translate: false,
             ),
           ],
         ),

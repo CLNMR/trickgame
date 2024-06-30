@@ -133,10 +133,11 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
       message: 'roleTargetsPlayerTooltip'
           .tr(namedArgs: {'role': userPlayer.roleKey.locName.tr()}),
       child: const Padding(
-        padding: EdgeInsets.only(right: 5),
+        padding: EdgeInsets.only(right: 3),
         child: Icon(
           Icons.center_focus_strong,
           color: Colors.redAccent,
+          size: 15,
         ),
       ),
     );

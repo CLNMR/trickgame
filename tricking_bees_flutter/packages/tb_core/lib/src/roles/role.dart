@@ -36,7 +36,7 @@ abstract class Role {
           : hand.filterByColor(compulsoryColor, allowOtherQueens: true);
 
   /// Whether this role is able to skip their turn if they want to.
-  bool canSkipTurn() => false;
+  bool get canSkipTurn => false;
 
   /// The base key for the status of the role.
   String get basicStatusKey => 'STATUS:SPECIAL:${key.name}';
