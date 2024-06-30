@@ -145,7 +145,7 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
 
   /// Tries to log in the user.
   Future<void> _tryLogin() async {
-    if (isLoginDisabled) return;
+    if (isLoginDisabled && !noAuth) return;
     try {
       await Yust.authService.signIn(_email, _password);
       if (context.mounted) context.go('/');

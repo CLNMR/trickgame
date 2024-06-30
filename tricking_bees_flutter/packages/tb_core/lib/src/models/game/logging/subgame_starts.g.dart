@@ -8,9 +8,9 @@ part of 'subgame_starts.dart';
 
 LogSubgameStarts _$LogSubgameStartsFromJson(Map json) => LogSubgameStarts(
       subgame: (json['subgame'] as num).toInt(),
+      trumpCard: GameCard.fromJson(
+          Map<String, dynamic>.from(json['trumpCard'] as Map)),
       indentLevel: (json['indentLevel'] as num?)?.toInt(),
-      trumpCard:
-          GameCard.fromJson((json['trumpCard'] as Map).cast<String, dynamic>()),
     );
 
 Map<String, dynamic> _$LogSubgameStartsToJson(LogSubgameStarts instance) =>

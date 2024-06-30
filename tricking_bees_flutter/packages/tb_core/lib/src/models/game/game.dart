@@ -80,10 +80,11 @@ class Game extends YustDoc {
         undealtCards =
             undealtCards ?? CardStack.initialDeck(playerNum: playerNum),
         playOrder = playOrder ?? List.generate(playerNum, (index) => index),
-        flags = cardAndEventFlags ?? {} {
-    logEntries = existingLogEntries ?? {};
-    if (logEntries.isEmpty) addLogEntry(LogStartOfGame(indentLevel: 0));
-  }
+        flags = cardAndEventFlags ?? {},
+        logEntries = existingLogEntries ??
+            {
+              0: [LogStartOfGame(indentLevel: 0)],
+            };
 
   /// Creates a [Game] from JSON data.
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
@@ -147,7 +148,7 @@ class Game extends YustDoc {
   /// All of the log entries for the game.
   /// Maps the round number (outer map) and the turn number (inner map) with it.
   @JsonKey(includeFromJson: true, includeToJson: true)
-  late final Map<RoundNumber, List<LogEntry>> logEntries;
+  final Map<RoundNumber, List<LogEntry>> logEntries;
 
   @override
   Map<String, dynamic> toJson() => _$GameToJson(this);

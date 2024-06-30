@@ -9,8 +9,10 @@ part of 'round_start_play_order.dart';
 LogRoundStartPlayOrder _$LogRoundStartPlayOrderFromJson(Map json) =>
     LogRoundStartPlayOrder(
       round: (json['round'] as num).toInt(),
+      playOrder: (json['playOrder'] as List<dynamic>)
+          .map((e) => (e as num).toInt())
+          .toList(),
       indentLevel: (json['indentLevel'] as num?)?.toInt(),
-      playOrder: (json['playOrder'] as List).cast<int>().toList(),
     );
 
 Map<String, dynamic> _$LogRoundStartPlayOrderToJson(

@@ -11,12 +11,10 @@ Player _$PlayerFromJson(Map json) => Player(
       displayName: json['displayName'] as String,
       cards: json['cards'] == null
           ? null
-          : CardStack.fromJson((json['cards'] as Map).cast<String, dynamic>()),
+          : CardStack.fromJson(Map<String, dynamic>.from(json['cards'] as Map)),
       tricksWon: (json['tricksWon'] as num?)?.toInt() ?? 0,
       pointTotal: (json['pointTotal'] as num?)?.toInt() ?? 0,
-      roleKey: json['roleKey'] == null
-          ? null
-          : $enumDecode(_$RoleCatalogEnumMap, json['roleKey']),
+      roleKey: $enumDecodeNullable(_$RoleCatalogEnumMap, json['roleKey']),
     );
 
 Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
@@ -29,7 +27,6 @@ Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
     };
 
 const _$RoleCatalogEnumMap = {
-  RoleCatalog.noRole: 'noRole',
   RoleCatalog.roleA: 'roleA',
   RoleCatalog.roleB: 'roleB',
   RoleCatalog.roleC: 'roleC',
@@ -40,4 +37,5 @@ const _$RoleCatalogEnumMap = {
   RoleCatalog.roleH: 'roleH',
   RoleCatalog.roleI: 'roleI',
   RoleCatalog.roleJ: 'roleJ',
+  RoleCatalog.noRole: 'noRole',
 };

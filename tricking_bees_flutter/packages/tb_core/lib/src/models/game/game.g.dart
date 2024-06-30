@@ -29,8 +29,6 @@ Game _$GameFromJson(Map json) => Game(
       players: (json['players'] as List<dynamic>?)
           ?.map((e) => Player.fromJson(Map<String, dynamic>.from(e as Map)))
           .toList(),
-      playOrder:
-          (json['playOrder'] as List<dynamic>?)?.map((e) => e as int).toList(),
       gameState: $enumDecodeNullable(_$GameStateEnumMap, json['gameState']) ??
           GameState.waitingForPlayers,
       currentSubgame: (json['currentSubgame'] as num?)?.toInt() ?? 0,
@@ -39,14 +37,17 @@ Game _$GameFromJson(Map json) => Game(
       currentTrump: json['currentTrump'] == null
           ? null
           : GameCard.fromJson(
-              (json['currentTrump'] as Map).cast<String, dynamic>()),
+              Map<String, dynamic>.from(json['currentTrump'] as Map)),
       currentTrick: json['currentTrick'] == null
           ? null
           : Trick.fromJson(
-              (json['currentTrick'] as Map).cast<String, dynamic>()),
+              Map<String, dynamic>.from(json['currentTrick'] as Map)),
+      playOrder: (json['playOrder'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
       undealtCards: json['cards'] == null
           ? null
-          : CardStack.fromJson((json['cards'] as Map).cast<String, dynamic>()),
+          : CardStack.fromJson(Map<String, dynamic>.from(json['cards'] as Map)),
       inputRequirement: $enumDecodeNullable(
               _$InputRequirementEnumMap, json['inputRequirement']) ??
           InputRequirement.card,
@@ -82,7 +83,6 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'public': instance.public,
       'password': instance.password,
       'playerNum': instance.playerNum,
-      'playOrder': instance.playOrder,
       'subgameNum': instance.subgameNum,
       'gameState': instance.gameState.toJson(),
       'players': instance.players.map((e) => e.toJson()).toList(),
@@ -93,12 +93,13 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'currentSubgame': instance.currentSubgame,
       'currentRound': instance.currentRound,
       'currentTurnIndex': instance.currentTurnIndex,
+      'playOrder': instance.playOrder,
       'currentTrump': instance.currentTrump?.toJson(),
       'currentTrick': instance.currentTrick?.toJson(),
       'inputRequirement': _$InputRequirementEnumMap[instance.inputRequirement]!,
       'flags': jsonEncode(instance.flags),
       'logEntries': instance.logEntries.map(
-          (k, e) => MapEntry(k.toString(), e.map((v) => v.toJson()).toList())),
+          (k, e) => MapEntry(k.toString(), e.map((e) => e.toJson()).toList())),
     };
 
 const _$GameStateEnumMap = {
@@ -110,10 +111,10 @@ const _$GameStateEnumMap = {
 
 const _$InputRequirementEnumMap = {
   InputRequirement.cardOrSkip: 'cardOrSkip',
-  InputRequirement.card: 'card',
   InputRequirement.twoCards: 'twoCards',
+  InputRequirement.card: 'card',
+  InputRequirement.selectRole: 'selectRole',
   InputRequirement.selectTrump: 'selectTrump',
   InputRequirement.selectPlayer: 'selectPlayer',
-  InputRequirement.selectRole: 'selectRole',
   InputRequirement.selectCardToRemove: 'selectCardToRemove',
 };

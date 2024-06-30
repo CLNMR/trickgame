@@ -20,7 +20,6 @@ Map<String, dynamic> _$LogRoleChosenToJson(LogRoleChosen instance) =>
     };
 
 const _$RoleCatalogEnumMap = {
-  RoleCatalog.noRole: 'noRole',
   RoleCatalog.roleA: 'roleA',
   RoleCatalog.roleB: 'roleB',
   RoleCatalog.roleC: 'roleC',
@@ -31,4 +30,5 @@ const _$RoleCatalogEnumMap = {
   RoleCatalog.roleH: 'roleH',
   RoleCatalog.roleI: 'roleI',
   RoleCatalog.roleJ: 'roleJ',
+  RoleCatalog.noRole: 'noRole',
 };
