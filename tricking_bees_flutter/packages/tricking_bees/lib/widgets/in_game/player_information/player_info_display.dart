@@ -130,7 +130,7 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
       return const SizedBox();
     }
     return Tooltip(
-      message: 'roleTargetsPlayer'
+      message: 'roleTargetsPlayerTooltip'
           .tr(namedArgs: {'role': userPlayer.roleKey.locName.tr()}),
       child: const Padding(
         padding: EdgeInsets.only(right: 5),

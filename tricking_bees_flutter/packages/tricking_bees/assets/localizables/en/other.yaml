@@ -9,6 +9,11 @@ GAMEUI:currentTrick: ''
 GAMEUI:previousTrick: ''
 HEAD:appTitle: ''
 HEAD:trumpDisplay: ''
+LOG:boxTitle: ''
+LOG:headerGameStart: ''
+LOG:headerSubgameRound: ''
+LOG:headerSubgameStart: ''
+PLAYERINFO:currentPoints: ''
 PLAYERINFO:totalPoints: ''
 PLAYERINFO:tricksWon: ''
 Queen: ''
@@ -19,4 +24,5 @@ logBoxTitle: Game log
 logDividerBeforeGameStart: ''
 logDividerRound: Round {round}
 roleTargetsPlayer: With your role {role}, you have selected this player.
+roleTargetsPlayerTooltip: ''
 trumpDisplayTooltip: ''

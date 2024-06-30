@@ -9,14 +9,20 @@ GAMEUI:currentTrick: Aktueller Stich
 GAMEUI:previousTrick: Letzter Stich
 HEAD:appTitle: Bienenstich!
 HEAD:trumpDisplay: Trumpf
+LOG:boxTitle: Spielverlauf
+LOG:headerGameStart: Spielbeginn
+LOG:headerSubgameRound: Runde {round}
+LOG:headerSubgameStart: Spiel {subgame}/{subgameNum}
+PLAYERINFO:currentPoints: Punkte, die du am Ende dieser Runde durch deine aktuelle
+  Rolle erhalten würdest
 PLAYERINFO:totalPoints: Punkte
 PLAYERINFO:tricksWon: Anzahl gewonnener Stiche
 Queen: Königin
 RoundDisplay: Runde {}
 cardColorSuffix: e
 connectiveAnd: ' und '
-logBoxTitle: Spielverlauf
-logDividerBeforeGameStart: Spielbeginn
-logDividerRound: Runde {round}
-roleTargetsPlayer: Mit deiner Rolle {role} hast du diesen Spieler ausgewählt.
+logBoxTitle: ''
+logDividerRound: ''
+roleTargetsPlayer: ''
+roleTargetsPlayerTooltip: Mit der Rolle {role} wurde dieser Spieler ausgewählt.
 trumpDisplayTooltip: In diesem Spiel kannst du mit {color} auftrumpfen.

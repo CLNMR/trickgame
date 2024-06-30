@@ -120,7 +120,7 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
           children: [
             _buildMinimizeButton(),
             const OwnText(
-              text: 'logBoxTitle',
+              text: 'LOG:boxTitle',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const Spacer(),
@@ -135,11 +135,11 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
 
   Widget _buildEntryList(Map<int, List<LogEntry>> logEntries) =>
       ListView.builder(
-        itemCount: logEntries.length,
+        itemCount: logEntries.length + 1,
         controller: _scrollController,
         itemBuilder: (context, round) {
-          final entries = logEntries[round]!;
-          return _buildExpansionPanelForRound(round, entries);
+          final entries = logEntries[round - 1]!;
+          return _buildExpansionPanelForRound(round - 1, entries);
         },
       );
 
@@ -153,6 +153,8 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
     final expanseController = ExpandableController(initialExpanded: isExpanded);
     expanseController.addListener(() {
       setState(() {
+        // TODO: Do not let the player open previous rounds except for subgame
+        // starts (as long as the game isn't finished)
         expandedState[round] = expanseController.expanded;
       });
     });
@@ -191,10 +193,22 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
   }
 
   Widget _buildHeaderForRound(RoundNumber round) => OwnText(
-        trObject: TrObject(
-          (round == 0) ? 'logDividerBeforeGameStart' : 'logDividerRound',
-          namedArgs: {'round': round.toString()},
-        ),
+        trObject: round == -1
+            ? TrObject('LOG:headerGameStart')
+            : Game.roundStartsSubgame(round)
+                ? TrObject(
+                    'LOG:headerSubgameStart',
+                    namedArgs: {
+                      'subgame': Game.getSubgameNumForRound(round).toString(),
+                      'subgameNum': widget.game.subgameNum.toString(),
+                    },
+                  )
+                : TrObject(
+                    'LOG:headerSubgameRound',
+                    namedArgs: {
+                      'round': Game.getSubRoundNumber(round).toString(),
+                    },
+                  ),
         style: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,

@@ -83,7 +83,7 @@ class Game extends YustDoc {
         flags = cardAndEventFlags ?? {},
         logEntries = existingLogEntries ??
             {
-              0: [LogStartOfGame(indentLevel: 0)],
+              -1: [LogStartOfGame(indentLevel: 0)],
             };
 
   /// Creates a [Game] from JSON data.
@@ -220,11 +220,11 @@ class Game extends YustDoc {
 
   /// Finish a subgame and go to the end, or start a new subgame.
   Future<void> finishSubgame() async {
-    for (final role in currentRoles) {
-      role.onEndOfSubgame(this);
-    }
     for (final entry in players.asMap().entries) {
       entry.value.awardPoints(this, entry.key);
+    }
+    for (final role in currentRoles) {
+      role.onEndOfSubgame(this);
     }
     // Reset trump color and trick.
     currentTrump = null;
@@ -243,8 +243,10 @@ class Game extends YustDoc {
     currentSubgame += 1;
     // The player that gets to choose first rotates with each subgame.
     currentTurnIndex = 0;
-    playOrder =
-        List.generate(playerNum, (index) => subgameStartingPlayerIndex + index);
+    playOrder = List.generate(
+      playerNum,
+      (index) => (subgameStartingPlayerIndex + index) % playerNum,
+    );
     // Deal new cards and reset players.
     undealtCards = CardStack.initialDeck(playerNum: playerNum);
     for (var i = 0; i < playerNum; i++) {
@@ -291,21 +293,21 @@ class Game extends YustDoc {
     for (final handler in currentRoles) {
       handler.onEndOfRound(this);
     }
-    final previousWinnerIndex = evaluateTrick();
+    final previousWinnerIndex = tryEvaluateTrick();
     currentRound++;
-    if (currentRound % 13 == 0) {
+    if (roundStartsSubgame(currentRound)) {
       await finishSubgame();
       return;
     }
     setPlayOrder(previousWinnerIndex);
     currentTrick = Trick(cardMap: LinkedHashMap());
-    for (final handler in currentRoles) {
-      await handler.onStartOfRound(this);
+    for (final role in currentRoles) {
+      await role.onStartOfRound(this);
     }
   }
 
-  /// Evaluates the trick and reorders the players.
-  PlayerIndex evaluateTrick() {
+  /// Evaluates the trick.
+  PlayerIndex tryEvaluateTrick() {
     final winnerIndex = currentTrick?.getWinningIndex(currentTrumpColor);
     if (winnerIndex == null) return 0;
     final winner = players[winnerIndex];
@@ -345,6 +347,16 @@ class Game extends YustDoc {
   /// Whether the user is a mere spectator of the given game.
   bool isSpectator(YustUser? user) =>
       !players.map((e) => e.id).contains(user?.id);
+
+  /// Whether the given round marks the start of a subgame.
+  static bool roundStartsSubgame(RoundNumber round) =>
+      getSubRoundNumber(round) == 0;
+
+  /// The subgame number corresponding to the given round.
+  static int getSubgameNumForRound(RoundNumber round) => (round / 12).ceil();
+
+  /// The round number with respect to the start of the subgame.
+  static int getSubRoundNumber(RoundNumber round) => round % 13;
 }
 
 /// The input requirement for the user.
