@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -40,6 +41,7 @@ part 'game_logging.dart';
 part 'game_pre_game_handling.dart';
 part 'game_role_handling.dart';
 part 'game_status_generation.dart';
+part 'game_automatic_playing.dart';
 
 @JsonSerializable()
 @GenerateService()
@@ -306,10 +308,11 @@ class Game extends YustDoc {
     }
   }
 
-  /// Evaluates the trick.
+  /// Evaluates the trick and returns the index of the winning player, or
+  /// the subgame number.
   PlayerIndex tryEvaluateTrick() {
     final winnerIndex = currentTrick?.getWinningIndex(currentTrumpColor);
-    if (winnerIndex == null) return 0;
+    if (winnerIndex == null) return currentSubgame - 1;
     final winner = players[winnerIndex];
     winner.tricksWon++;
     addLogEntry(LogTrickWon(playerIndex: winnerIndex));
@@ -353,7 +356,8 @@ class Game extends YustDoc {
       getSubRoundNumber(round) == 0;
 
   /// The subgame number corresponding to the given round.
-  static int getSubgameNumForRound(RoundNumber round) => (round / 12).ceil();
+  static int getSubgameNumForRound(RoundNumber round) =>
+      ((round + 1) / 13).ceil();
 
   /// The round number with respect to the start of the subgame.
   static int getSubRoundNumber(RoundNumber round) => round % 13;

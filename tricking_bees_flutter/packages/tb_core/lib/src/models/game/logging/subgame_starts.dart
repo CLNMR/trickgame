@@ -59,22 +59,4 @@ class LogSubgameStarts extends LogEntry {
           ),
         ],
       );
-
-  // @override
-  // Future<void> showEventDisplay(
-  //   Game game,
-  //   Function(
-  //     TrObject title,
-  //     TrObject message,
-  //   ) displayEvent,
-  //   Function() incrementLogDisplayCount,
-  // ) async {
-  //   final currentEvent =
-  //       game.currentRoles.first; // TODO: This is a temporary solution.
-  //   await displayEvent(
-  //     TrObject('New Round: ${currentEvent.key.locName}'),
-  //     TrObject(currentEvent.key.descBenefits),
-  //   );
-  //   incrementLogDisplayCount();
-  // }
 }
