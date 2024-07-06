@@ -80,8 +80,8 @@ class RoleH extends Role {
   int calculatePoints(Game game, int tricksWon) {
     final chosenPlayers = getChosenPlayers(game);
     if (chosenPlayers.length < 2) return 0;
-    final p1Num = game.players[chosenPlayers[0]].tricksWon;
-    final p2Num = game.players[chosenPlayers[1]].tricksWon;
+    final p1Num = game.players[chosenPlayers[0]].calculateCurrentPoints(game);
+    final p2Num = game.players[chosenPlayers[1]].calculateCurrentPoints(game);
     return ((p1Num + p2Num) / 2).ceil();
   }
 

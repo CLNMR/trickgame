@@ -100,7 +100,8 @@ extension GameEventHandlingExt on Game {
 
   /// Deletes a flag for the current card or event.
   void deleteFlag(String key) {
-    if (flags.containsKey(key)) flags[key] = FieldValue.delete();
+    flags.remove(key);
+    // if (flags.containsKey(key)) flags[key] = FieldValue.delete();
   }
 
   /// Checks if a flag is currently registered.
