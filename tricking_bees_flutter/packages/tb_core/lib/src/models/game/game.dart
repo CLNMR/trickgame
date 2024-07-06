@@ -215,7 +215,30 @@ class Game extends YustDoc {
   Map<PlayerIndex, int> get playerPoints =>
       players.map((e) => e.pointTotal).toList().asMap();
 
-  /// Increments the player index.
+  /// The ranks (1-indexed) for each player, mapped by their index;
+  /// (PlayerIndex -> PlayerRank).
+  Map<PlayerRank, List<PlayerIndex>> get playerRanks {
+    final sortedPlayers = playerPoints.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    // Group the players by their points, such that players with the same
+    // amount of points are in the same group.
+    final groupedByPoints = <int, List<PlayerIndex>>{};
+    for (final entry in sortedPlayers) {
+      groupedByPoints.putIfAbsent(entry.value, () => []).add(entry.key);
+    }
+    // Now, we can invert the map to get the players grouped by their rank.
+
+    final ranks = <PlayerRank, List<PlayerIndex>>{};
+    var rank = 1;
+    for (final entry in groupedByPoints.entries) {
+      ranks[rank] = entry.value;
+      rank += entry.value.length;
+    }
+    return ranks;
+  }
+
+  /// Increments the current turn index.
   void incrementTurnIndex() {
     currentTurnIndex = (currentTurnIndex + 1) % playerNum;
   }

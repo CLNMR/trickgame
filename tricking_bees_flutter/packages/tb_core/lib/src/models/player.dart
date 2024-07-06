@@ -26,6 +26,13 @@ class Player {
   })  : roleKey = roleKey ?? RoleCatalog.noRole,
         cards = cards ?? CardStack();
 
+  /// Creates a dummy [Player].
+  factory Player.dummy({CardStack? cards}) => Player(
+        id: 'dummy',
+        displayName: 'dummy',
+        cards: cards,
+      );
+
   /// Creates a [Player] from a [YustUser].
   factory Player.fromUser(YustUser user) => Player(
         id: user.id,

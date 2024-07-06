@@ -21,7 +21,7 @@ extension GameEventHandlingExt on Game {
   /// Checks whether the current player can choose a role.
   bool canChooseRole(RoleCatalog role, YustUser? user) =>
       (user != null) &&
-      currentPlayer.id == getPlayer(user).id &&
+      isAuthenticatedPlayer(user, currentPlayer) &&
       inputRequirement == InputRequirement.selectRole &&
       !currentRoles.map((e) => e.key).contains(role);
 

@@ -75,5 +75,6 @@ extension GameCardExt on Game {
 
   /// Whether the given user can currently skip the rest of the turn.
   bool canSkipTurn(YustUser? user) =>
-      inputRequirement == InputRequirement.cardOrSkip && isCurrentPlayer(user);
+      inputRequirement == InputRequirement.cardOrSkip &&
+      isAuthenticatedPlayer(user, currentPlayer);
 }

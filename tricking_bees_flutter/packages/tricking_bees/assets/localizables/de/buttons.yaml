@@ -7,6 +7,7 @@ Offline: Offline
 Online: Online
 PlayWithoutRoles: Ohne Rollen spielen
 Private: Privat
+ProceedRandomly: Zufällige Aktion
 Public: Öffentlich
 ResumeGame: Spiel Fortsetzen
 ResumeTestGame: ''
@@ -14,4 +15,3 @@ Setting: Einstellungen
 SkipCardPlay: Zug Überspringen
 StartGame: Spiel Starten
 TestGame: Testspiel beitreten
-ProceedRandomly: Zufällige Aktion

@@ -31,7 +31,3 @@ void main() {
     expect(logEntries, []);
   });
 }
-
-// simulateBiddingPhase(Game game) {
-//   game.acceptOfferAndSetSolo(user)
-//   }

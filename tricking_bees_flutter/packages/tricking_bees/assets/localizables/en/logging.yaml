@@ -2,6 +2,7 @@ cardPlayed: '{player} plays {card}.'
 cardPlayedHiddenBefore: ''
 cardPlayedHiddenThisRound: ''
 cardsDealt: ''
+endOfGame: ''
 playerChosen: ''
 pointsAwarded: '{player} won {numberTricks} tricks. Due to their role {role} they
   receive {numberPoints} points.'

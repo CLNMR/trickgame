@@ -78,8 +78,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
           child: GestureDetector(
             onTap: () async => (game.canChooseRole(roleKey, ref.user))
                 ? game.chooseRole(roleKey)
-                // : null,
-                : game.chooseRole(roleKey), // TODO: For testing purposes
+                : null,
             child: RoleIcon(
               isChoosable: game.canChooseRole(roleKey, ref.user),
               roleKey: roleKey,
@@ -92,8 +91,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
 
   Widget _buildTrumpSelectGrid(BuildContext context, WidgetRef ref) {
     final availColors = CardColor.getColorsForPlayerNum(game.playerNum);
-    final isSelecting =
-        noAuth || game.currentPlayer.id == game.getPlayer(ref.user!).id;
+    final isSelecting = isAuthenticatedPlayer(ref.user, game.currentPlayer);
     return Center(
       child: GridView.builder(
         itemCount: availColors.length,

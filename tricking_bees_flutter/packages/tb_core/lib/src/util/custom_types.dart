@@ -9,3 +9,6 @@ typedef TurnNumber = int;
 
 /// Reflects the index of the given player in the list of players.
 typedef PlayerIndex = int;
+
+/// Reflects the rank the given player achieved, where 1 is the best.
+typedef PlayerRank = int;

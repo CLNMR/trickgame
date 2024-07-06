@@ -96,13 +96,19 @@ Benötigt python 3.12 oder höher + pygame.
 
 ## TODOs
 
-Zeugs das aktuell noch offen ist:
-
 - [x] Log and display the trump color.
 - [x] Implement proper log messages
 - [x] Show previous trick
-- [ ] Distinguish Round and Subgame for log header
-- [ ] Show player order in nicer way, maybe assign player colors.
+- [x] Distinguish Round and Subgame for log header
+- [x] Show player order in nicer way, maybe assign player colors.
+- [x] Distinguish between dev and prod mode.
+- [x] Log messages:
+  - [x] Choose role
+  - [x] Playing a card hidden
+  - [x] Choose person
+  - [x] Choose trump color
+  - [x] Extra cards being dealt
+- [ ] Add version (also dev mode toggle?) to game so we can distinguish
 - [ ] Rework role selection (make it look nice)
 - [ ] Rework status messages
   - [x] Choose role
@@ -110,13 +116,13 @@ Zeugs das aktuell noch offen ist:
   - [x] Play card
   - [ ] Edge cases?
   - [ ] Dynamic messages after you did something wrong?
-- [ ] Log messages:
-  - [x] Choose role
-  - [x] Playing a card hidden
-  - [x] Choose person
-  - [ ] Choose trump color
-  - [ ] Extra cards being dealt
-- [ ] Basic Bot implementieren, der zufällige mögliche Aktion durchführt.
-- [ ] Dev/Prod-Mode-Unterscheidung (sowohl build als auch flag im Spiel setzen)
-- [ ] Look at end-of-game: How is the final leaderboard displayed? How are players with the same amount of points handled?
+- [ ] Implement Basic Bot
+  - [x] Implement random action scheme
+  - [ ] Implement 'Start game with bots' and have them play automatically
+  - [ ] Maybe implement offline mode?
+- [ ] Look at end-of-game:
+  - [ ] How are players with the same amount of points handled?
+  - [ ] How is the final leaderboard displayed?
+    - [ ] Properly calculate order with players at same spot
+    - [ ] Rework corresponding log entry
 - [ ] Advanced Role selection: Implement that each player has to choose from a limited number of roles, and add selection capability for that mode

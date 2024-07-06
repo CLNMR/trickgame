@@ -2,6 +2,7 @@ import '../cards/card_color.dart';
 import '../cards/card_stack.dart';
 import '../cards/game_card.dart';
 import '../roles/role_catalog.dart';
+import '../util/custom_types.dart';
 
 /// The special translation type for a TrObject.
 enum RichTrType {
@@ -18,10 +19,13 @@ enum RichTrType {
   role(RoleCatalog),
 
   /// The special translation type for a player.
-  player(int),
+  player(PlayerIndex),
 
   /// The special translation type for a list of players.
-  playerList(List<int>),
+  playerList(List<PlayerIndex>),
+
+  /// The special translation type for a list of players.
+  playerRanking(Map<PlayerRank, List<PlayerIndex>>),
 
   /// The special translation type for a number.
   number(int),

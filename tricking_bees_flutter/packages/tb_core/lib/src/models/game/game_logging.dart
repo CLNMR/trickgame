@@ -30,7 +30,6 @@ extension GameLogEntryExt on Game {
   }) {
     final indentationLevel = absoluteIndentLevel ?? logEntry.indentLevel;
     logEntry.indentLevel = indentationLevel;
-    if (!logEntries.containsKey(currentRound)) logEntries[currentRound] = [];
-    logEntries[currentRound]!.add(logEntry);
+    logEntries.putIfAbsent(currentRound, () => []).add(logEntry);
   }
 }

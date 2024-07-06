@@ -2,14 +2,17 @@ cardPlayed: '{player} spielt {card}.'
 cardPlayedHiddenBefore: '{player} spielt {card} (verdeckt).'
 cardPlayedHiddenThisRound: '{player} spielt eine Karte (verdeckt).'
 cardsDealt: '{player} werden {number} zusätzliche Karten zugeteilt.'
+endOfGame: Das Spiel ist zu Ende.
 playerChosen: '{role}: {player} wählt {playerChosen}.'
 pointsAwarded: '{player} hat {numberTricks} Stiche erzielt. Aufgrund der Rolle {role}
   bekommt er/sie daher {numberPoints} Punkte.'
 roleChosen: '{player} wählt {role} für dieses Spiel.'
 roundStartPlayOrder: Runde {number} beginnt mit der Reihenfolge {playerList}.
 skipTurn: '{player} überspringt das Spielen einer Karte.'
-startOfGame: 'Wir spielen ein {number}-Spieler-Spiel (ID: {gameId}) mit {playerList}. Daher spielen wir mit {numberCardsTotal} Karten, wobei es {numberColors} Farben gibt,
-  bei denen {numberCards} die höchste Zahl ist.'
-subgameStarts: Die Karten für Spiel {number} von {numberTot} werden verteilt. Als Trumpf wird die {card} aufgedeckt.
+startOfGame: 'Wir spielen ein {number}-Spieler-Spiel (ID: {gameId}) mit {playerList}.
+  Daher spielen wir mit {numberCardsTotal} Karten, wobei es {numberColors} Farben
+  gibt, bei denen {numberCards} die höchste Zahl ist.'
+subgameStarts: Die Karten für Spiel {number} von {numberTot} werden verteilt. Als
+  Trumpf wird die {card} aufgedeckt.
 trickWon: '{player} gewinnt den Stich.'
 trumpChosen: '{player} wählt {color} als neue Trumpffarbe.'

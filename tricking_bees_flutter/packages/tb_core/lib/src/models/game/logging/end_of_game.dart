@@ -35,13 +35,7 @@ class LogEndOfGame extends LogEntry {
   TrObject getDescription(Game game) => TrObject(
         localizedKey,
         richTrObjects: [
-          RichTrObject(
-            RichTrType.playerList,
-            value: game.playerPoints.entries.toList()
-              ..sort((a, b) => a.value.compareTo(b.value))
-              ..map((e) => e.key).toList(),
-            keySuffix: 'Ranking',
-          ),
+          RichTrObject(RichTrType.playerRanking, value: game.playerRanks),
         ],
         namedArgs: {'gameId': game.gameId.toString()},
       );

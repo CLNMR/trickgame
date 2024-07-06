@@ -52,6 +52,7 @@ extension UiRichTrObject on RichTrObject {
       case RichTrType.role:
         return _getRoleSpan(value as RoleCatalog);
       default:
+        print('trType: $trType');
         return TextSpan(
           text: value.toString(),
           style: const TextStyle(fontWeight: FontWeight.bold),
