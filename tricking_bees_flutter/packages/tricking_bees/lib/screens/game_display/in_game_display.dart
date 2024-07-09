@@ -77,7 +77,8 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                         player: widget.game.getPlayer(ref.user!),
                       ),
                     ),
-                    _buildTrumpDisplay(),
+                    if (widget.game.gameState != GameState.finished)
+                      _buildTrumpDisplay(),
                   ],
                 ),
               ],

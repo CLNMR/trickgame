@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yust/yust.dart';
 
@@ -27,6 +26,7 @@ import 'game.service.dart';
 import 'logging/card_played.dart';
 import 'logging/end_of_game.dart';
 import 'logging/log_entry.dart';
+import 'logging/points_awarded.dart';
 import 'logging/role_chosen.dart';
 import 'logging/round_start_play_order.dart';
 import 'logging/skip_turn.dart';
@@ -36,12 +36,13 @@ import 'logging/trump_chosen.dart';
 import 'logging/turn_start.dart';
 
 part 'game.g.dart';
+part 'game_automatic_playing.dart';
 part 'game_card_playing.dart';
 part 'game_logging.dart';
 part 'game_pre_game_handling.dart';
 part 'game_role_handling.dart';
 part 'game_status_generation.dart';
-part 'game_automatic_playing.dart';
+part 'game_end_handling.dart';
 
 @JsonSerializable()
 @GenerateService()
@@ -190,6 +191,9 @@ class Game extends YustDoc {
   /// The player currently expected to do something.
   Player get currentPlayer => players[currentPlayerIndex];
 
+  /// The total number of rounds that will be played in the game.
+  int get totalRoundNum => subgameNum * 13;
+
   /// The trick of the previous round, inferred from the cardPlay log entries.
   Trick? get previousTrick {
     if (currentRound == 0) return null;
@@ -214,29 +218,6 @@ class Game extends YustDoc {
   /// The points for each player, indexed by their index.
   Map<PlayerIndex, int> get playerPoints =>
       players.map((e) => e.pointTotal).toList().asMap();
-
-  /// The ranks (1-indexed) for each player, mapped by their index;
-  /// (PlayerIndex -> PlayerRank).
-  Map<PlayerRank, List<PlayerIndex>> get playerRanks {
-    final sortedPlayers = playerPoints.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-
-    // Group the players by their points, such that players with the same
-    // amount of points are in the same group.
-    final groupedByPoints = <int, List<PlayerIndex>>{};
-    for (final entry in sortedPlayers) {
-      groupedByPoints.putIfAbsent(entry.value, () => []).add(entry.key);
-    }
-    // Now, we can invert the map to get the players grouped by their rank.
-
-    final ranks = <PlayerRank, List<PlayerIndex>>{};
-    var rank = 1;
-    for (final entry in groupedByPoints.entries) {
-      ranks[rank] = entry.value;
-      rank += entry.value.length;
-    }
-    return ranks;
-  }
 
   /// Increments the current turn index.
   void incrementTurnIndex() {

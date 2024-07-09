@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 // /// The color of light buttons, accent text, dividers, favorites, etc.
 // const COLOR_RED = Color.fromARGB(255, 128, 13, 15);
@@ -116,7 +116,7 @@ final lightTheme = FlexThemeData.light(
   visualDensity: FlexColorScheme.comfortablePlatformDensity,
   useMaterial3: true,
   // To use the Playground font, add GoogleFonts package and uncomment
-  fontFamily: GoogleFonts.notoSans().fontFamily,
+  fontFamily: 'Roboto', // GoogleFonts.notoSans().fontFamily,
 );
 
 /// The dark theme
@@ -167,7 +167,7 @@ final darkTheme = FlexThemeData.dark(
   visualDensity: FlexColorScheme.comfortablePlatformDensity,
   useMaterial3: true,
   // To use the Playground font, add GoogleFonts package and uncomment
-  fontFamily: GoogleFonts.notoSans().fontFamily,
+  fontFamily: 'Roboto', // GoogleFonts.notoSans().fontFamily,
 );
 // If you do not have a themeMode switch, uncomment this line
 // to let the device system mode control the theme mode:

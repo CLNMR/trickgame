@@ -2,7 +2,7 @@ cardPlayed: '{player} spielt {card}.'
 cardPlayedHiddenBefore: '{player} spielt {card} (verdeckt).'
 cardPlayedHiddenThisRound: '{player} spielt eine Karte (verdeckt).'
 cardsDealt: '{player} werden {number} zusätzliche Karten zugeteilt.'
-endOfGame: Das Spiel ist zu Ende.
+endOfGame: Das Spiel ist zu Ende, die finale Reihenfolge ist {playerRanking}.
 playerChosen: '{role}: {player} wählt {playerChosen}.'
 pointsAwarded: '{player} hat {numberTricks} Stiche erzielt. Aufgrund der Rolle {role}
   bekommt er/sie daher {numberPoints} Punkte.'

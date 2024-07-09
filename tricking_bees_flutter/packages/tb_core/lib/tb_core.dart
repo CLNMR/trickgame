@@ -9,6 +9,7 @@ export 'src/models/game/game.dart';
 export 'src/models/game/game.service.dart';
 export 'src/models/game/logging/log_entry.dart';
 export 'src/models/game/logging/log_entry_type.dart';
+export 'src/models/game/logging/points_awarded.dart';
 export 'src/models/game_event_handler.dart';
 export 'src/models/game_id.dart';
 export 'src/models/game_state.dart';

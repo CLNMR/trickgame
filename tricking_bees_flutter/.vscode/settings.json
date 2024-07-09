@@ -1,0 +1,10 @@
+
+    
+{ 
+    "workspaceKeybindings.localizables.enabled": true
+    // Corresponding to the following keybinding in the keybindings.json file: {
+    // "key": "ctrl+oem_7",
+    // "command": "workbench.action.tasks.runTask",
+    // "args": "Run Localizables",
+    // "when": "config.workspaceKeybindings.localizables.enabled"}
+}

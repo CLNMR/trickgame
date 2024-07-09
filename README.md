@@ -123,6 +123,6 @@ Benötigt python 3.12 oder höher + pygame.
 - [ ] Look at end-of-game:
   - [ ] How are players with the same amount of points handled?
   - [ ] How is the final leaderboard displayed?
-    - [ ] Properly calculate order with players at same spot
+    - [x] Properly calculate order with players at same spot
     - [ ] Rework corresponding log entry
 - [ ] Advanced Role selection: Implement that each player has to choose from a limited number of roles, and add selection capability for that mode

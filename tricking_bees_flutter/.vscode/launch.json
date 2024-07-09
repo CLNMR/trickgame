@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Tester",
+            "type": "dart",
+            "request": "launch",
+            "program": "packages/tricking_bees/lib/main.dart",
+            "toolArgs": ["--dart-define", "environment=prod", "--dart-define", "testMode=true"]
+        },
+        {
+            "name": "Launch Emu",
+            "type": "dart",
+            "request": "launch",
+            "program": "packages/tricking_bees/lib/main.dart",
+            "toolArgs": ["--dart-define", "environment=prod", "--dart-define", "emuMode=true"]
+        },
+        {
             "name": "Launch Prod",
             "type": "dart",
             "request": "launch",

@@ -5,7 +5,7 @@ class RichTrObject {
   /// Creates a [RichTrObject].
   RichTrObject(this.trType, {required this.value, this.keySuffix = ''}) {
     assert(
-      value.runtimeType == trType.valueType,
+      value.runtimeType == trType.valueType || value is Map,
       'Encountered $value ${value.runtimeType}, expected ${trType.valueType}.',
     );
   }

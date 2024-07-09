@@ -1,11 +1,11 @@
-noRole: ''
-roleA: ''
-roleB: ''
-roleC: ''
-roleD: ''
-roleE: ''
-roleF: ''
-roleG: ''
-roleH: ''
-roleI: ''
-roleJ: ''
+noRole: You have not chosen a role.
+roleA: You receive two points for each trick won.
+roleB: You receive two points for each trick won.
+roleC: You receive two points for each trick won.
+roleD: You receive two points for each trick won.
+roleE: You receive one point for each trick won.
+roleF: You receive one point for each trick won.
+roleG: You receive one point for each trick won.
+roleH: You receive the average (rounded up) of the points of your chosen players.
+roleI: You receive eight points minus two points for each trick won.
+roleJ: You receive one point for each trick won.

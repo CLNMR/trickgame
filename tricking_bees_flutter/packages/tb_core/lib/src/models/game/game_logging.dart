@@ -27,9 +27,11 @@ extension GameLogEntryExt on Game {
   void addLogEntry(
     LogEntry logEntry, {
     int? absoluteIndentLevel,
+    RoundNumber? round,
   }) {
     final indentationLevel = absoluteIndentLevel ?? logEntry.indentLevel;
     logEntry.indentLevel = indentationLevel;
-    logEntries.putIfAbsent(currentRound, () => []).add(logEntry);
+    final roundToAdd = round ?? currentRound;
+    logEntries.putIfAbsent(roundToAdd, () => []).add(logEntry);
   }
 }

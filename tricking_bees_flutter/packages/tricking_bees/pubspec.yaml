@@ -78,6 +78,7 @@ flutter:
   assets:
     - assets/
     - assets/fonts/
+    - assets/fonts/Roboto/
     - assets/localizables/de-DE.json
     - assets/localizables/en-US.json
     - assets/images/roles/
@@ -98,6 +99,11 @@ flutter:
         - family: CustomIcons
           fonts:
               - asset: assets/fonts/CustomIcons.ttf
+        - family: Roboto
+          fonts:
+            - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+            - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+              weight: 700
   #   - family: WerewolfFont
   #     fonts:
   #       - asset: assets/fonts/werewolf_font.ttf

@@ -1,17 +1,17 @@
 CreateAccount: Create Account
 JoinGame: Join Game
-LastGame: ''
+LastGame: Resume Last Game
 Login: Login
 NewGame: New Game
 Offline: Offline
 Online: Online
-PlayWithoutRoles: ''
+PlayWithoutRoles: Play Without Roles
 Private: Private
-ProceedRandomly: ''
+ProceedRandomly: Proceed Randomly
 Public: Public
 ResumeGame: Resume Game
 ResumeTestGame: Resume Test Game
 Setting: Settings
 SkipCardPlay: Don't Play Card
 StartGame: Start Game
-TestGame: ''
+TestGame: Join Test Game

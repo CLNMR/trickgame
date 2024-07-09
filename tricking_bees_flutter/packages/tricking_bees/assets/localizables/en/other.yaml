@@ -1,28 +1,27 @@
 ArchivedGames: Archived Games
-CARDCOLOR:blue: ''
-CARDCOLOR:green: ''
-CARDCOLOR:red: ''
-CARDCOLOR:violet: ''
-CARDCOLOR:yellow: ''
+CARDCOLOR:blue: Blue
+CARDCOLOR:green: Green
+CARDCOLOR:red: Red
+CARDCOLOR:violet: Violet
+CARDCOLOR:yellow: Yellow
 CurrentGames: Current Games
-GAMEUI:currentTrick: ''
-GAMEUI:previousTrick: ''
-HEAD:appTitle: ''
-HEAD:trumpDisplay: ''
-LOG:boxTitle: ''
-LOG:headerGameStart: ''
-LOG:headerSubgameRound: ''
-LOG:headerSubgameStart: ''
-PLAYERINFO:currentPoints: ''
-PLAYERINFO:totalPoints: ''
-PLAYERINFO:tricksWon: ''
-Queen: ''
-RoundDisplay: 'Round: {}'
+END:pointTooltip: '{number} points as {role} with {numberTricks} tricks'
+GAMEUI:currentTrick: Current Trick
+GAMEUI:previousTrick: Previous Trick
+HEAD:appTitle: Tricking Bees!
+HEAD:trumpDisplay: Trump
+LOG:boxTitle: Game History
+LOG:headerEndOfGame: End of Game
+LOG:headerGameStart: Start of Game
+LOG:headerSubgameRound: Round {round}
+LOG:headerSubgameStart: Game {subgame}/{subgameNum}
+PLAYERINFO:currentPoints: Points you would receive at the end of this round through
+  your current role
+PLAYERINFO:totalPoints: Points
+PLAYERINFO:tricksWon: Number of Tricks Won
+Queen: Queen
+RoundDisplay: Round {}
 cardColorSuffix: ''
 connectiveAnd: ', and '
-logBoxTitle: Game log
-logDividerBeforeGameStart: ''
-logDividerRound: Round {round}
-roleTargetsPlayer: With your role {role}, you have selected this player.
-roleTargetsPlayerTooltip: ''
-trumpDisplayTooltip: ''
+roleTargetsPlayerTooltip: This player was selected with the role {role}.
+trumpDisplayTooltip: In this game, you can trump with {color}.

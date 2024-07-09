@@ -195,20 +195,23 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
   Widget _buildHeaderForRound(RoundNumber round) => OwnText(
         trObject: round == -1
             ? TrObject('LOG:headerGameStart')
-            : Game.roundStartsSubgame(round)
-                ? TrObject(
-                    'LOG:headerSubgameStart',
-                    namedArgs: {
-                      'subgame': Game.getSubgameNumForRound(round).toString(),
-                      'subgameNum': widget.game.subgameNum.toString(),
-                    },
-                  )
-                : TrObject(
-                    'LOG:headerSubgameRound',
-                    namedArgs: {
-                      'round': Game.getSubRoundNumber(round).toString(),
-                    },
-                  ),
+            : round == widget.game.totalRoundNum
+                ? TrObject('LOG:headerEndOfGame')
+                : Game.roundStartsSubgame(round)
+                    ? TrObject(
+                        'LOG:headerSubgameStart',
+                        namedArgs: {
+                          'subgame':
+                              Game.getSubgameNumForRound(round).toString(),
+                          'subgameNum': widget.game.subgameNum.toString(),
+                        },
+                      )
+                    : TrObject(
+                        'LOG:headerSubgameRound',
+                        namedArgs: {
+                          'round': Game.getSubRoundNumber(round).toString(),
+                        },
+                      ),
         style: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,

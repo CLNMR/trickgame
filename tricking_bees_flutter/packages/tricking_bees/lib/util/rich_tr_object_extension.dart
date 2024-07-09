@@ -51,8 +51,13 @@ extension UiRichTrObject on RichTrObject {
         return _getSpanForList(value, RichTrType.player, context, playerNames);
       case RichTrType.role:
         return _getRoleSpan(value as RoleCatalog);
+      case RichTrType.playerRanking:
+        return _getPlayerRankingSpan(
+          value as Map<PlayerRank, List<PlayerIndex>>,
+          context,
+          playerNames,
+        );
       default:
-        print('trType: $trType');
         return TextSpan(
           text: value.toString(),
           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -125,6 +130,36 @@ extension UiRichTrObject on RichTrObject {
             ),
           ),
         ),
+      );
+
+  InlineSpan _getPlayerRankingSpan(
+    Map<PlayerRank, List<PlayerIndex>> ranks,
+    BuildContext context,
+    List<String> playerNames,
+  ) =>
+      TextSpan(
+        children: [
+          const TextSpan(text: '\n'),
+          ...ranks.entries
+              .map(
+                (e) => TextSpan(
+                  children: [
+                    RichTrObject(RichTrType.number, value: e.key)
+                        .getEnrichedSpan(context, playerNames),
+                    const TextSpan(text: ': '),
+                    _getSpanForList(
+                      e.value,
+                      RichTrType.player,
+                      context,
+                      playerNames,
+                    ),
+                  ],
+                ),
+              )
+              .expand((span) => [span, const TextSpan(text: ';\n')])
+              .toList()
+            ..removeLast(),
+        ],
       );
 }
 

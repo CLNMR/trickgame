@@ -1,17 +1,19 @@
-RoleJ: ''
-roleA: ''
-roleB: ''
-roleC: ''
-roleC:START:SelectOne: ''
-roleC:START:SelectTwo: ''
-roleC:START:Wait: ''
-roleD: ''
-roleE: ''
-roleF: ''
-roleG: ''
-roleH: ''
+roleA: You may skip playing a card.
+roleB: You have chosen {color} as the trump color.
+roleC: At the start of the game, you discarded {cardList}.
+roleC:START:SelectOne: You have already discarded {card}. Choose another one of your
+  cards to discard.
+roleC:START:SelectTwo: Two more cards have been dealt to you. Now choose two cards
+  to discard.
+roleC:START:Wait: Wait for {player} to choose two cards to discard.
+roleD: You always play last, unless you win the trick.
+roleE: You are not required to follow suit.
+roleF: You must always play two cards.
+roleG: You always lead the first trick.
+roleH: At the end of the game, you receive the average points of {playerList}.
 roleH:START:SelectOne: So far, you have selected {player}. Select one more player
   for the averaging.
-roleH:START:SelectTwo: Select two players whose points to average.
+roleH:START:SelectTwo: Choose two players to receive the average of their points.
 roleH:START:Wait: Wait for {player} to choose players whose points to average.
-roleI: ''
+roleI: Try to win as few tricks as possible. {color} does not count as trump for you.
+roleJ: Your cards are played face down, except when you lead a trick.

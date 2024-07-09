@@ -4,8 +4,8 @@ INPUT:cardOrSkip: It's your turn. You may play a card or skip your turn.
 INPUT:cardOrSkip:WAITING: Waiting for {player} to play a card or end their turn.
 INPUT:selectCardToRemove: Choose a card to discard.
 INPUT:selectCardToRemove:WAITING: Waiting for {player} to discard a card.
-INPUT:selectPlayer: ''
-INPUT:selectPlayer:WAITING: ''
+INPUT:selectPlayer: Choose a player.
+INPUT:selectPlayer:WAITING: Wait for {player} to choose a player.
 INPUT:selectRole: Choose one of the available roles for the next game.
 INPUT:selectRole:WAITING: Waiting for {player} to choose a role.
 INPUT:selectTrump: Choose a suit as trump.

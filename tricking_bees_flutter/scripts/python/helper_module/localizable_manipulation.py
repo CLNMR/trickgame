@@ -37,7 +37,17 @@ def _update_localizables(lang1: str, lang2: str):
         name1 = f"{lang1} {fpath1.name}"
         name2 = f"{lang2} {fpath2.name}"
         missing_keys = compare_two_dicts(dict1, dict2, name1, name2, remove_empty=True)
-        new_content = dict2 | {key: "" for key in missing_keys}
+        new_content = dict2  # | {key: "" for key in missing_keys}
+        # Remove keys that are empty or nonexistent in both files:
+        removed_keys = {
+            key
+            for key in new_content
+            if dict1.get(key, "") == "" and dict2.get(key, "") == ""
+        }
+        if len(removed_keys) > 0:
+            new_content = {
+                key: new_content[key] for key in new_content if key not in removed_keys
+            }
         write_yaml_dict(fpath2, new_content, overwrite=True)
 
 

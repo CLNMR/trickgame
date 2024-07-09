@@ -83,6 +83,7 @@ class Player {
         points: points,
         tricksWon: tricksWon,
       ),
+      round: game.currentRound - 1,
     );
   }
 

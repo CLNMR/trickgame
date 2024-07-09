@@ -10,10 +10,11 @@ import 'package:yust_ui/yust_ui.dart';
 
 import 'design/theme_constants.dart';
 import 'screens/wg_router.dart';
+import 'widgets/test_widget.dart';
 
 /// Fill in the following line, if you want to use a local emulated Firebase
 /// Environment
-const emulatorAddress = null;
+const emulatorAddress = 'localhost';
 
 // TODO: Add offline check for players - after 2 minutes, write new time,
 // after 3 minutes, display as offline
@@ -22,8 +23,24 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   EasyLocalization.logger.enableBuildModes = [];
-
   _initAppConfig();
+
+  if (const bool.fromEnvironment('testMode', defaultValue: false)) {
+    runApp(
+      EasyLocalization(
+        supportedLocales: const [
+          Locale('en', 'US'),
+          Locale('de', 'DE'),
+        ],
+        path: 'assets/localizables',
+        fallbackLocale: const Locale('en', 'US'),
+        child: const ProviderScope(
+          child: TestWidget(),
+        ),
+      ),
+    );
+    return;
+  }
 
   await Yust(forUI: true).initialize(
     firebaseOptions: AppConfig.config.getFirebaseOptions(),

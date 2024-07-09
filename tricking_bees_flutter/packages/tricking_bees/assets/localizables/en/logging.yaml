@@ -1,9 +1,9 @@
 cardPlayed: '{player} plays {card}.'
-cardPlayedHiddenBefore: ''
-cardPlayedHiddenThisRound: ''
-cardsDealt: ''
-endOfGame: ''
-playerChosen: ''
+cardPlayedHiddenBefore: '{player} plays {card} (hidden).'
+cardPlayedHiddenThisRound: '{player} plays a card (hidden).'
+cardsDealt: '{player} is dealt {number} additional cards.'
+endOfGame: The game is over, the final order is {playerRanking}.
+playerChosen: '{role}: {player} chooses {playerChosen}.'
 pointsAwarded: '{player} won {numberTricks} tricks. Due to their role {role} they
   receive {numberPoints} points.'
 roleChosen: '{player} chooses to be {role} for this game.'
@@ -16,4 +16,4 @@ startOfGame: 'Starting a {number}-player game (ID: {gameId}) with {playerList}. 
 subgameStarts: The cards for game {number} of {numberTot} are distributed. {card}
   is revealed to be the trump card this time.
 trickWon: '{player} wins the trick.'
-trumpChosen: ''
+trumpChosen: '{player} chooses {color} as the new trump color.'

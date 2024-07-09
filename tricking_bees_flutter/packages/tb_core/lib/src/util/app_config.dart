@@ -124,23 +124,26 @@ class AppConfig {
           ? 'https://app.trickingbees.com'
           : 'https://dev.trickingbees.com',
       apiUrl: isEmu
-          ? 'http://$emulatorDomain:5001/trickingbees-dev/us-central1/api/v1/'
+          ? 'http://$emulatorDomain:8080/trickingbees-dev/us-central1/api/v1/'
           : isProd
               ? 'https://app.trickingbees.com/api/v1/'
               : 'https://dev.trickingbees.com/api/v1/',
       apiKeyFirebase: isProd
           ? 'AIzaSyC5FW_qfHNa_7ZFYfnQZemtrDjUCoRvlm4' // cspell:disable-line
-          : '', // cspell:disable-line
+          : 'AIzaSyC5FW_qfHNa_7ZFYfnQZemtrDjUCoRvlm4', // cspell:disable-line
       appIdAndroid:
-          isProd ? '1:449478430713:android:0b0fb65d2b6ee34619f728' : '',
-      appIdIos: isProd ? '1:449478430713:ios:d12e75313555f61019f728' : '',
-      appIdWeb: isProd ? '1:449478430713:web:9f2d869b3cbdddd919f728' : '',
-      authDomain:
-          isProd ? 'trickingbees.firebaseapp.com' : '', // cspell:disable-line
-      measurementId: isProd ? 'G-X35276WFY4' : '', // cspell:disable-line
-      messagingSenderId: isProd ? '449478430713' : '',
-      projectId: isProd ? 'trickingbees' : '',
-      storageBucket: isProd ? 'trickingbees.appspot.com' : '',
+          isProd ? '1:449478430713:android:0b0fb65d2b6ee34619f728' : 'test',
+      appIdIos: isProd ? '1:449478430713:ios:d12e75313555f61019f728' : 'test',
+      appIdWeb: isProd ? '1:449478430713:web:9f2d869b3cbdddd919f728' : 'test',
+      authDomain: isEmu
+          ? 'localhost:9099'
+          : isProd
+              ? 'trickingbees.firebaseapp.com'
+              : '', // cspell:disable-line
+      measurementId: isProd ? 'G-X35276WFY4' : 'test', // cspell:disable-line
+      messagingSenderId: isProd ? '449478430713' : 'test',
+      projectId: isProd ? 'trickingbees' : 'test',
+      storageBucket: isProd ? 'trickingbees.appspot.com' : 'test',
     );
   }
 

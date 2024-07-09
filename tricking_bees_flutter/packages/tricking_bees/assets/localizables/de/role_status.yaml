@@ -1,4 +1,3 @@
-RoleJ: Deine Karten werden verdeckt gespielt, außer du spielst aus.
 roleA: Du darfst das Spielen einer Karte überspringen.
 roleB: Du hast {color} als Trumpffarbe gewählt.
 roleC: Zu Beginn des Spiels hast du {cardList} abgeworfen.
@@ -19,3 +18,4 @@ roleH:START:Wait: Warte auf {player}, um zwei Spieler für den Mittelwert an Pun
   zu wählen.
 roleI: Versuche, so wenig Stiche wie möglich zu erhalten. {color} zählt für dich nicht
   als Trumpffarbe.
+roleJ: Deine Karten werden verdeckt gespielt, außer du spielst aus.
