@@ -14,4 +14,4 @@ cd packages/tricking_bees
 flutter build web --dart-define environment=prod --no-tree-shake-icons
 
 echo "Publish web release to firestore..."
-firebase deploy
+firebase deploy --only hosting:app

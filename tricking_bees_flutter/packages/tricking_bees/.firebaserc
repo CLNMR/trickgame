@@ -1,5 +1,15 @@
 {
   "projects": {
-    "default": "tricking_bees-3323c"
-  }
+    "default": "trickingbees"
+  },
+  "targets": {
+    "trickingbees": {
+      "hosting": {
+        "app": [
+          "trickingbees"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
