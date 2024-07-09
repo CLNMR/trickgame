@@ -14,7 +14,8 @@ import 'widgets/test_widget.dart';
 
 /// Fill in the following line, if you want to use a local emulated Firebase
 /// Environment
-const emulatorAddress = 'localhost';
+const emulatorAddress =
+    bool.fromEnvironment('emuMode', defaultValue: false) ? 'localhost' : null;
 
 // TODO: Add offline check for players - after 2 minutes, write new time,
 // after 3 minutes, display as offline
