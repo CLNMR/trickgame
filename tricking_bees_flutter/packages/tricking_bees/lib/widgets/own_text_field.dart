@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,9 @@ class OwnTextField extends StatelessWidget {
     this.label = '',
     this.obscureText = false,
     this.autocorrect = true,
+    this.translateLabel = true,
     this.keyboardType,
+    this.style,
   }) : controller = controller ?? TextEditingController(text: initialText);
 
   /// The placeholder text.
@@ -38,15 +41,23 @@ class OwnTextField extends StatelessWidget {
   /// Whether the text should be autocorrected.
   final bool autocorrect;
 
+  /// Whether the label should be translated.
+  final bool translateLabel;
+
   /// The type of keyboard to use.
   final TextInputType? keyboardType;
+
+  /// The style of the text.
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) => TextField(
         decoration: InputDecoration(
-          label: Text(label),
+          label: Text(
+            translateLabel ? context.tr('TEXTFIELDLABEL:$label') : label,
+          ),
         ),
-        style: const TextStyle(color: Colors.black),
+        style: style ?? const TextStyle(color: Colors.black),
         controller: controller,
         onChanged: onChanged,
         obscureText: obscureText,
@@ -75,6 +86,8 @@ class OwnTextField extends StatelessWidget {
           'onEditingComplete',
           onEditingComplete,
         ),
-      );
+      )
+      ..add(DiagnosticsProperty<bool>('translateLabel', translateLabel))
+      ..add(DiagnosticsProperty<TextStyle?>('style', style));
   }
 }

@@ -1,3 +1,4 @@
+ChangeLocale: Auf Deutsch wechseln
 CreateAccount: Create Account
 JoinGame: Join Game
 LastGame: Resume Last Game
@@ -12,6 +13,7 @@ Public: Public
 ResumeGame: Resume Game
 ResumeTestGame: Resume Test Game
 Setting: Settings
+SignOut: Sign Out
 SkipCardPlay: Don't Play Card
 StartGame: Start Game
 TestGame: Join Test Game

@@ -33,7 +33,7 @@ class WGRouter {
         ),
         ..._getRoutes(ref),
       ],
-      initialLocation: HomeScreenRouting.path,
+      initialLocation: LoginScreenRouting.path,
       debugLogDiagnostics: false,
       redirect: (context, state) => _guard(context, state, ref),
     );

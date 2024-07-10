@@ -15,7 +15,7 @@ extension LoginScreenRouting on LoginScreen {
   static const String path = '/login';
 
   /// The parameter of the screen.
-  static const String? param = null;
+  static const String param = 'email';
 
   /// The route of the screen.
   static GoRoute route = GoRoute(
@@ -25,6 +25,6 @@ extension LoginScreenRouting on LoginScreen {
       context,
       state,
     ) =>
-        LoginScreen(),
+        LoginScreen(initialEmail: state.pathParameters[param]),
   );
 }

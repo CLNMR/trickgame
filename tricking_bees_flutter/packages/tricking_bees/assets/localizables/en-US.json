@@ -1,5 +1,6 @@
 {
   "ArchivedGames": "Archived Games",
+  "BUT:ChangeLocale": "Auf Deutsch wechseln",
   "BUT:CreateAccount": "Create Account",
   "BUT:JoinGame": "Join Game",
   "BUT:LastGame": "Resume Last Game",
@@ -14,6 +15,7 @@
   "BUT:ResumeGame": "Resume Game",
   "BUT:ResumeTestGame": "Resume Test Game",
   "BUT:Setting": "Settings",
+  "BUT:SignOut": "Sign Out",
   "BUT:SkipCardPlay": "Don't Play Card",
   "BUT:StartGame": "Start Game",
   "BUT:TestGame": "Join Test Game",

@@ -11,29 +11,43 @@ import '../widgets/own_button.dart';
 import '../widgets/own_text.dart';
 import '../widgets/own_text_field.dart';
 import 'create_email_pw_screen.r.dart';
+import 'home_screen.r.dart';
 
 /// The home screen of the app.
 @Screen()
 class LoginScreen extends ConsumerStatefulWidget {
   /// Creates a [LoginScreen].
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.initialEmail});
 
   /// The route to redirect to after a successful sign in.
   final String? redirection = '';
 
+  /// The email adress, if sent from the password creation screen.
+  final String? initialEmail;
+
   @override
-  ConsumerState<LoginScreen> createState() => _HomeScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('redirection', redirection));
+    properties
+      ..add(StringProperty('redirection', redirection))
+      ..add(StringProperty('initialEmail', initialEmail));
   }
 }
 
-class _HomeScreenState extends ConsumerState<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialEmail != null) {
+      _emailController.text = widget.initialEmail ?? '';
+    }
+  }
 
   @override
   void dispose() {
@@ -41,9 +55,6 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
     _passwordController.dispose();
     super.dispose();
   }
-
-  String _email = '';
-  String _password = '';
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -89,8 +100,8 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
   Widget _buildQuickLogin(BuildContext context) => OwnButton(
         text: 'Quick Dev Login',
         onPressed: () async {
-          _email = '1@xxx.xxx';
-          _password = 'xxxxxx';
+          _emailController.text = '1@xxx.xxx';
+          _passwordController.text = 'xxxxxx';
           await _tryLogin();
         },
       );
@@ -109,11 +120,9 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
           children: [
             OwnTextField(
               controller: _emailController,
-              label: 'Email',
+              label: 'logInEmail',
               onChanged: (text) {
-                setState(() {
-                  _email = text;
-                });
+                setState(() {});
               },
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
@@ -121,11 +130,9 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
             const SizedBox(height: 16),
             OwnTextField(
               controller: _passwordController,
-              label: 'Password',
+              label: 'logInPassword',
               onChanged: (text) {
-                setState(() {
-                  _password = text;
-                });
+                setState(() {});
               },
               obscureText: true,
               autocorrect: false,
@@ -141,14 +148,17 @@ class _HomeScreenState extends ConsumerState<LoginScreen> {
       );
 
   /// Whether the login button should be disabled.
-  bool get isLoginDisabled => _email.isEmpty || _password.isEmpty;
+  bool get isLoginDisabled =>
+      _emailController.text.isEmpty || _passwordController.text.isEmpty;
 
   /// Tries to log in the user.
   Future<void> _tryLogin() async {
     if (isLoginDisabled && !noAuth) return;
     try {
-      await Yust.authService.signIn(_email, _password);
-      if (context.mounted) context.go('/');
+      final router = GoRouter.of(context);
+      await Yust.authService
+          .signIn(_emailController.text, _passwordController.text);
+      router.goNamed(HomeScreenRouting.path);
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);

@@ -8,7 +8,10 @@ CurrentGames: Aktive Spiele
 END:pointTooltip: '{number} Punkte als {role} mit {numberTricks} Stichen'
 GAMEUI:currentTrick: Aktueller Stich
 GAMEUI:previousTrick: Letzter Stich
+HEAD:account: Accounteinstellungen
 HEAD:appTitle: Bienenstich!
+HEAD:gameList: Deine Spiele
+HEAD:joinGame: Spiel beitreten
 HEAD:trumpDisplay: Trumpf
 LOG:boxTitle: Spielverlauf
 LOG:headerEndOfGame: Spielende
@@ -21,7 +24,17 @@ PLAYERINFO:totalPoints: Punkte
 PLAYERINFO:tricksWon: Anzahl gewonnener Stiche
 Queen: Königin
 RoundDisplay: Runde {}
+TEXTFIELDLABEL:joinGamePassword: Passwort
+TEXTFIELDLABEL:logInEmail: Email-Adresse
+TEXTFIELDLABEL:logInPassword: Passwort
+TEXTFIELDLABEL:signUpAlias: Alias (Anzeigename im Spiel)
+TEXTFIELDLABEL:signUpEmail: E-Mail-Adresse
+TEXTFIELDLABEL:signUpPassword: Passwort (mindestens 6 Zeichen)
 cardColorSuffix: e
 connectiveAnd: ' und '
+gameButConnectiveOf: ' von '
+gameButPlayerNum: Anzahl der Spieler
+gameButPlayers: 'Spieler: '
+gameButSubgameNum: Anzahl der Minispiele
 roleTargetsPlayerTooltip: Mit der Rolle {role} wurde dieser Spieler ausgewählt.
 trumpDisplayTooltip: In diesem Spiel kannst du mit {color} auftrumpfen.
