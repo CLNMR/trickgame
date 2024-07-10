@@ -24,7 +24,10 @@ class _HomeScreenState extends ConsumerState<GameListScreen> {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const OwnText(text: 'HEAD:GameList'),
+          title: const OwnText(
+            text: 'HEAD:gameList',
+            type: OwnTextType.title,
+          ),
           backgroundColor: Colors.black26,
           foregroundColor: Colors.white,
         ),
@@ -78,7 +81,7 @@ class _HomeScreenState extends ConsumerState<GameListScreen> {
             // LATER: Refine orderBy
             orderBy: [
               YustOrderBy(field: 'gameState', descending: false),
-              YustOrderBy(field: 'modifiedAt', descending: false),
+              YustOrderBy(field: 'modifiedAt', descending: true),
             ],
           ),
         ),

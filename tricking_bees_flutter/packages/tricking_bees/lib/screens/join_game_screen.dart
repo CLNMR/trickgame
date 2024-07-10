@@ -11,6 +11,7 @@ import '../util/widget_ref_extension.dart';
 import '../widgets/game_button.dart';
 import '../widgets/own_button.dart';
 import '../widgets/own_text.dart';
+import '../widgets/own_text_field.dart';
 
 /// A screen to join a game waiting for more players.
 @Screen()
@@ -30,7 +31,7 @@ class _HomeScreenState extends ConsumerState<JoinGameScreen> {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const OwnText(text: 'HEAD:JoinGame'),
+          title: const OwnText(text: 'HEAD:joinGame', type: OwnTextType.title),
           backgroundColor: Colors.black26,
           foregroundColor: Colors.white,
         ),
@@ -38,9 +39,9 @@ class _HomeScreenState extends ConsumerState<JoinGameScreen> {
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
-              _buildJoinPrivateGameButton(context),
-              const SizedBox(height: 20),
               Expanded(child: _buildGameList(context)),
+              const SizedBox(height: 20),
+              _buildJoinPrivateGameButton(context),
             ],
           ),
         ),
@@ -63,10 +64,8 @@ class _HomeScreenState extends ConsumerState<JoinGameScreen> {
               inputFormatters: [GameIdInputFormatter()],
             ),
             const SizedBox(height: 8),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Password',
-              ),
+            OwnTextField(
+              label: 'joinGamePassword',
               controller: _passwordController,
             ),
             const SizedBox(height: 8),
@@ -101,36 +100,44 @@ class _HomeScreenState extends ConsumerState<JoinGameScreen> {
         }
       };
 
-  Widget _buildGameList(BuildContext context) => YustDocsBuilder<Game>(
-        // TODO: Build properly with a dynamically loading list
-        modelSetup: Game.setup(),
-        builder: (g, _, __) {
-          final games = g
-              .where(
-                (doc) => doc.players.any((player) => player.id == ref.user!.id),
-              )
-              .toList();
-          if (games.isEmpty) {
-            return const OwnText(text: 'NoGamesFound');
-          }
-          return ListView.builder(
-            itemBuilder: (context, index) => GameButton(game: games[index]),
-            itemCount: games.length,
-          );
-        },
-        orderBy: [YustOrderBy(field: 'createdAt', descending: false)],
-        filters: [
-          YustFilter(
-            field: 'gameState',
-            comparator: YustFilterComparator.equal,
-            value: GameState.waitingForPlayers.toJson(),
-          ),
-          YustFilter(
-            field: 'public',
-            comparator: YustFilterComparator.equal,
-            value: true,
-          ),
-        ],
-        showLoadingSpinner: true,
+  Widget _buildGameList(BuildContext context) => DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: YustDocsBuilder<Game>(
+          // TODO: Build properly with a dynamically loading list
+          modelSetup: Game.setup(),
+          builder: (g, _, __) {
+            final games = g
+                .where(
+                  (doc) =>
+                      !doc.players.any((player) => player.id == ref.user!.id) &&
+                      doc.playerNum != doc.players.length,
+                )
+                .toList();
+            if (games.isEmpty) {
+              return const OwnText(text: 'NoGamesFound');
+            }
+            return ListView.builder(
+              itemBuilder: (context, index) => GameButton(game: games[index]),
+              itemCount: games.length,
+            );
+          },
+          orderBy: [YustOrderBy(field: 'modifiedAt', descending: true)],
+          filters: [
+            YustFilter(
+              field: 'gameState',
+              comparator: YustFilterComparator.equal,
+              value: GameState.waitingForPlayers.toJson(),
+            ),
+            YustFilter(
+              field: 'public',
+              comparator: YustFilterComparator.equal,
+              value: true,
+            ),
+          ],
+          showLoadingSpinner: true,
+        ),
       );
 }

@@ -12,6 +12,7 @@ class PlayerIcon extends StatelessWidget {
     required this.index,
     this.tooltip,
     this.isHighlighted = false,
+    this.displayNumber = false,
   });
 
   /// The player index of this player.
@@ -22,6 +23,9 @@ class PlayerIcon extends StatelessWidget {
 
   /// Whether this player's icon is highlighted.
   final bool isHighlighted;
+
+  /// Whether this icon should display a number instead of the letter.
+  final bool displayNumber;
 
   /// The catalog entry corresponding to this player
   PlayerOrderCatalog get player => PlayerOrderCatalog.fromIndex(index);
@@ -45,7 +49,7 @@ class PlayerIcon extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(1),
           child: Text(
-            player.playerLetter,
+            displayNumber ? player.playerNumber : player.playerLetter,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
@@ -59,7 +63,8 @@ class PlayerIcon extends StatelessWidget {
       ..add(IntProperty('index', index))
       ..add(EnumProperty<PlayerOrderCatalog>('player', player))
       ..add(StringProperty('tooltip', tooltip))
-      ..add(DiagnosticsProperty<bool>('isHighlighted', isHighlighted));
+      ..add(DiagnosticsProperty<bool>('isHighlighted', isHighlighted))
+      ..add(DiagnosticsProperty<bool>('displayNum', displayNumber));
   }
 }
 
@@ -82,6 +87,9 @@ enum PlayerOrderCatalog {
 
   /// The letter associated with this player.
   String get playerLetter => ['A', 'B', 'C', 'D', 'E', 'F'][index];
+
+  /// The (1-indexed) number of this player according to the order.
+  String get playerNumber => (index + 1).toString();
 
   /// Get all players for a given player number.
   static Iterable<PlayerOrderCatalog> getPlayers(int playerNum) =>
