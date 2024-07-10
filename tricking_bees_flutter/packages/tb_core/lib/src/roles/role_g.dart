@@ -16,6 +16,4 @@ class RoleG extends Role {
       ..insert(0, playerIndex);
   }
 
-  @override
-  int calculatePoints(Game game, int tricksWon) => tricksWon;
 }
