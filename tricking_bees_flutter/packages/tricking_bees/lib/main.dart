@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 import 'package:yust/yust.dart';
@@ -24,7 +26,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   EasyLocalization.logger.enableBuildModes = [];
-  _initAppConfig();
+  await _initAppConfig();
 
   if (const bool.fromEnvironment('testMode', defaultValue: false)) {
     runApp(
@@ -68,7 +70,7 @@ void main() async {
   );
 }
 
-void _initAppConfig() {
+Future<void> _initAppConfig() async {
   const env = emulatorAddress != null
       ? OwnEnvironment.emulator
       : String.fromEnvironment('environment', defaultValue: 'dev') == 'prod'
@@ -79,11 +81,20 @@ void _initAppConfig() {
       : Platform.isAndroid
           ? OwnPlatform.android
           : OwnPlatform.ios;
-  AppConfig.initialize(
-    env: env,
-    platform: platform,
-    emulatorDomain: emulatorAddress,
-  );
+  try {
+    final jsonString =
+        await rootBundle.loadString('assets/secrets/firebase_keys.json');
+    final jsonData = Map<String, dynamic>.from(jsonDecode(jsonString))
+        .map((key, value) => MapEntry(key, value.toString()));
+    await AppConfig.initialize(
+      env: env,
+      platform: platform,
+      emulatorDomain: emulatorAddress,
+      firebaseSettings: jsonData,
+    );
+  } catch (e) {
+    print('Error: $e');
+  }
 }
 
 /// The main widget of the app.
