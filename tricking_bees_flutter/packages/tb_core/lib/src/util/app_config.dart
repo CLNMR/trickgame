@@ -110,41 +110,44 @@ class AppConfig {
       AppConfig.config.environment == OwnEnvironment.testing;
 
   /// Initializes the app configuration.
-  static void initialize({
+  static Future<void> initialize({
     required OwnEnvironment env,
     required OwnPlatform platform,
     String? emulatorDomain,
-  }) {
+    required Map<String, String> firebaseSettings,
+  }) async {
     final isProd = env == OwnEnvironment.production;
     final isEmu = env == OwnEnvironment.emulator;
-    AppConfig.config = AppConfig(
-      environment: env,
-      platform: platform,
-      basicUrl: isProd
-          ? 'https://app.trickingbees.com'
-          : 'https://dev.trickingbees.com',
-      apiUrl: isEmu
-          ? 'http://$emulatorDomain:8080/trickingbees-dev/us-central1/api/v1/'
-          : isProd
-              ? 'https://app.trickingbees.com/api/v1/'
-              : 'https://dev.trickingbees.com/api/v1/',
-      apiKeyFirebase: isProd
-          ? 'AIzaSyC5FW_qfHNa_7ZFYfnQZemtrDjUCoRvlm4' // cspell:disable-line
-          : 'AIzaSyC5FW_qfHNa_7ZFYfnQZemtrDjUCoRvlm4', // cspell:disable-line
-      appIdAndroid:
-          isProd ? '1:449478430713:android:0b0fb65d2b6ee34619f728' : 'test',
-      appIdIos: isProd ? '1:449478430713:ios:d12e75313555f61019f728' : 'test',
-      appIdWeb: isProd ? '1:449478430713:web:9f2d869b3cbdddd919f728' : 'test',
-      authDomain: isEmu
-          ? 'localhost:9099'
-          : isProd
-              ? 'trickingbees.firebaseapp.com'
-              : '', // cspell:disable-line
-      measurementId: isProd ? 'G-X35276WFY4' : 'test', // cspell:disable-line
-      messagingSenderId: isProd ? '449478430713' : 'test',
-      projectId: isProd ? 'trickingbees' : 'test',
-      storageBucket: isProd ? 'trickingbees.appspot.com' : 'test',
-    );
+    try {
+      AppConfig.config = AppConfig(
+        environment: env,
+        platform: platform,
+        basicUrl: isProd ? '...' : '...',
+        apiUrl: isEmu
+            ? 'http://$emulatorDomain:8080/trickingbees-dev/us-central1/api/v1/'
+            : isProd
+                ? '...'
+                : '...',
+        apiKeyFirebase:
+            isProd || isEmu ? firebaseSettings['apiKeyFirebase']! : '...',
+        appIdAndroid: isProd ? firebaseSettings['appIdAndroid']! : '...',
+        appIdIos: isProd ? firebaseSettings['appIdIos']! : '...',
+        appIdWeb: isProd ? firebaseSettings['appIdWeb']! : '...',
+        authDomain: isEmu
+            ? 'localhost:9099'
+            : isProd
+                ? firebaseSettings['authDomain']!
+                : '...',
+        measurementId: isProd ? firebaseSettings['measurementId']! : '...',
+        messagingSenderId:
+            isProd ? firebaseSettings['messagingSenderId']! : '...',
+        projectId: isProd ? firebaseSettings['projectId']! : '...',
+        storageBucket: isProd ? firebaseSettings['storageBucket']! : '...',
+      );
+    } catch (e, s) {
+      print('Error reading or decoding JSON file: $e');
+      print(s);
+    }
   }
 
   /// Returns the Firebase options for the current platform.

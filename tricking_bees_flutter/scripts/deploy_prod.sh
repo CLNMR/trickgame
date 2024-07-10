@@ -14,4 +14,13 @@ cd packages/tricking_bees
 flutter build web --dart-define environment=prod --no-tree-shake-icons
 
 echo "Publish web release to firestore..."
+# Extract projectId from firebase_keys.json
+projectId=$(jq -r '.projectId' assets/secrets/firebase_keys.json)
+
+# Replace 'PROJECT_ID' with the actual projectId in .firebaserc
+sed -i '' "s/PROJECT_ID/$projectId/g" .firebaserc
+
 firebase deploy --only hosting:app
+
+# Return to 'PROJECT_ID' in .firebaserc
+sed -i '' "s/$projectId/PROJECT_ID/g" .firebaserc

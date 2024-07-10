@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "trickingbees"
+    "default": "PROJECT_ID"
   },
   "targets": {
-    "trickingbees": {
+    "PROJECT_ID": {
       "hosting": {
         "app": [
-          "trickingbees"
+          "PROJECT_ID"
         ]
       }
     }
