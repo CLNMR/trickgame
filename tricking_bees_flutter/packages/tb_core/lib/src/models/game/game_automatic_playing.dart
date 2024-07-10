@@ -52,7 +52,7 @@ extension GameAutoPlayExt on Game {
     final player = getPlayer(user);
     final players = getOtherPlayers(user)
         .where(
-          (p) => p.role.isPlayerSelected(this, getPlayerIndex(p)),
+          (p) => !player.role.isPlayerSelected(this, getPlayerIndex(p)),
         )
         .toList();
     if (players.isEmpty) return;
