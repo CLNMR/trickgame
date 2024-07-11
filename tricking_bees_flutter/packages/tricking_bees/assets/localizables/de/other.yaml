@@ -6,30 +6,53 @@ CARDCOLOR:violet: Violett
 CARDCOLOR:yellow: Gelb
 CurrentGames: Aktive Spiele
 END:pointTooltip: '{number} Punkte als {role} mit {numberTricks} Stichen'
+End:endTitle: Punkteübersicht
 GAMEUI:currentTrick: Aktueller Stich
 GAMEUI:previousTrick: Letzter Stich
 HEAD:account: Accounteinstellungen
 HEAD:appTitle: Bienenstich!
 HEAD:gameList: Deine Spiele
-HEAD:joinGame: Spiel beitreten
+HEAD:joinGame: Spiel Beitreten
+HEAD:newGame: Spiel Erstellen
 HEAD:trumpDisplay: Trumpf
 LOG:boxTitle: Spielverlauf
 LOG:headerEndOfGame: Spielende
 LOG:headerGameStart: Spielbeginn
 LOG:headerSubgameRound: Runde {round}
 LOG:headerSubgameStart: Spiel {subgame}/{subgameNum}
+NEWGAME:gameIdHeader: 'Spiel-ID: '
+NEWGAME:inGameOptionsHeader: Einstellungen zur Sichtbarkeit
+NEWGAME:playerNum: 'Anzahl Spieler: '
+NEWGAME:playerOrder: 'Spielerreihenfolge: '
+NEWGAME:subgameNum: 'Anzahl Minispiele: '
+NEWGAME:visibilityOptionsHeader: Einstellungen zur Sichtbarkeit
 PLAYERINFO:currentPoints: Punkte, die du am Ende dieser Runde durch deine aktuelle
   Rolle erhalten würdest
 PLAYERINFO:totalPoints: Punkte
 PLAYERINFO:tricksWon: Anzahl gewonnener Stiche
 Queen: Königin
 RoundDisplay: Runde {}
+SWITCH:manual: Manuell
+SWITCH:offline: Offline
+SWITCH:online: Online
+SWITCH:private: Privat
+SWITCH:public: Öffentlich
+SWITCH:random: Zufällig
 TEXTFIELDLABEL:joinGamePassword: Passwort
 TEXTFIELDLABEL:logInEmail: Email-Adresse
 TEXTFIELDLABEL:logInPassword: Passwort
+TEXTFIELDLABEL:setGamePassword: Passwort
 TEXTFIELDLABEL:signUpAlias: Alias (Anzeigename im Spiel)
 TEXTFIELDLABEL:signUpEmail: E-Mail-Adresse
 TEXTFIELDLABEL:signUpPassword: Passwort (mindestens 6 Zeichen)
+WAITING:connectiveOf: ' von '
+WAITING:gameInformationHeader: Spielinformationen
+WAITING:playersHeader: 'Spieler: '
+WAITING:removePlayerTooltip: Entferne diesen Spieler
+WAITING:removePlayerTooltipDisabled: Du kannst dich nicht selbst entfernen
+WAITING:shufflePlayers: Zu Beginn des Spiels wird die Spielerreihenfolge zufällig
+  festgelegt.
+WAITING:subgameNumInfo: Es werden {number} Minispiele gespielt.
 cardColorSuffix: e
 connectiveAnd: ' und '
 gameButConnectiveOf: ' von '

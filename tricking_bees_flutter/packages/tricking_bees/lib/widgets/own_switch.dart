@@ -67,14 +67,14 @@ class OwnSwitch extends StatelessWidget {
                 width: 100,
                 height: 40,
                 child: Center(
-                  child: Text(context.tr('BUT:$firstOptionKey')),
+                  child: Text(context.tr('SWITCH:$firstOptionKey')),
                 ),
               ),
               SizedBox(
                 width: 100,
                 height: 40,
                 child: Center(
-                  child: Text(context.tr('BUT:$secondOptionKey')),
+                  child: Text(context.tr('SWITCH:$secondOptionKey')),
                 ),
               ),
             ],

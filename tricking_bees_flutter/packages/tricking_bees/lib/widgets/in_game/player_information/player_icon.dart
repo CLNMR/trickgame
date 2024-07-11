@@ -73,9 +73,10 @@ enum PlayerOrderCatalog {
   player1(Color.fromRGBO(255, 130, 143, 1)),
   player2(Color.fromRGBO(146, 206, 255, 1)),
   player3(Color.fromRGBO(192, 255, 120, 1)),
-  player4(Color.fromRGBO(175, 129, 207, 1)),
+  player4(Color.fromRGBO(255, 172, 99, 1)),
   player5(Color.fromRGBO(255, 245, 152, 1)),
-  player6(Color.fromRGBO(255, 172, 99, 1));
+  player6(Color.fromRGBO(114, 120, 222, 1)),
+  unknonwPlayer(Color.fromRGBO(132, 45, 232, 1));
 
   const PlayerOrderCatalog(this.color);
 
@@ -86,7 +87,7 @@ enum PlayerOrderCatalog {
   final Color color;
 
   /// The letter associated with this player.
-  String get playerLetter => ['A', 'B', 'C', 'D', 'E', 'F'][index];
+  String get playerLetter => ['A', 'B', 'C', 'D', 'E', 'F', '?'][index];
 
   /// The (1-indexed) number of this player according to the order.
   String get playerNumber => (index + 1).toString();

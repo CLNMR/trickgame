@@ -1,11 +1,15 @@
 import 'dart:math';
 
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
 import '../../util/context_extension.dart';
+import '../../widgets/in_game/player_information/player_icon.dart';
+import '../../widgets/in_game/player_information/player_info_display.dart';
+import '../../widgets/own_text.dart';
 
 /// The display screen of the bidding.
 class EndDisplay extends ConsumerWidget {
@@ -20,27 +24,34 @@ class EndDisplay extends ConsumerWidget {
     final pointsHistory = game.getPointsHistory();
     final ranks = game.playerRanks;
     final maxPoints = game.playerPoints.values.toList().reduce(max);
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: ranks.entries
-            .map(
-              (e) => Flexible(
-                flex: 1,
-                child: _buildSingleRank(
-                  context,
-                  pointsHistory[e.value[0]]!,
-                  maxPoints,
-                ),
-              ),
-            )
-            .toList(),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const OwnText(text: 'END:endTitle'),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: ranks.entries
+                .map(
+                  (e) => Flexible(
+                    child: _buildSingleRank(
+                      context,
+                      e.value[0],
+                      pointsHistory[e.value[0]]!,
+                      maxPoints,
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildSingleRank(
     BuildContext context,
+    int playerIndex,
     List<LogPointsAwarded> pointEntries,
     int maxPoints,
   ) {
@@ -64,10 +75,42 @@ class EndDisplay extends ConsumerWidget {
           ),
         )
         .toList();
-    return CustomStackedBar(
-      points: points,
-      tooltips: tooltips,
-      maxPoints: maxPoints,
+    return Column(
+      children: [
+        Expanded(
+          child: CustomStackedBar(
+            points: points,
+            tooltips: tooltips,
+            maxPoints: maxPoints,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(3),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Row(
+            children: [
+              IconWithNumber(
+                iconData: Icons.emoji_events,
+                displayNum: points.reduce((a, b) => a + b),
+                tooltip: 'PLAYERINFO:totalPoints',
+                iconSize: 20,
+              ),
+              const SizedBox(width: 3),
+              PlayerIcon(index: playerIndex),
+              const SizedBox(width: 3),
+              Expanded(
+                child: OwnText(
+                  text: game.players[playerIndex].displayName,
+                  translate: false,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -102,36 +145,49 @@ class CustomStackedBar extends StatelessWidget {
   final int maxPoints;
 
   @override
-  Widget build(BuildContext context) {
-    var cumulativePoints = 0;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: points.asMap().entries.map(
-        (entry) {
-          final index = entry.key;
-          final pointAmount = entry.value;
-          final heightFraction = pointAmount / maxPoints;
-          cumulativePoints += pointAmount;
-          final colorVal =
-              (cumulativePoints / maxPoints * 1000).ceil().clamp(100, 1000);
-          return Tooltip(
-            richMessage: tooltips[index],
-            child: FractionallySizedBox(
-              heightFactor: heightFraction,
-              widthFactor: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.amber[colorVal],
-                  border: Border.all(color: Colors.black),
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) => Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: points.reversed.toList().asMap().entries.map(
+            (entry) {
+              final index = entry.key;
+              final subgame = points.length - index;
+              final pointAmount = entry.value;
+              final heightFraction = max(pointAmount / maxPoints, 0.001);
+              final colorVal =
+                  ((subgame - 1) / points.length * 40).ceil().clamp(0, 40);
+              return Tooltip(
+                richMessage: tooltips[subgame - 1],
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: constraints.maxHeight,
+                  ),
+                  child: FractionallySizedBox(
+                    heightFactor: heightFraction,
+                    widthFactor: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.amber.getShadeColor(shadeValue: colorVal),
+                        border: Border.all(color: Colors.black, width: 1.5),
+                        borderRadius: BorderRadius.circular(1),
+                      ),
+                      margin: const EdgeInsets.all(1),
+                      child: Center(
+                        child: OwnText(
+                          trObject: TrObject(
+                            'RoundDisplay',
+                            args: [subgame.toString()],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                margin: const EdgeInsets.all(1),
-              ),
-            ),
-          );
-        },
-      ).toList(),
-    );
-  }
+              );
+            },
+          ).toList(),
+        ),
+      );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

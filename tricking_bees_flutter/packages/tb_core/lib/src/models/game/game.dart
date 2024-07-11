@@ -38,11 +38,11 @@ import 'logging/turn_start.dart';
 part 'game.g.dart';
 part 'game_automatic_playing.dart';
 part 'game_card_playing.dart';
+part 'game_end_handling.dart';
 part 'game_logging.dart';
 part 'game_pre_game_handling.dart';
 part 'game_role_handling.dart';
 part 'game_status_generation.dart';
-part 'game_end_handling.dart';
 
 @JsonSerializable()
 @GenerateService()
@@ -63,6 +63,7 @@ class Game extends YustDoc {
     this.online = true,
     this.public = true,
     this.password = '',
+    this.shufflePlayers = true,
     this.playerNum = 4,
     this.subgameNum = 4,
     List<Player>? players,
@@ -109,6 +110,9 @@ class Game extends YustDoc {
 
   /// The number of subgames to play.
   int subgameNum;
+
+  /// Whether the players are shuffled upon the start of the game.
+  bool shufflePlayers;
 
   /// The state of the game.
   GameState gameState;
@@ -237,11 +241,26 @@ class Game extends YustDoc {
     deleteFlag(_overridingTrumpColorKey);
     currentTrick = null;
     if (currentSubgame == subgameNum) {
-      gameState = GameState.finished;
-      addLogEntry(LogEndOfGame());
+      endTheGame();
     } else {
       await startNewSubgame();
     }
+  }
+
+  /// Ends the game and gives each player a card corresponding to their rank.
+  void endTheGame() {
+    for (var i = 0; i < playerNum; i++) {
+      players[i].resetForNewSubgame();
+      players[i].dealCards(
+        CardStack(
+          cards: [
+            GameCard(number: getRankForPlayer(i), color: CardColor.yellow),
+          ],
+        ),
+      );
+    }
+    gameState = GameState.finished;
+    addLogEntry(LogEndOfGame());
   }
 
   /// Start a new subgame.
@@ -354,6 +373,9 @@ class Game extends YustDoc {
   /// Whether the user is a mere spectator of the given game.
   bool isSpectator(YustUser? user) =>
       !players.map((e) => e.id).contains(user?.id);
+
+  /// Whether the user has created the game and should thus be able to start it.
+  bool isUserOwner(YustUser? user) => createdBy == user?.id;
 
   /// Whether the given round marks the start of a subgame.
   static bool roundStartsSubgame(RoundNumber round) =>

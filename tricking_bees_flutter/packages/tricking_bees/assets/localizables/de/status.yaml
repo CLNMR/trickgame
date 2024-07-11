@@ -15,4 +15,11 @@ INPUT:twoCards: Du bist am Zug. Spiele zwei Karten.
 INPUT:twoCards:WAITING: Warte darauf, dass {player} zwei Karten spielt.
 gameIsFinished: Das Spiel ist zu Ende! {playerWinner} hat mit {numberWinner} Punkten
   gewonnen. Du hast mit {numberPlayer} Punkten den {numberRank}. Platz erzielt.
-waitingForOtherPlayers: Warte auf {number} andere Spieler.
+promptOwnerToStart: Du bist der Spielleiter. Klicke auf 'Spiel Starten', wenn alle
+  Spieler bereit sind.
+promptOwnerToStartWithoutShuffle: Du bist der Spielleiter. Lege die Spielerreihenfolge
+  fest und klicke auf 'Spiel Starten'.
+waitingForPlayers: Warte darauf, dass {number} weitere Spieler beitreten. Schicke
+  ihnen einfach die ID '{gameId}'.
+waitingForPlayersPrivate: Warte darauf, dass {number} weitere Spieler beitreten. Schicke
+  ihnen einfach die ID '{gameId}' und das Passwort '{password}'.

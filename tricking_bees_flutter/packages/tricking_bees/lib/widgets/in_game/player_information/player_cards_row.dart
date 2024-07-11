@@ -100,19 +100,21 @@ class _PlayerCardsRowState extends ConsumerState<PlayerCardsRow> {
     final isSpectator = widget.game.isSpectator(ref.user);
     // For now, we want to hide the individual cards from spectators.
     final cardIsHidden =
-        !isAuthenticatedPlayer(ref.user, widget.player) || isSpectator;
+        (!isAuthenticatedPlayer(ref.user, widget.player) || isSpectator) &&
+            widget.game.gameState != GameState.finished;
     final cardIsDisabled = !cardIsHidden &&
         !widget.game.canPlayCard(card, widget.player) &&
         !widget.game.canRemoveCard(widget.player);
+    final isHovered = _hoveredCardIndex == index;
     return Positioned(
       // Use AnimatedPositioned for smooth animation; Doesn't seem to work with
       // the way I'm reordering the cards...
       // duration: const Duration(milliseconds: 300),
       left: leftOffset,
-      top: 10,
-      bottom: 10,
+      top: isHovered ? 8 : 15,
+      bottom: isHovered ? 15 : 8,
       child: Transform.scale(
-        scale: _hoveredCardIndex == index ? 1.15 : 1.0,
+        scale: isHovered ? 1.11 : 1.0,
         child: MouseRegion(
           onEnter: (event) => setState(() => _hoveredCardIndex = index),
           onExit: (event) => setState(() => _hoveredCardIndex = null),

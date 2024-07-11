@@ -57,6 +57,11 @@ class LogStartOfGame extends LogEntry {
             value: CardColor.getColorNumForPlayerNum(game.playerNum),
             keySuffix: 'Colors',
           ),
+          RichTrObject(
+            RichTrType.number,
+            value: game.subgameNum,
+            keySuffix: 'Subgames',
+          ),
         ],
         namedArgs: {'gameId': game.gameId.toString()},
       );
