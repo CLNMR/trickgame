@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +46,29 @@ class InGameDisplay extends ConsumerStatefulWidget {
 
 class _GameDisplayState extends ConsumerState<InGameDisplay> {
   bool _skipIsHovered = false;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    if (!widget.game.online) _startTimer();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+      // Check if the game is an offline bot game and has the current turn.
+      if (!widget.game.online && !widget.game.isCurrentPlayer(ref.user)) {
+        await widget.game.performRandomPossibleAction();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final player = widget.game.getPlayer(ref.user!);
@@ -53,7 +78,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
           Expanded(
             child: Column(
               children: [
-                Expanded(
+                Flexible(
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(5),
@@ -77,8 +102,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                         player: widget.game.getPlayer(ref.user!),
                       ),
                     ),
-                    if (widget.game.gameState != GameState.finished)
-                      _buildTrumpDisplay(),
+                    _buildTrumpDisplay(),
                   ],
                 ),
               ],
@@ -160,58 +184,60 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
         ),
       );
 
-  Widget _buildTrumpDisplay() => Tooltip(
-        richMessage: context.trFromObjectToTextSpan(
-          TrObject(
-            'trumpDisplayTooltip',
-            richTrObjects: [
-              RichTrObject(
-                RichTrType.color,
-                value: widget.game.currentTrumpColor ?? CardColor.noColor,
-              ),
-            ],
-          ),
-          [],
-        ),
-        child: Container(
-          height: 100,
-          decoration: BoxDecoration(
-            border: Border.all(),
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white.withOpacity(0.5),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(3),
-            child: Column(
-              children: [
-                const OwnText(text: 'HEAD:trumpDisplay'),
-                Expanded(
-                  child: Row(
-                    children: [
-                      if (widget.game.currentTrump != null)
-                        SingleCardDisplay.fromCardKey(
-                          cardKey: widget.game.currentTrump!,
-                          isDisabled: widget.game.hasOverridingTrumpColor,
-                        )
-                      else
-                        const SingleCardDisplay(
-                          cardColor: Colors.black,
-                          symbol: '!',
-                        ),
-                      if (widget.game.hasOverridingTrumpColor)
-                        SingleCardDisplay(
-                          cardColor:
-                              Color(widget.game.currentTrumpColor!.hexValue),
-                          symbol: '!',
-                        ),
-                    ],
-                  ),
+  Widget _buildTrumpDisplay() => (widget.game.gameState != GameState.finished)
+      ? Tooltip(
+          richMessage: context.trFromObjectToTextSpan(
+            TrObject(
+              'trumpDisplayTooltip',
+              richTrObjects: [
+                RichTrObject(
+                  RichTrType.color,
+                  value: widget.game.currentTrumpColor ?? CardColor.noColor,
                 ),
               ],
             ),
+            [],
           ),
-        ),
-      );
+          child: Container(
+            height: 100,
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white.withOpacity(0.5),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(3),
+              child: Column(
+                children: [
+                  const OwnText(text: 'HEAD:trumpDisplay'),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        if (widget.game.currentTrump != null)
+                          SingleCardDisplay.fromCardKey(
+                            cardKey: widget.game.currentTrump!,
+                            isDisabled: widget.game.hasOverridingTrumpColor,
+                          )
+                        else
+                          const SingleCardDisplay(
+                            cardColor: Colors.black,
+                            symbol: '!',
+                          ),
+                        if (widget.game.hasOverridingTrumpColor)
+                          SingleCardDisplay(
+                            cardColor:
+                                Color(widget.game.currentTrumpColor!.hexValue),
+                            symbol: '!',
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+      : const SizedBox();
 
   // return AnimatedBuilder(
   //   animation: _controller,
@@ -220,7 +246,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _buildPlayersInTopRow(),
-          Expanded(
+          Flexible(
             child: Row(
               children: [
                 _buildLeftPlayer(),
