@@ -71,7 +71,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    final player = widget.game.getPlayer(ref.user!);
+    final player = widget.game.getPlayer(ref.user);
     return Center(
       child: Row(
         children: [
@@ -99,7 +99,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
                     Flexible(
                       child: PlayerCardsRow(
                         game: widget.game,
-                        player: widget.game.getPlayer(ref.user!),
+                        player: player,
                       ),
                     ),
                     _buildTrumpDisplay(),
@@ -115,9 +115,9 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
   }
 
   Widget _buildSkipButton() => ref.user != null &&
-          widget.game.getPlayer(ref.user!).role.canSkipTurn
+          widget.game.getPlayer(ref.user).role.canSkipTurn
       ? Tooltip(
-          message: 'BUTTON:SkipCardPlay'.tr(),
+          message: 'BUT:SkipCardPlay'.tr(),
           child: Container(
             height: 100,
             width: 80,
@@ -290,7 +290,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
   }
 
   Widget _buildLeftPlayer() => (widget.game.playerNum == 3)
-      ? Container()
+      ? const SizedBox()
       : Column(
           children: [
             _buildPlayerOverlay(
@@ -300,7 +300,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
           ],
         );
   Widget _buildRightPlayer() => (widget.game.playerNum == 3)
-      ? Container()
+      ? const SizedBox()
       : Column(
           children: [
             _buildPlayerOverlay(

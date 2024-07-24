@@ -66,6 +66,7 @@ class Game extends YustDoc {
     this.shufflePlayers = true,
     this.playerNum = 4,
     this.subgameNum = 4,
+    this.allowSpectators = false,
     List<Player>? players,
     // Dynamic game properties:
     this.gameState = GameState.waitingForPlayers,
@@ -113,6 +114,9 @@ class Game extends YustDoc {
 
   /// Whether the players are shuffled upon the start of the game.
   bool shufflePlayers;
+
+  /// Whether spectators are allowed.
+  bool allowSpectators;
 
   /// The state of the game.
   GameState gameState;
@@ -208,9 +212,15 @@ class Game extends YustDoc {
     return Trick(cardMap: LinkedHashMap.fromEntries(trickLogEntries));
   }
 
-  /// The players other than the user's player.
-  List<Player> getOtherPlayers(YustUser? user) =>
-      players.where((player) => player.id != user?.id).toList();
+  /// The players other than the user's player, starting at their index.
+  List<Player> getOtherPlayers(YustUser? user) => List.generate(
+        players.length - 1,
+        (index) => (getPlayerIndex(getPlayer(user)) + index + 1) % playerNum,
+      )
+          .map(
+            (e) => players[e],
+          )
+          .toList();
 
   /// Get the players that currently do not have the turn.
   List<Player> getNonCurrentPlayers() =>
@@ -360,8 +370,8 @@ class Game extends YustDoc {
   }
 
   /// Returns the player associated with the given user.
-  Player getPlayer(YustUser user) =>
-      players.firstWhere((player) => player.id == user.id);
+  Player getPlayer(YustUser? user) =>
+      players.firstWhere((player) => player.id == user?.id);
 
   /// Returns the index of the given player in the list of players.
   int getPlayerIndex(Player player) =>
@@ -371,7 +381,7 @@ class Game extends YustDoc {
   Game copy() => Game.fromJson(toJson());
 
   /// Whether the user is a mere spectator of the given game.
-  bool isSpectator(YustUser? user) =>
+  bool isUserSpectator(YustUser? user) =>
       !players.map((e) => e.id).contains(user?.id);
 
   /// Whether the user has created the game and should thus be able to start it.

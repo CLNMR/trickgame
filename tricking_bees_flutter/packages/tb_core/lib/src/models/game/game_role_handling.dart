@@ -9,7 +9,7 @@ extension GameEventHandlingExt on Game {
   /// next player.
   Future<void> chooseRole(RoleCatalog roleKey) async {
     currentPlayer.roleKey = roleKey;
-    addLogEntry(LogRoleChosen(playerIndex: currentTurnIndex, role: roleKey));
+    addLogEntry(LogRoleChosen(playerIndex: currentPlayerIndex, role: roleKey));
     incrementTurnIndex();
     if (currentTurnIndex == 0) {
       await finishRoleSelection(firstTime: true);

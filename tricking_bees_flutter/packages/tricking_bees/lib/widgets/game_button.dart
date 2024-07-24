@@ -28,7 +28,7 @@ class GameButton extends ConsumerWidget {
           child: GestureDetector(
             onTap: () async {
               final goRouter = GoRouter.of(context);
-              await game.addUser(ref.user!);
+              await game.tryAddUser(ref.user!);
               await goRouter.pushNamed(
                 GameScreenRouting.path,
                 pathParameters: {'gameId': game.id},

@@ -3,18 +3,20 @@ part of 'game.dart';
 /// Handles the registration of players and the start of the game
 extension GamePreGameHandlingExt on Game {
   /// Adds the given user to the game, if he is not already present.
-  Future<void> addUser(
+  Future<void> tryAddUser(
     YustUser user, {
     bool shouldSave = true,
   }) async =>
-      addPlayer(Player.fromUser(user), shouldSave: shouldSave);
+      tryAddPlayer(Player.fromUser(user), shouldSave: shouldSave);
 
   /// Adds the given player to the game, if he is not already present.
-  Future<void> addPlayer(
+  Future<void> tryAddPlayer(
     Player player, {
     bool shouldSave = true,
   }) async {
-    if (players.map((e) => e.id).contains(player.id)) return;
+    if (players.map((e) => e.id).contains(player.id) || arePlayersComplete) {
+      return;
+    }
     players.add(player);
     if (shouldSave) await save();
   }
@@ -38,12 +40,12 @@ extension GamePreGameHandlingExt on Game {
   Future<void> startLobby(YustUser user) async {
     createdBy = user.id;
     envId = noAuth ? 'test' : 'prod';
-    await addUser(user, shouldSave: false);
+    await tryAddUser(user, shouldSave: false);
     final game = GameService.init(this);
     await game.save();
     if (!online) {
       for (var i = 1; i < playerNum; i++) {
-        await game.addPlayer(Player(id: 'bot$i', displayName: 'Bot $i'));
+        await game.tryAddPlayer(Player(id: 'bot$i', displayName: 'Bot $i'));
       }
       await game.startMainGame();
     }

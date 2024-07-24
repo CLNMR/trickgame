@@ -269,7 +269,7 @@ class _WaitingDisplayState extends ConsumerState<WaitingDisplay> {
       playerIndex += 1;
       if (!playerDict.containsKey(playerIndex)) return;
     }
-    await widget.game.addPlayer(
+    await widget.game.tryAddPlayer(
       Player(
         id: playerDict[playerIndex]!,
         displayName: 'Player $playerIndex',

@@ -124,7 +124,15 @@ class _HomeScreenState extends ConsumerState<NewGameScreen> {
                   },
                 ),
               ],
-            ]
+              OwnSwitch(
+                firstOptionKey: 'allowSpec',
+                secondOptionKey: 'disallowSpec',
+                secondOption: !_game.allowSpectators,
+                onChange: (value) {
+                  setState(() => _game.allowSpectators = !value);
+                },
+              ),
+            ],
           ],
         ),
       );

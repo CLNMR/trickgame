@@ -15,13 +15,15 @@ HEAD:gameList: Deine Spiele
 HEAD:joinGame: Spiel Beitreten
 HEAD:newGame: Spiel Erstellen
 HEAD:trumpDisplay: Trumpf
+JOINGAME:noGamesFound: Keine offenen Spiele gefunden. Erstelle ein neues Spiel oder
+  warte darauf, dass ein anderes Spiel erstellt wird.
 LOG:boxTitle: Spielverlauf
 LOG:headerEndOfGame: Spielende
 LOG:headerGameStart: Spielbeginn
 LOG:headerSubgameRound: Runde {round}
 LOG:headerSubgameStart: Spiel {subgame}/{subgameNum}
 NEWGAME:gameIdHeader: 'Spiel-ID: '
-NEWGAME:inGameOptionsHeader: Einstellungen zur Sichtbarkeit
+NEWGAME:inGameOptionsHeader: Spieloptionen
 NEWGAME:playerNum: 'Anzahl Spieler: '
 NEWGAME:playerOrder: 'Spielerreihenfolge: '
 NEWGAME:subgameNum: 'Anzahl Minispiele: '
@@ -32,6 +34,8 @@ PLAYERINFO:totalPoints: Punkte
 PLAYERINFO:tricksWon: Anzahl gewonnener Stiche
 Queen: Königin
 RoundDisplay: Runde {}
+SWITCH:allowSpec: Zuschauer erlauben
+SWITCH:disallowSpec: Zuschauer verbieten
 SWITCH:manual: Manuell
 SWITCH:offline: Offline
 SWITCH:online: Online
