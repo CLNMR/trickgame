@@ -108,8 +108,15 @@ Benötigt python 3.12 oder höher + pygame.
   - [x] Choose person
   - [x] Choose trump color
   - [x] Extra cards being dealt
+- [ ] Logging
+  - [ ] Rework how subgames are collapsed - When a previous subgame is un-collapsed, all rounds should be collapsed, but the important info of who won should be visible.
+  - [ ] Separate last round and point awarding
+- [ ] Implement additional phase at the end of each subgame to show an overview of the awarded points
 - [ ] Add version (also dev mode toggle?) to game so we can distinguish
-- [ ] Rework role selection (make it look nice)
+- [ ] Display:
+  - [ ] Rework role selection (make it look nice)
+  - [ ] Display the queen differently
+- [ ] Implement one-queen-per-role mode, distribute queens with the role and have the first queen in a trick be the winning one
 - [ ] Rework status messages
   - [x] Choose role
   - [x] Current role
@@ -121,8 +128,9 @@ Benötigt python 3.12 oder höher + pygame.
   - [ ] Implement 'Start game with bots' and have them play automatically
   - [ ] Maybe implement offline mode?
 - [ ] Look at end-of-game:
-  - [ ] How are players with the same amount of points handled?
+  - [ ] Fix how players with the same amount of points are handled
   - [ ] How is the final leaderboard displayed?
     - [x] Properly calculate order with players at same spot
     - [ ] Rework corresponding log entry
+    - [ ] Rework corresponding status message
 - [ ] Advanced Role selection: Implement that each player has to choose from a limited number of roles, and add selection capability for that mode
