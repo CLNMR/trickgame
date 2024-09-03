@@ -107,7 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       () async => context.push(JoinGameScreenRouting.path);
 
   Widget _buildResumeGameButton(BuildContext context) => OwnButton(
-        text: 'ResumeGame',
+        text: 'YourGames',
         onPressed: _goToGameListScreen(context),
       );
 
@@ -122,17 +122,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildResumeTestGameButton(BuildContext context) => OwnButton(
         text: 'TestGame',
         onPressed: () async =>
-            context.push('${GameScreenRouting.path}/pJmDKQL6fjiDyrOq29Tq'),
+            context.push('${GameScreenRouting.path}/3jBRBbwVVMwyYukbQ6UW'),
       );
   Widget _buildResumeLastGameButton(BuildContext context) => OwnButton(
         text: 'LastGame',
         // TODO: Disable if no games by user exist, and debug filters which
         // didn't work.
         onPressed: () async {
+          final router = GoRouter.of(context);
           final game = await GameService.getFirstFromDB(
             orderBy: [
               YustOrderBy(
-                field: 'createdAt',
+                field: 'modifiedAt',
                 descending: true,
               ),
             ],
@@ -151,7 +152,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           );
           if (game == null) return;
           // print('Opening game: ${game.id}');
-          await context.push('${GameScreenRouting.path}/${game.id}');
+          await router.push('${GameScreenRouting.path}/${game.id}');
         },
       );
 

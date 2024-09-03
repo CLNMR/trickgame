@@ -45,7 +45,7 @@
   "LOG:roleChosen": "{player} chooses to be {role} for this game.",
   "LOG:roundStartPlayOrder": "Round {number} starts where the players are ordered as follows: {playerList}.",
   "LOG:skipTurn": "{player} skips playing any cards.",
-  "LOG:startOfGame": "Starting a {number}-player game (ID: {gameId}) with {playerList}. We therefore play with {numberCardsTotal} cards, where there are {numberColors} colors where {numberCards} is the highest number.",
+  "LOG:startOfGame": "Let's go (ID: {gameId})! We're playing {numberSubgames} subgames, the players {playerList} ({number} in total) are attending. We therefore play with {numberCardsTotal} cards, where there are {numberColors} colors where {numberCards} is the highest number.",
   "LOG:subgameStarts": "The cards for game {number} of {numberTot} are distributed. {card} is revealed to be the trump card this time.",
   "LOG:trickWon": "{player} wins the trick.",
   "LOG:trumpChosen": "{player} chooses {color} as the new trump color.",

@@ -73,32 +73,44 @@ class _HomeScreenState extends ConsumerState<JoinGameScreen> {
           ],
         ),
       );
-  VoidCallback _joinPrivateGame() => () async {
-        final gameId = _gameIdController.text;
-        final password = _passwordController.text;
-        final router = GoRouter.of(context);
-        final game = await GameService.getFirst(
-          filters: [
-            YustFilter(
-              field: 'gameId',
-              comparator: YustFilterComparator.equal,
-              value: gameId,
-            ),
-            YustFilter(
-              field: 'password',
-              comparator: YustFilterComparator.equal,
-              value: password,
-            ),
-          ],
-        );
-        if (game == null) {
-          await YustUi.alertService
-              .showAlert('Game not found or password incorrect', '');
-        } else {
-          await game.addUser(ref.user!);
-          await router.pushNamed('/game', pathParameters: {'gameId': gameId});
-        }
-      };
+  Future<void> _joinPrivateGame() async {
+    final gameId = _gameIdController.text;
+    final password = _passwordController.text;
+    final router = GoRouter.of(context);
+    try {
+      final game = await GameService.getFirst(
+        filters: [
+          YustFilter(
+            field: 'gameId',
+            comparator: YustFilterComparator.equal,
+            value: gameId,
+          ),
+          YustFilter(
+            field: 'password',
+            comparator: YustFilterComparator.equal,
+            value: password,
+          ),
+        ],
+      );
+      if (game == null) {
+        throw Exception('Game not found');
+      }
+      if (!game.allowSpectators && game.arePlayersComplete) {
+        // await YustUi.alertService.showAlert(
+        //   'Game full',
+        //   // ignore: lines_longer_than_80_chars
+        //   "You can't join this game as it's full and doesn't allow spectators.",
+        // );
+        return;
+      }
+      await game.tryAddUser(ref.user!);
+      await router.pushNamed('/game', pathParameters: {'gameId': gameId});
+    } catch (e) {
+      // await YustUi.alertService
+      //     .showAlert('Game not found or password incorrect', '');
+      return;
+    }
+  }
 
   Widget _buildGameList(BuildContext context) => DecoratedBox(
         decoration: BoxDecoration(
@@ -117,7 +129,9 @@ class _HomeScreenState extends ConsumerState<JoinGameScreen> {
                 )
                 .toList();
             if (games.isEmpty) {
-              return const OwnText(text: 'NoGamesFound');
+              return const Center(
+                child: OwnText(text: 'JOINGAME:noGamesFound'),
+              );
             }
             return ListView.builder(
               itemBuilder: (context, index) => GameButton(game: games[index]),

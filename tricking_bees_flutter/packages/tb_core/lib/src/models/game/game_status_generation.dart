@@ -7,7 +7,7 @@ extension GameStatusGenerationExt on Game {
     if (user == null) return [];
     switch (gameState) {
       case GameState.waitingForPlayers:
-        return _getStatusMessagesForWaitingForPlayers(user);
+        return [_getStatusMessageForWaitingForPlayers(user)];
       case GameState.roleSelection:
         return _getStatusMessagesForInProgress(user)
           ..add(_getStartOfGameRoleStatus(user) ?? TrObject(''));
@@ -19,14 +19,26 @@ extension GameStatusGenerationExt on Game {
     }
   }
 
-  List<TrObject> _getStatusMessagesForWaitingForPlayers(YustUser user) => [
-        TrObject(
-          'STATUS:waitingForOtherPlayers',
-          richTrObjects: [
-            RichTrObject(RichTrType.number, value: playerNum - players.length),
-          ],
-        ),
-      ];
+  TrObject _getStatusMessageForWaitingForPlayers(YustUser user) =>
+      !arePlayersComplete
+          ? TrObject(
+              'STATUS:waitingForPlayers${public ? '' : 'Private'}',
+              richTrObjects: [
+                RichTrObject(
+                  RichTrType.number,
+                  value: playerNum - players.length,
+                ),
+              ],
+              namedArgs: {
+                'gameId': gameId.toString(),
+                'password': password,
+              },
+            )
+          : !isUserOwner(user)
+              ? TrObject('STATUS:waitingForOwnerToStart')
+              : shufflePlayers
+                  ? TrObject('STATUS:promptOwnerToStart')
+                  : TrObject('STATUS:promptOwnerToStartWithoutShuffle');
 
   List<TrObject> _getGameFinishedStatus(YustUser user) {
     // TODO: Currently handles same point amounts poorly

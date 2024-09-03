@@ -1,9 +1,11 @@
 roleA: Du darfst das Spielen einer Karte überspringen.
 roleB: Du hast {color} als Trumpffarbe gewählt.
 roleC: Zu Beginn des Spiels hast du {cardList} abgeworfen.
-roleC:START:SelectOne: Du hast bereits {card} abgeworfen. Wähle eine weitere deiner
+roleC:START:SelectOne: Du hast bereits {card} und {card2} abgeworfen. Wähle eine weitere
+  deiner Karten zum Abwerfen.
+roleC:START:SelectThree: Dir wurden drei weitere Karten zugeteilt. Wähle nun drei
   Karten zum Abwerfen.
-roleC:START:SelectTwo: Dir wurden zwei weitere Karten zugeteilt. Wähle nun zwei Karten
+roleC:START:SelectTwo: Du hast bereits {card} abgeworfen. Wähle nun zwei weitere Karten
   zum Abwerfen.
 roleC:START:Wait: Warte auf {player}, um zwei Karten zum Abwerfen zu wählen.
 roleD: Du spielst immer als letztes, außer du gewinnst den Stich.

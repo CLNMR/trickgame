@@ -23,9 +23,11 @@ Game _$GameFromJson(Map json) => Game(
           : GameId.fromJson(Map<String, dynamic>.from(json['gameId'] as Map)),
       online: json['online'] as bool? ?? true,
       public: json['public'] as bool? ?? true,
+      shufflePlayers: json['shufflePlayers'] as bool? ?? false,
       password: json['password'] as String? ?? '',
       playerNum: (json['playerNum'] as num?)?.toInt() ?? 4,
       subgameNum: (json['subgameNum'] as num?)?.toInt() ?? 4,
+      allowSpectators: json['allowSpectators'] as bool? ?? false,
       players: (json['players'] as List<dynamic>?)
           ?.map((e) => Player.fromJson(Map<String, dynamic>.from(e as Map)))
           .toList(),
@@ -82,6 +84,8 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'online': instance.online,
       'public': instance.public,
       'password': instance.password,
+      'shufflePlayers': instance.shufflePlayers,
+      'allowSpectators': instance.allowSpectators,
       'playerNum': instance.playerNum,
       'subgameNum': instance.subgameNum,
       'gameState': instance.gameState.toJson(),

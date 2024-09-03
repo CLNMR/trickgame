@@ -28,7 +28,7 @@ class GameButton extends ConsumerWidget {
           child: GestureDetector(
             onTap: () async {
               final goRouter = GoRouter.of(context);
-              await game.addUser(ref.user!);
+              await game.tryAddUser(ref.user!);
               await goRouter.pushNamed(
                 GameScreenRouting.path,
                 pathParameters: {'gameId': game.id},
@@ -47,18 +47,16 @@ class GameButton extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: OwnText(text: game.gameId.toString()),
-                  ),
+                  OwnText(text: game.gameId.toString()),
+                  const SizedBox(width: 5),
                   OwnText(
                     text: (game.createdAt != null)
                         ? DateFormat('MM-dd HH:mm')
                             .format(game.createdAt!.toLocal())
                         : '',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                  const SizedBox(width: 5),
+                  Flexible(
                     child: OwnText(
                       text: 'gameButPlayers'.tr() +
                           game.players
@@ -68,33 +66,29 @@ class GameButton extends ConsumerWidget {
                       ellipsis: true,
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(width: 5),
                   if (game.gameState != GameState.waitingForPlayers) ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: OwnText(
-                        trObject: TrObject(
-                          'RoundDisplay',
-                          args: [
-                            game.currentRound.toString(),
-                          ],
-                        ),
+                    OwnText(
+                      trObject: TrObject(
+                        'RoundDisplay',
+                        args: [
+                          game.currentRound.toString(),
+                        ],
                       ),
                     ),
+                    const SizedBox(width: 5),
                     IconWithNumber(
                       iconData: Icons.format_list_bulleted,
                       displayNum: game.currentSubgame,
                     ),
                     const OwnText(text: 'gameButConnectiveOf'),
                   ],
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: IconWithNumber(
-                      iconData: Icons.numbers,
-                      displayNum: game.subgameNum,
-                      tooltip: 'gameButSubgameNum'.tr(),
-                    ),
+                  IconWithNumber(
+                    iconData: Icons.numbers,
+                    displayNum: game.subgameNum,
+                    tooltip: 'gameButSubgameNum'.tr(),
                   ),
+                  const SizedBox(width: 5),
                   if (game.gameState == GameState.waitingForPlayers) ...[
                     PlayerIcon(
                       index: game.players.length - 1,
@@ -102,14 +96,12 @@ class GameButton extends ConsumerWidget {
                     ),
                     const OwnText(text: 'gameButConnectiveOf'),
                   ],
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: PlayerIcon(
-                      index: game.playerNum - 1,
-                      displayNumber: true,
-                      tooltip: 'gameButPlayerNum'.tr(),
-                    ),
+                  PlayerIcon(
+                    index: game.playerNum - 1,
+                    displayNumber: true,
+                    tooltip: 'gameButPlayerNum'.tr(),
                   ),
+                  const SizedBox(width: 5),
                 ],
               ),
             ),

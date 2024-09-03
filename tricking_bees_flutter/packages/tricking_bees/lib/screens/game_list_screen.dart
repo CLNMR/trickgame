@@ -59,6 +59,7 @@ class _HomeScreenState extends ConsumerState<GameListScreen> {
         ),
         Expanded(
           child: YustDocsBuilder<Game>(
+            limit: 10,
             // TODO: Build properly with a dynamically loading list
             modelSetup: Game.setup(),
             showLoadingSpinner: true,

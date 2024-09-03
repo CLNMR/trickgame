@@ -16,9 +16,9 @@ void main() {
   });
 
   test('addUser', () async {
-    await game.addUser(user1);
-    await game.addUser(user2);
-    await game.addUser(user3);
+    await game.tryAddUser(user1);
+    await game.tryAddUser(user2);
+    await game.tryAddUser(user3);
     expect(game.players.toSet(), {
       Player.fromUser(user1),
       Player.fromUser(user2),

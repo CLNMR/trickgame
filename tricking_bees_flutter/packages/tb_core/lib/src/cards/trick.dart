@@ -63,27 +63,30 @@ class Trick {
   /// Whether this trick contains a queen.
   bool get containsQueen => cards.any((card) => card.isQueen);
 
-  /// Whether this trick contains any cards of the given trump color.
-  bool containsTrump(CardColor? trumpColor) =>
-      cards.any((card) => card.color == trumpColor);
-
   /// Adds a new card to the stack, and sorts them again by default.
   void addCard(GameCard card, PlayerIndex playerIndex) {
     cardMap[card] = playerIndex;
   }
 
   /// Find the winning card:
-  /// If the trick contains a queen, the winning card is the last queen.
+  /// If the trick contains a queen, the winning card is the first queen.
   /// If otherwise the trick contains the trump, the winning card is the
   /// highest trump.
   /// Otherwise the highest card of the compulsory color wins.
-  GameCard? getWinningCard(CardColor? trumpColor) {
-    if (cards.isEmpty) return null;
+  GameCard? getWinningCard(
+    CardColor? trumpColor, {
+    GameCard? excludedCardFromTrump,
+  }) {
+    final filteredCards =
+        cards.where((element) => element != excludedCardFromTrump);
+    if (filteredCards.isEmpty) return null;
     if (containsQueen) {
-      return cards.lastWhere((card) => card.isQueen);
+      return cards.firstWhere((card) => card.isQueen);
     }
-    if (containsTrump(trumpColor)) {
-      final sortedCards = cards
+    // Check whether anyone has put a trump in the non-trump mix
+    if (compulsoryColor != trumpColor &&
+        filteredCards.any((card) => card.color == trumpColor)) {
+      final sortedCards = filteredCards
           .where((card) => card.color == trumpColor)
           .toList()
         ..sort(GameCard.sort);
