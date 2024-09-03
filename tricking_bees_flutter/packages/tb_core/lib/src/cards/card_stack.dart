@@ -24,7 +24,7 @@ class CardStack extends IterableBase<GameCard> {
         List.generate(
           highestNumber,
           (index) => GameCard(number: index + 1, color: color),
-        )..add(GameCard(number: null, color: color, isQueen: true)),
+        ),// ..add(GameCard(number: null, color: color, isQueen: true)),
       );
     }
     return CardStack(cards: cards);
@@ -107,7 +107,7 @@ class CardStack extends IterableBase<GameCard> {
   }
 
   /// Deal out random cards from this stack.
-  CardStack dealCards({int cardNum = 12}) {
+  CardStack dealCards({int cardNum = 11}) {
     assert(cardNum <= length, 'Not enough cards left to deal.');
     final hand = CardStack();
     for (var i = 0; i < cardNum; i++) {

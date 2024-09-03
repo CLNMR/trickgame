@@ -10,6 +10,13 @@ extension GameEventHandlingExt on Game {
   Future<void> chooseRole(RoleCatalog roleKey) async {
     currentPlayer.roleKey = roleKey;
     addLogEntry(LogRoleChosen(playerIndex: currentPlayerIndex, role: roleKey));
+    currentPlayer.cards.addCard(
+      GameCard(
+        number: 0,
+        color: CardColor.noColor,
+        queenRole: roleKey,
+      ),
+    );
     incrementTurnIndex();
     if (currentTurnIndex == 0) {
       await finishRoleSelection(firstTime: true);
