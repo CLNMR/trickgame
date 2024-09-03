@@ -7,32 +7,33 @@ Ein Spiel von Fabian Balzer und Colin Ihlenfeldt
 
 ## Benötigte Karten
 
-1-18 in 5 Farben
+Standardmäßig:
+**1-15 in 4 Farben (= 60 Karten)**
+**+ doppelte Karten von 3 bis 13, die nach Bedarf (Spielerzahl) hinzugefügt werden.**
 
-|Anzahl Spieler | Anzahl Karten | Kartenkombinationen|
+|Anzahl Spieler | Anzahl Karten | Extra-Karten|
 |---------------|---------------|--------------------|
-|2 Spieler |    42 (3 übrig) |    3x 1-14|
-|3 Spieler |    56 (5 übrig) |    4x 1-14|
-|4 Spieler |    68 (5 übrig) |    4x 1-17|
-|5 Spieler |    85 (10 übrig) |    5x 1-17|
-|6 Spieler |    90 (3 übrig) |    5x 1-18|
+|3 Spieler |    60 (0 übrig) |    - |
+|4 Spieler |    76 (2 übrig) |    6, 7, 8, 9 hinzu |
+|5 Spieler |    88 (0 übrig) |    3, 4, 5 hinzu |
+|6 Spieler |    104 (2 übrig) |    10, 11, 12, 13 hinzu |
 
 ## Spielablauf
 
-- Karten werden verteilt: (Anzahl Spieler)+1 Stapel mit je 12 Karten + 2 Karten extra + 1 Karte für Trumpf
-  - Übrige Karten kommen beiseite
+- Karten werden verteilt: 14 Karten pro Spieler, ein Extrablatt mit 14 Karten, 3 Drückeberger-Karten, 1 trumpfbestimmende Karte
+  - Übrige Karten (bei 4 und 6 Spielern) werden verdeckt beiseite gelegt
 - Trumpffarbe wird aufgedeckt
-- Rollen werden gewählt
-  - Gegen den Uhrzeigersinn, beginnend beim Geber
-  - Variante: Erst stehen nur drei zufällige Rollen zur Auswahl, zwischen denen gewählt wird. Der Geber wählt eine dieser Rollen, der nächste Spieler erhält die verbliebenen beiden zur Auswahl, ergänzt um eine weitere zufällig gewählte Rolle.
-- Rolleneffekte werden ausgeführt (Trumpffarbe geändert, Tokens verteilt, …)
+- Rollen werden der Reihe nach im Uhrzeigersinn gewählt (beginnend bei der Person links des Gebers, dem *Anspieler*), die entsprechende Königin wird auf die Hand genommen.
+  - Variante: Erst stehen nur drei zufällige Rollen zur Auswahl, zwischen denen gewählt wird. Der *Anspieler* wählt eine dieser Rollen, der nächste Spieler erhält die verbliebenen beiden zur Auswahl, ergänzt um eine weitere zufällig gewählte Rolle.
+- Rolleneffekte werden anschließend in der gleichen Reihenfolge ausgeführt (Trumpffarbe geändert, Tokens verteilt, …)
+- Anschließend beginnt (i.d.R.) der *Anspieler* den ersten Stich.
 
 ### Legeregeln
 
-- Trümpfe können nur gespielt werden, wenn man keine Farbe bedienen muss
-- Nieten können immer gespielt werden
-- Letzter Trumpf gewinnt, außer letzte Runde
-- Kein Farbzwang, wenn Trumpf gespielt wird
+- Trümpfe können nur gespielt werden, wenn man keine Farbe bedienen muss.
+- Königinnen können immer gespielt werden, es gewinnt stets die erste gespielte Königin.
+- Kein Farbzwang, wenn mit einer Königin angespielt wird.
+- Bei identischen Karten: Die zuerst gelegte Karte wird als höher gewertet.
 
 ## Rollen
 
@@ -45,10 +46,10 @@ Du darfst die Trumpffarbe bestimmen.
 Punkte: Anzahl Stiche * 2
 
 Drücken - C  
-Du darfst am Anfang 2 Karten drücken und dafür 2 der übrigen Karten nehmen.
+Du darfst am Anfang 3 Karten drücken und dafür 3 der übrigen Karten nehmen.
 Punkte: Anzahl Stiche * 2
 
-Letzte Karte - D  
+Letzte Karte - D  [ab 4 Spielern]
 Du legst immer als Letztes, es sei denn, du spielst den Stich an.
 Punkte: Anzahl Stiche * 2
 
@@ -60,25 +61,52 @@ Zwei Karten pro Stich - F
 Du erhältst 20 Karten am Anfang und musst immer wenn du am Zug bist noch eine weitere Karte legen.
 Punkte: Anzahl Stiche
 
-Anspielen - G  
+Anspielen - G  [ab 4 Spielern]
 Du spielst jeden Stich an.
-Punkte: Anzahl Stiche
+Punkte: Anzahl Stiche * 2
 
-Fremde Punkte sammeln - H  
+Fremde Punkte sammeln - H [ab 4 Spielern]
 Wähle am Anfang zwei Spieler.
-Punkte: Der Mittelwert (aufgerundet) aus deren Punkten
+Punkte: Die Summe aus deren Punkten abzüglich der eigenen Stichzahl * 2
+**TODO** Implementieren
 
-Kein Trumpf - I  
+Möglichst wenig ohne Trumpf - I  
 Keine deiner Karten ist Trumpf.
-Punkte: max(0, 8 - Anzahl Stiche * 2)
+Punkte:
+- 3 Spieler: max(0, 12 - Anzahl Stiche * 2)
+- 4 Spieler: max(0, 10 - Anzahl Stiche * 2)
+- 5 Spieler: max(0, 8 - Anzahl Stiche * 2)
+- 6 Spieler: max(0, 6 - Anzahl Stiche * 2)
+**TODO** Basispunktzahl der Spielerzahl anpassen
 
-Verdecktes Spiel - J
+Verdeckt Spielen: Tarnungsmeisterin - J
 Wenn du nicht ausspielst, spielst du deine Karten verdeckt.
 Erst am Ende jedes Stichs wird die verdeckte Karte aufgedeckt.
 Punkte: Anzahl Stiche * 2
 
 Seher - K
-Vor Spielbeginn darfst du dir die Karten eines anderen Spielers anschauen.
+Vor Spielbeginn darfst du dir die Karten eines anderen Spielers und alle beiseite gelegten Karten anschauen.
+Punkte: Anzahl Stiche * 2
+
+Möglichst wenig mit Niete: Drohne - L
+Du versuchst keine Stiche zu bekommen. Deine Königin ist eine Drohne, die niemals einen Stich bekommt.
+Punkte:
+- 3 Spieler: max(0, 12 - Anzahl Stiche * 2)
+- 4 Spieler: max(0, 10 - Anzahl Stiche * 2)
+- 5 Spieler: max(0, 8 - Anzahl Stiche * 2)
+- 6 Spieler: max(0, 6 - Anzahl Stiche * 2)
+
+Nutzung doppelter Karten: Zwilling - M [ab 4 Spielern]
+Du kannst zwei identische Exemplare (z.B. zwei grüne Sechsen) gemeinsam ausspielen. Diese werden dann als höchste Karte dieser Farbe gewertet.
+Punkte: Anzahl Stiche * 2
+
+Vorhersehung - N
+Du sagst für alle Spieler vorher, wie viele Stiche sie erzielen werden.
+Punkte:
+- 3 Spieler: Pro Spieler: max(0, 4 - Differenz zur Vorhersage)
+- 4 Spieler: Pro Spieler: max(0, 3 - Differenz zur Vorhersage)
+- 5 Spieler: Pro Spieler: max(0, 2 - Differenz zur Vorhersage)
+- 6 Spieler: Pro Spieler: max(0, 1 - Differenz zur Vorhersage)
 
 ## Spielstatistik
 

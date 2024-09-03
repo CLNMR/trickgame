@@ -22,9 +22,9 @@ class RoleC extends Role {
   @override
   bool onStartOfSubgame(Game game) {
     game.inputRequirement = InputRequirement.selectCardToRemove;
-    game.currentPlayer.dealCards(game.undealtCards.dealCards(cardNum: 2));
+    game.currentPlayer.dealCards(game.undealtCards.dealCards(cardNum: 3));
     game.addLogEntry(
-      LogCardsDealt(cardAmount: 2, playerIndex: game.currentPlayerIndex),
+      LogCardsDealt(cardAmount: 3, playerIndex: game.currentPlayerIndex),
     );
     return true;
   }
@@ -46,7 +46,7 @@ class RoleC extends Role {
   Future<void> onSelectCardToRemove(Game game, GameCard card) async {
     if (game.inputRequirement != InputRequirement.selectCardToRemove) return;
     discardCard(game, card);
-    if (getDiscardedCards(game).length == 2) {
+    if (getDiscardedCards(game).length == 3) {
       await game.finishRoleSelection();
     } else {
       await game.save();
@@ -70,13 +70,23 @@ class RoleC extends Role {
   TrObject? getStatusAtStartOfGame(Game game, YustUser? user) {
     final keyBase = '${key.statusKey}:START:';
     final discardedCards = getDiscardedCards(game);
-    final keySuffix = discardedCards.isEmpty ? 'SelectTwo' : 'SelectOne';
+    final keySuffix = discardedCards.isEmpty
+        ? 'SelectThree'
+        : discardedCards.length == 1
+            ? 'SelectTwo'
+            : 'SelectOne';
     return game.isCurrentPlayer(user)
         ? TrObject(
             '$keyBase$keySuffix',
             richTrObjects: [
               if (discardedCards.isNotEmpty)
                 RichTrObject(RichTrType.card, value: discardedCards.first),
+              if (discardedCards.length > 1)
+                RichTrObject(
+                  RichTrType.card,
+                  value: discardedCards[1],
+                  keySuffix: '1',
+                ),
             ],
           )
         : TrObject(
