@@ -5,7 +5,16 @@
 		},
 		{
 			"path": ".."
+		},
+		{
+			"path": "../../flutter_game_framework"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"gameplay",
+			"subgame",
+			"undealt"
+		]
+	}
 }

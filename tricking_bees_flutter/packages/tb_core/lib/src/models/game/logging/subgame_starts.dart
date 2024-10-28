@@ -1,12 +1,10 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../cards/game_card.dart';
-import '../../../wrapper/rich_tr_object.dart';
-import '../../../wrapper/rich_tr_object_type.dart';
-import '../../../wrapper/tr_object.dart';
-import '../game.dart';
-import 'log_entry.dart';
-import 'log_entry_type.dart';
+import '../../../util/tb_rich_tr_object_type.dart';
+import '../tb_game.dart';
+import 'tb_log_entry_type.dart';
 
 part 'subgame_starts.g.dart';
 
@@ -20,7 +18,7 @@ class LogSubgameStarts extends LogEntry {
     required this.trumpCard,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.subgameStarts,
+          entryType: TBLogEntryType.subgameStarts,
           indentLevel: indentLevel ?? 0,
         );
 
@@ -50,11 +48,11 @@ class LogSubgameStarts extends LogEntry {
           ),
           RichTrObject(
             RichTrType.number,
-            value: game.subgameNum,
+            value: (game as TBGame).subgameNum,
             keySuffix: 'Tot',
           ),
           RichTrObject(
-            RichTrType.card,
+            TBRichTrType.card,
             value: trumpCard,
           ),
         ],

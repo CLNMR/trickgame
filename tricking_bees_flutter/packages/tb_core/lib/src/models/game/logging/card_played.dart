@@ -1,12 +1,10 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../cards/game_card.dart';
-import '../../../wrapper/rich_tr_object.dart';
-import '../../../wrapper/rich_tr_object_type.dart';
-import '../../../wrapper/tr_object.dart';
-import '../game.dart';
-import 'log_entry.dart';
-import 'log_entry_type.dart';
+import '../../../util/tb_rich_tr_object_type.dart';
+import '../tb_game.dart';
+import 'tb_log_entry_type.dart';
 
 part 'card_played.g.dart';
 
@@ -21,7 +19,7 @@ class LogCardPlayed extends LogEntry {
     this.isHidden = false,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.cardPlayed,
+          entryType: TBLogEntryType.cardPlayed,
           indentLevel: indentLevel ?? 2,
         );
 
@@ -49,7 +47,8 @@ class LogCardPlayed extends LogEntry {
     var trKey = localizedKey;
     if (isHidden) {
       final isPlayedThisRound =
-          game.logEntries[game.currentRound]?.contains(this) ?? false;
+          (game as TBGame).logEntries[game.currentRound]?.contains(this) ??
+              false;
       final suffix = isPlayedThisRound ? 'ThisRound' : 'Before';
       trKey = '${localizedKey}Hidden$suffix';
     }
@@ -61,6 +60,6 @@ class LogCardPlayed extends LogEntry {
           RichTrType.player,
           value: playerIndex,
         ),
-        RichTrObject(RichTrType.card, value: cardKey),
+        RichTrObject(TBRichTrType.card, value: cardKey),
       ];
 }

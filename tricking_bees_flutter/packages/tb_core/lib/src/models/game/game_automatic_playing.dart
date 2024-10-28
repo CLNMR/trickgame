@@ -1,7 +1,7 @@
-part of 'game.dart';
+part of 'tb_game.dart';
 
 /// Handles automation of gameplay.
-extension GameAutoPlayExt on Game {
+extension GameAutoPlayExt on TBGame {
   /// Performs a random action that is currently possible.
   Future<void> performRandomPossibleAction() async {
     if ([GameState.finished, GameState.waitingForPlayers].contains(gameState)) {
@@ -33,7 +33,7 @@ extension GameAutoPlayExt on Game {
 
   Future<void> _playRandomCard(YustUser? user, {bool allowSkip = false}) async {
     if (user == null) return;
-    final player = getPlayer(user);
+    final player = getPlayer(user) as TBPlayer;
     final cards = player.cards
         .where((e) => player.canPlayCard(e, compulsoryColor))
         .toList();
@@ -49,7 +49,7 @@ extension GameAutoPlayExt on Game {
 
   Future<void> _selectRandomPlayer(YustUser? user) async {
     if (user == null) return;
-    final player = getPlayer(user);
+    final player = getPlayer(user) as TBPlayer;
     final players = getOtherPlayers(user)
         .where(
           (p) => !player.role.isPlayerSelected(this, getPlayerIndex(p)),

@@ -1,7 +1,7 @@
-part of 'game.dart';
+part of 'tb_game.dart';
 
 /// Handles the generation of status messages during the game
-extension GameEndHandlingExt on Game {
+extension GameEndHandlingExt on TBGame {
   /// The ranks (1-indexed) for each player, mapped by their index;
   /// (PlayerIndex -> PlayerRank).
   Map<PlayerRank, List<PlayerIndex>> get playerRanks {

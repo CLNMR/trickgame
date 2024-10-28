@@ -1,11 +1,7 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../wrapper/rich_tr_object.dart';
-import '../../../wrapper/rich_tr_object_type.dart';
-import '../../../wrapper/tr_object.dart';
-import '../game.dart';
-import 'log_entry.dart';
-import 'log_entry_type.dart';
+import 'tb_log_entry_type.dart';
 
 part 'round_start_play_order.g.dart';
 
@@ -19,7 +15,7 @@ class LogRoundStartPlayOrder extends LogEntry {
     required this.playOrder,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.roundStartPlayOrder,
+          entryType: TBLogEntryType.roundStartPlayOrder,
           indentLevel: indentLevel ?? 0,
         );
 

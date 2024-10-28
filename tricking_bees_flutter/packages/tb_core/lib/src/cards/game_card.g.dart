@@ -9,15 +9,13 @@ part of 'game_card.dart';
 GameCard _$GameCardFromJson(Map json) => GameCard(
       number: (json['number'] as num?)?.toInt(),
       color: $enumDecode(_$CardColorEnumMap, json['color']),
-      queenRole: json['queenRole'] != null
-          ? $enumDecode(_$RoleCatalogEnumMap, json['queenRole'])
-          : null,
+      queenRole: $enumDecodeNullable(_$RoleCatalogEnumMap, json['queenRole']),
     );
 
 Map<String, dynamic> _$GameCardToJson(GameCard instance) => <String, dynamic>{
       'number': instance.number,
       'color': _$CardColorEnumMap[instance.color]!,
-      'queenRole': _$RoleCatalogEnumMap[instance.queenRole] ?? null,
+      'queenRole': _$RoleCatalogEnumMap[instance.queenRole],
     };
 
 const _$CardColorEnumMap = {

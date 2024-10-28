@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player.dart';
+part of 'tb_player.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Player _$PlayerFromJson(Map json) => Player(
+TBPlayer _$TBPlayerFromJson(Map json) => TBPlayer(
       id: json['id'] as String,
       displayName: json['displayName'] as String,
       cards: json['cards'] == null
@@ -17,7 +17,7 @@ Player _$PlayerFromJson(Map json) => Player(
       roleKey: $enumDecodeNullable(_$RoleCatalogEnumMap, json['roleKey']),
     );
 
-Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
+Map<String, dynamic> _$TBPlayerToJson(TBPlayer instance) => <String, dynamic>{
       'id': instance.id,
       'displayName': instance.displayName,
       'tricksWon': instance.tricksWon,

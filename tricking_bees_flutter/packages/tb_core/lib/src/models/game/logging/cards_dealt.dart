@@ -1,12 +1,7 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../util/custom_types.dart';
-import '../../../wrapper/rich_tr_object.dart';
-import '../../../wrapper/rich_tr_object_type.dart';
-import '../../../wrapper/tr_object.dart';
-import '../game.dart';
-import 'log_entry.dart';
-import 'log_entry_type.dart';
+import 'tb_log_entry_type.dart';
 
 part 'cards_dealt.g.dart';
 
@@ -20,7 +15,7 @@ class LogCardsDealt extends LogEntry {
     required this.playerIndex,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.cardsDealt,
+          entryType: TBLogEntryType.cardsDealt,
           indentLevel: indentLevel ?? 2,
         );
 

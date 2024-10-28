@@ -1,12 +1,9 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../roles/role_catalog.dart';
-import '../../../wrapper/rich_tr_object.dart';
-import '../../../wrapper/rich_tr_object_type.dart';
-import '../../../wrapper/tr_object.dart';
-import '../game.dart';
-import 'log_entry.dart';
-import 'log_entry_type.dart';
+import '../../../util/tb_rich_tr_object_type.dart';
+import 'tb_log_entry_type.dart';
 
 part 'player_chosen.g.dart';
 
@@ -21,7 +18,7 @@ class LogPlayerChosen extends LogEntry {
     required this.roleKey,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.playerChosen,
+          entryType: TBLogEntryType.playerChosen,
           indentLevel: indentLevel ?? 0,
         );
 
@@ -57,7 +54,7 @@ class LogPlayerChosen extends LogEntry {
             value: playerChosenIndex,
             keySuffix: 'Chosen',
           ),
-          RichTrObject(RichTrType.role, value: roleKey),
+          RichTrObject(TBRichTrType.role, value: roleKey),
         ],
       );
 }

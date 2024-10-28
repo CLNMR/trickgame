@@ -1,11 +1,8 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../wrapper/rich_tr_object.dart';
-import '../../../wrapper/rich_tr_object_type.dart';
-import '../../../wrapper/tr_object.dart';
-import '../game.dart';
-import 'log_entry.dart';
-import 'log_entry_type.dart';
+import '../tb_game.dart';
+import 'tb_log_entry_type.dart';
 
 part 'turn_start.g.dart';
 
@@ -18,7 +15,7 @@ class LogTrickWon extends LogEntry {
     required this.playerIndex,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.trickWon,
+          entryType: TBLogEntryType.trickWon,
           indentLevel: indentLevel ?? 1,
         );
 
@@ -52,7 +49,7 @@ class LogTrickWon extends LogEntry {
     ) displayEvent,
     Function() incrementLogDisplayCount,
   ) async {
-    final playerInfo = game.currentPlayer;
+    final playerInfo = (game as TBGame).currentPlayer;
     await displayEvent(
       TrObject("${playerInfo.displayName}'s turn starts"),
       TrObject(''),

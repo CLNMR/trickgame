@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yust/yust.dart';
 
@@ -10,47 +10,38 @@ import '../../cards/card_color.dart';
 import '../../cards/card_stack.dart';
 import '../../cards/game_card.dart';
 import '../../cards/trick.dart';
-import '../../codegen/annotations/generate_service.dart';
 import '../../roles/role.dart';
 import '../../roles/role_catalog.dart';
 import '../../util/custom_types.dart';
-import '../../util/env_variables.dart';
-import '../../util/other_functions.dart';
-import '../../wrapper/rich_tr_object.dart';
-import '../../wrapper/rich_tr_object_type.dart';
-import '../../wrapper/tr_object.dart';
-import '../game_id.dart';
-import '../game_state.dart';
-import '../player.dart';
-import 'game.service.dart';
+import '../../util/tr_object.dart';
+import '../tb_player.dart';
 import 'logging/card_played.dart';
-import 'logging/end_of_game.dart';
-import 'logging/log_entry.dart';
 import 'logging/points_awarded.dart';
 import 'logging/role_chosen.dart';
 import 'logging/round_start_play_order.dart';
 import 'logging/skip_turn.dart';
-import 'logging/start_of_game.dart';
 import 'logging/subgame_starts.dart';
 import 'logging/trump_chosen.dart';
 import 'logging/turn_start.dart';
+import 'tb_game_state.dart';
 
-part 'game.g.dart';
 part 'game_automatic_playing.dart';
 part 'game_card_playing.dart';
 part 'game_end_handling.dart';
 part 'game_logging.dart';
-part 'game_pre_game_handling.dart';
-part 'game_role_handling.dart';
-part 'game_status_generation.dart';
+part 'tb_game_pre_game_handling.dart';
+part 'tb_game_role_handling.dart';
+part 'tb_game_status_generation.dart';
+part 'tb_game.g.dart';
+part 'tb_game.service.dart';
 
 @JsonSerializable()
 @GenerateService()
 
 /// A game of TrickingBees.
-class Game extends YustDoc {
+class TBGame extends Game {
   /// Creates a [Game].
-  Game({
+  TBGame({
     super.id,
     super.createdAt,
     super.createdBy,
@@ -60,16 +51,17 @@ class Game extends YustDoc {
     super.envId,
     GameId? gameId,
     // Static game properties:
-    this.online = true,
-    this.public = true,
-    this.password = '',
-    this.shufflePlayers = true,
-    this.playerNum = 4,
+    super.online = true,
+    super.public = true,
+    super.password = '',
+    super.shufflePlayers = true,
+    super.playerNum = 4,
     this.subgameNum = 4,
-    this.allowSpectators = false,
-    List<Player>? players,
+    super.allowSpectators = false,
+    List<TBPlayer>? players,
     // Dynamic game properties:
-    this.gameState = GameState.waitingForPlayers,
+    super.gameState = GameState.waitingForPlayers,
+    this.tbGameState = TBGameState.notRunning,
     this.currentSubgame = 0,
     this.currentRound = 0,
     this.currentTurnIndex = 0,
@@ -80,49 +72,18 @@ class Game extends YustDoc {
     this.inputRequirement = InputRequirement.card,
     Map<RoundNumber, List<LogEntry>>? existingLogEntries,
     Map<String, dynamic>? cardAndEventFlags,
-  })  : gameId = gameId ?? GameId.generate(),
-        players = players ?? [],
-        undealtCards =
+  })  : undealtCards =
             undealtCards ?? CardStack.initialDeck(playerNum: playerNum),
-        playOrder = playOrder ?? List.generate(playerNum, (index) => index),
-        flags = cardAndEventFlags ?? {},
         logEntries = existingLogEntries ??
             {
               -1: [LogStartOfGame(indentLevel: 0)],
             };
 
   /// Creates a [Game] from JSON data.
-  factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
-
-  /// The ID of the game in the format NNN-NNN-NNN.
-  final GameId gameId;
-
-  /// Whether the game is online or offline.
-  bool online;
-
-  /// Whether the game is public or private.
-  bool public;
-
-  /// The password needed to enter the game.
-  String password;
-
-  /// The number of players this game is played with.
-  int playerNum;
+  factory TBGame.fromJson(Map<String, dynamic> json) => _$TBGameFromJson(json);
 
   /// The number of subgames to play.
   int subgameNum;
-
-  /// Whether the players are shuffled upon the start of the game.
-  bool shufflePlayers;
-
-  /// Whether spectators are allowed.
-  bool allowSpectators;
-
-  /// The state of the game.
-  GameState gameState;
-
-  /// The list of players in the game.
-  List<Player> players;
 
   /// The cards of each player. Index 0 denotes the card defining the trump
   /// color, Index 1 denotes the two extra cards for the changing role, Index 2
@@ -140,9 +101,6 @@ class Game extends YustDoc {
   /// Does NOT necessarily correspond to the list of players!
   TurnNumber currentTurnIndex;
 
-  /// The current play order, where the entries are player indices.
-  List<PlayerIndex> playOrder;
-
   /// The current trump card.
   GameCard? currentTrump;
 
@@ -152,23 +110,23 @@ class Game extends YustDoc {
   /// Which input is required from the users.
   InputRequirement inputRequirement;
 
-  /// Stores all flags for the current cards and event.
-  // @JsonKey(includeFromJson: true, includeToJson: true)
-  final Map<String, dynamic> flags;
-
   /// All of the log entries for the game.
   /// Maps the round number (outer map) and the turn number (inner map) with it.
   @JsonKey(includeFromJson: true, includeToJson: true)
   final Map<RoundNumber, List<LogEntry>> logEntries;
 
+  /// The state more specific to Tricking Bees that the game can be in
+  /// Only relevant if the game is in [GameState.running]
+  TBGameState tbGameState;
+
   @override
-  Map<String, dynamic> toJson() => _$GameToJson(this);
+  Map<String, dynamic> toJson() => _$TBGameToJson(this);
 
   /// The setup for the [Game] model.
-  static YustDocSetup<Game> setup() => YustDocSetup<Game>(
+  static YustDocSetup<TBGame> setup() => YustDocSetup<TBGame>(
         collectionName: 'games',
-        fromJson: Game.fromJson,
-        newDoc: Game.new,
+        fromJson: TBGame.fromJson,
+        newDoc: TBGame.new,
       );
 
   final _overridingTrumpColorKey = 'overridingTrumpColor';
@@ -197,7 +155,7 @@ class Game extends YustDoc {
       (currentSubgame - 1) % playerNum;
 
   /// The player currently expected to do something.
-  Player get currentPlayer => players[currentPlayerIndex];
+  TBPlayer get currentPlayer => players[currentPlayerIndex] as TBPlayer;
 
   /// The total number of rounds that will be played in the game.
   int get totalRoundNum => subgameNum * 13;
@@ -212,26 +170,18 @@ class Game extends YustDoc {
     return Trick(cardMap: LinkedHashMap.fromEntries(trickLogEntries));
   }
 
-  /// The players other than the user's player, starting at their index.
-  List<Player> getOtherPlayers(YustUser? user) => List.generate(
-        players.length - 1,
-        (index) => (getPlayerIndex(getPlayer(user)) + index + 1) % playerNum,
-      )
-          .map(
-            (e) => players[e],
-          )
-          .toList();
-
   /// Get the players that currently do not have the turn.
-  List<Player> getNonCurrentPlayers() =>
-      players.where((player) => player.id != currentPlayer.id).toList();
+  List<TBPlayer> getNonCurrentPlayers() => players
+      .where((player) => player.id != currentPlayer.id)
+      .whereType<TBPlayer>()
+      .toList();
 
   /// Returns whether the given user is the current player.
   bool isCurrentPlayer(YustUser? user) => currentPlayer.id == user?.id;
 
   /// The points for each player, indexed by their index.
   Map<PlayerIndex, int> get playerPoints =>
-      players.map((e) => e.pointTotal).toList().asMap();
+      players.map((e) => (e as TBPlayer).pointTotal).toList().asMap();
 
   /// Increments the current turn index.
   void incrementTurnIndex() {
@@ -241,7 +191,7 @@ class Game extends YustDoc {
   /// Finish a subgame and go to the end, or start a new subgame.
   Future<void> finishSubgame() async {
     for (final entry in players.asMap().entries) {
-      entry.value.awardPoints(this, entry.key);
+      (entry.value as TBPlayer).awardPoints(this, entry.key);
     }
     for (final role in currentRoles) {
       role.onEndOfSubgame(this);
@@ -260,8 +210,8 @@ class Game extends YustDoc {
   /// Ends the game and gives each player a card corresponding to their rank.
   void endTheGame() {
     for (var i = 0; i < playerNum; i++) {
-      players[i].resetForNewSubgame();
-      players[i].dealCards(
+      (players[i] as TBPlayer).resetForNewSubgame();
+      (players[i] as TBPlayer).dealCards(
         CardStack(
           cards: [
             GameCard(number: getRankForPlayer(i), color: CardColor.yellow),
@@ -285,11 +235,11 @@ class Game extends YustDoc {
     // Deal new cards and reset players.
     undealtCards = CardStack.initialDeck(playerNum: playerNum);
     for (var i = 0; i < playerNum; i++) {
-      players[i].resetForNewSubgame();
-      players[i].dealCards(undealtCards.dealCards());
+      (players[i] as TBPlayer).resetForNewSubgame();
+      (players[i] as TBPlayer).dealCards(undealtCards.dealCards());
     }
     currentTrump = undealtCards.getRandomCard();
-    gameState = GameState.roleSelection;
+    // gameState = GameState.roleSelection; // TODO: Add new SubGameState
     inputRequirement = InputRequirement.selectRole;
     addLogEntry(
       LogSubgameStarts(subgame: currentSubgame, trumpCard: currentTrump!),
@@ -313,9 +263,9 @@ class Game extends YustDoc {
 
   /// Advance the game to the next turn during the trick-playing phase.
   Future<void> goToNextTurn() async {
-    if (gameState == GameState.roleSelection) {
-      return;
-    }
+    // if (gameState == GameState.roleSelection) {
+    //   return;
+    // } // TODO: Add new SubGameState
     inputRequirement = InputRequirement.card;
 
     for (final role in currentRoles) {
@@ -346,7 +296,7 @@ class Game extends YustDoc {
   PlayerIndex tryEvaluateTrick() {
     final winnerIndex = currentTrick?.getWinningIndex(currentTrumpColor);
     if (winnerIndex == null) return currentSubgame - 1;
-    final winner = players[winnerIndex];
+    final winner = players[winnerIndex] as TBPlayer;
     winner.tricksWon++;
     addLogEntry(LogTrickWon(playerIndex: winnerIndex));
     return winnerIndex;
@@ -369,24 +319,6 @@ class Game extends YustDoc {
     );
   }
 
-  /// Returns the player associated with the given user.
-  Player getPlayer(YustUser? user) =>
-      players.firstWhere((player) => player.id == user?.id);
-
-  /// Returns the index of the given player in the list of players.
-  int getPlayerIndex(Player player) =>
-      players.indexWhere((other) => other.id == player.id);
-
-  /// Copies the game.
-  Game copy() => Game.fromJson(toJson());
-
-  /// Whether the user is a mere spectator of the given game.
-  bool isUserSpectator(YustUser? user) =>
-      !players.map((e) => e.id).contains(user?.id);
-
-  /// Whether the user has created the game and should thus be able to start it.
-  bool isUserOwner(YustUser? user) => createdBy == user?.id;
-
   /// Whether the given round marks the start of a subgame.
   static bool roundStartsSubgame(RoundNumber round) =>
       getSubRoundNumber(round) == 0;
@@ -397,6 +329,44 @@ class Game extends YustDoc {
 
   /// The round number with respect to the start of the subgame.
   static int getSubRoundNumber(RoundNumber round) => round % 13;
+
+  @override
+  Game copy() {
+    // TODO: implement copy
+    throw UnimplementedError();
+  }
+
+  @override
+  Game init() {
+    // TODO: implement init
+    throw UnimplementedError();
+  }
+
+  @override
+
+  /// Saves the document.
+  Future<void> save({
+    bool merge = true,
+    bool? trackModification,
+    bool skipOnSave = false,
+    bool? removeNullValues,
+    bool doNotCreate = false,
+  }) async {
+    await Yust.databaseService.saveDoc<TBGame>(
+      TBGame.setup(),
+      this,
+      trackModification: trackModification ?? false,
+      skipOnSave: skipOnSave,
+      doNotCreate: doNotCreate,
+      merge: merge,
+      removeNullValues: removeNullValues,
+    );
+  }
+
+  @override
+  void start() {
+    // TODO: implement start
+  }
 }
 
 /// The input requirement for the user.

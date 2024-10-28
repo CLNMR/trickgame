@@ -1,13 +1,10 @@
 import 'dart:collection';
 
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 
-import '../util/custom_types.dart';
 import 'card_color.dart';
 import 'card_stack.dart';
 import 'game_card.dart';
-
-@JsonSerializable()
 
 /// A trick in the game.
 class Trick {

@@ -1,6 +1,6 @@
 import '../cards/card_color.dart';
 import '../cards/card_stack.dart';
-import '../models/game/game.dart';
+import '../models/game/tb_game.dart';
 import 'role.dart';
 import 'role_catalog.dart';
 
@@ -14,5 +14,5 @@ class RoleE extends Role {
       hand;
 
   @override
-  int calculatePoints(Game game, int tricksWon) => tricksWon;
+  int calculatePoints(TBGame game, int tricksWon) => tricksWon;
 }

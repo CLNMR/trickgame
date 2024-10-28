@@ -1,13 +1,9 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../roles/role_catalog.dart';
-import '../../../util/custom_types.dart';
-import '../../../wrapper/rich_tr_object.dart';
-import '../../../wrapper/rich_tr_object_type.dart';
-import '../../../wrapper/tr_object.dart';
-import '../game.dart';
-import 'log_entry.dart';
-import 'log_entry_type.dart';
+import '../../../util/tb_rich_tr_object_type.dart';
+import 'tb_log_entry_type.dart';
 
 part 'points_awarded.g.dart';
 
@@ -23,7 +19,7 @@ class LogPointsAwarded extends LogEntry {
     required this.points,
     required this.tricksWon,
   }) : super(
-          entryType: LogEntryType.pointsAwarded,
+          entryType: TBLogEntryType.pointsAwarded,
           indentLevel: indentLevel ?? 0,
         );
 
@@ -54,7 +50,7 @@ class LogPointsAwarded extends LogEntry {
         localizedKey,
         richTrObjects: [
           RichTrObject(RichTrType.player, value: playerIndex),
-          RichTrObject(RichTrType.role, value: roleKey),
+          RichTrObject(TBRichTrType.role, value: roleKey),
           RichTrObject(
             RichTrType.number,
             value: tricksWon,

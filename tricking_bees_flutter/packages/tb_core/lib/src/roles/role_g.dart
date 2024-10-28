@@ -1,4 +1,4 @@
-import '../models/game/game.dart';
+import '../models/game/tb_game.dart';
 import 'role.dart';
 import 'role_catalog.dart';
 
@@ -8,12 +8,11 @@ class RoleG extends Role {
   RoleG() : super(key: RoleCatalog.roleG);
 
   @override
-  void transformPlayOrder(Game game) {
+  void transformPlayOrder(TBGame game) {
     final playerIndex = game.getFirstPlayerWithRole(key);
     if (playerIndex == null || game.playOrder.first == playerIndex) return;
     game.playOrder
       ..remove(playerIndex)
       ..insert(0, playerIndex);
   }
-
 }

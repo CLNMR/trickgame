@@ -1,11 +1,9 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:yust/yust.dart';
 
-import '../models/game/game.dart';
-import '../models/game/game.service.dart';
 import '../models/game/logging/player_chosen.dart';
-import '../wrapper/rich_tr_object.dart';
-import '../wrapper/rich_tr_object_type.dart';
-import '../wrapper/tr_object.dart';
+import '../models/game/tb_game.dart';
+import '../models/tb_player.dart';
 import 'role.dart';
 import 'role_catalog.dart';
 
@@ -18,18 +16,18 @@ class RoleH extends Role {
   final String _chosenPlayersKey = 'RoleHChosenPlayerIndexes';
 
   /// Get the players chosen so far.
-  List<int> getChosenPlayers(Game game) =>
+  List<int> getChosenPlayers(TBGame game) =>
       game.getFlagList<int>(_chosenPlayersKey) ?? <int>[];
 
   /// Add a player to the list of chosen players.
-  void addSelectedPlayer(Game game, int selectedPlayerIndex) {
+  void addSelectedPlayer(TBGame game, int selectedPlayerIndex) {
     final chosenPlayers = getChosenPlayers(game)..add(selectedPlayerIndex);
     game.setFlag(_chosenPlayersKey, chosenPlayers);
   }
 
   /// Choose players at the start of the game.
   @override
-  bool onStartOfSubgame(Game game) {
+  bool onStartOfSubgame(TBGame game) {
     if (getChosenPlayers(game).length >= 2) return false;
     // If there are only three players, the two selected players are
     // automatically the other two players and no selection is needed.
@@ -46,13 +44,13 @@ class RoleH extends Role {
   }
 
   @override
-  void onEndOfSubgame(Game game) {
+  void onEndOfSubgame(TBGame game) {
     game.deleteFlag(_chosenPlayersKey);
   }
 
   /// Select a player.
   @override
-  Future<void> selectPlayer(Game game, int selectedPlayerIndex) async {
+  Future<void> selectPlayer(TBGame game, int selectedPlayerIndex) async {
     if (game.inputRequirement != InputRequirement.selectPlayer) return;
     if (isPlayerSelected(game, selectedPlayerIndex)) return;
     // A player cannot select themselves.
@@ -73,20 +71,22 @@ class RoleH extends Role {
   }
 
   @override
-  bool isPlayerSelected(Game game, int playerIndex) =>
+  bool isPlayerSelected(TBGame game, int playerIndex) =>
       getChosenPlayers(game).contains(playerIndex);
 
   @override
-  int calculatePoints(Game game, int tricksWon) {
+  int calculatePoints(TBGame game, int tricksWon) {
     final chosenPlayers = getChosenPlayers(game);
     if (chosenPlayers.length < 2) return 0;
-    final p1Num = game.players[chosenPlayers[0]].calculateCurrentPoints(game);
-    final p2Num = game.players[chosenPlayers[1]].calculateCurrentPoints(game);
+    final p1Num = (game.players[chosenPlayers[0]] as TBPlayer)
+        .calculateCurrentPoints(game);
+    final p2Num = (game.players[chosenPlayers[1]] as TBPlayer)
+        .calculateCurrentPoints(game);
     return ((p1Num + p2Num) / 2).ceil();
   }
 
   @override
-  TrObject? getStatusAtStartOfGame(Game game, YustUser? user) {
+  TrObject? getStatusAtStartOfGame(TBGame game, YustUser? user) {
     final keyBase = '${key.statusKey}:START:';
     final chosenPlayers = getChosenPlayers(game);
     final keySuffix = chosenPlayers.isEmpty ? 'SelectTwo' : 'SelectOne';
@@ -107,7 +107,7 @@ class RoleH extends Role {
   }
 
   @override
-  TrObject getStatusWhileActive(Game game, YustUser? user) => TrObject(
+  TrObject getStatusWhileActive(TBGame game, YustUser? user) => TrObject(
         key.statusKey,
         richTrObjects: [
           RichTrObject(RichTrType.playerList, value: getChosenPlayers(game)),

@@ -1,9 +1,10 @@
-part of 'game.dart';
+part of 'tb_game.dart';
 
 /// Handles the events for each round of the game.
-extension GameEventHandlingExt on Game {
+extension TBGameEventHandlingExt on TBGame {
   /// Retrieve all roles that are currently active in this game.
-  List<Role> get currentRoles => players.map((e) => e.role).toList();
+  List<Role> get currentRoles =>
+      players.map((e) => (e as TBPlayer).role).toList();
 
   /// Assigns the given Role to the current player and advances the game to the
   /// next player.
@@ -54,7 +55,8 @@ extension GameEventHandlingExt on Game {
 
   /// Finishes the role selection and advances the game to the next player.
   Future<void> endRoleSelectionAndStartTrickGame() async {
-    gameState = GameState.playingTricks;
+    gameState = GameState.running;
+    tbGameState = TBGameState.playingTricks;
     inputRequirement = InputRequirement.card;
     playOrder = List.generate(
       playerNum,
@@ -74,7 +76,7 @@ extension GameEventHandlingExt on Game {
 
   /// Retrieve the first player with the given role.
   int? getFirstPlayerWithRole(RoleCatalog roleKey) =>
-      players.indexWhere((e) => e.roleKey == roleKey);
+      players.indexWhere((e) => (e as TBPlayer).roleKey == roleKey);
 
   /// Sets a flag for the current card or event.
   void setFlag(String key, dynamic value) {

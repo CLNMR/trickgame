@@ -1,4 +1,4 @@
-import '../models/game/game.dart';
+import '../models/game/tb_game.dart';
 import 'role.dart';
 import 'role_catalog.dart';
 
@@ -8,7 +8,7 @@ class RoleA extends Role {
   RoleA() : super(key: RoleCatalog.roleA);
 
   @override
-  Future<void> onStartOfTurn(Game game) async {
+  Future<void> onStartOfTurn(TBGame game) async {
     if (game.currentPlayer.roleKey != RoleCatalog.roleA) return;
     game.inputRequirement = InputRequirement.cardOrSkip;
   }

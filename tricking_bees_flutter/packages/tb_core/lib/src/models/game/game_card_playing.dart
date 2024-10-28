@@ -1,23 +1,26 @@
-part of 'game.dart';
+part of 'tb_game.dart';
 
 /// Handles everything around card playing.
-extension GameCardExt on Game {
+extension GameCardExt on TBGame {
   /// The color currently compulsory to play.
   CardColor? get compulsoryColor => currentTrick?.compulsoryColor;
 
   /// Determines whether the given user can currently any cards.
   bool canPlayAnyCards(Player player) =>
-      gameState == GameState.playingTricks &&
+      gameState == GameState.running &&
+      tbGameState == TBGameState.playingTricks &&
       (inputRequirement.isCard) &&
       (currentPlayer.id == player.id);
 
   /// Determines whether the given player can currently play the given card.
   bool canPlayCard(GameCard card, Player player) =>
-      canPlayAnyCards(player) && player.canPlayCard(card, compulsoryColor);
+      canPlayAnyCards(player) &&
+      (player as TBPlayer).canPlayCard(card, compulsoryColor);
 
   /// Whether the given player is able to remove a card.
   bool canRemoveCard(Player player) =>
-      gameState == GameState.roleSelection &&
+      gameState == GameState.running &&
+      tbGameState == TBGameState.roleSelection &&
       inputRequirement == InputRequirement.selectCardToRemove &&
       currentPlayer.id == player.id;
 
@@ -30,10 +33,10 @@ extension GameCardExt on Game {
     if (!isAuthenticatedPlayer(user, player)) return;
     if (inputRequirement == InputRequirement.selectCardToRemove) {
       if (!canRemoveCard(player)) return;
-      await player.role.onSelectCardToRemove(this, cardKey);
+      await (player as TBPlayer).role.onSelectCardToRemove(this, cardKey);
       return;
     }
-    if (!player.canPlayCard(cardKey, compulsoryColor)) return;
+    if (!(player as TBPlayer).canPlayCard(cardKey, compulsoryColor)) return;
     player.playCard(cardKey);
     currentTrick!.addCard(cardKey, currentPlayerIndex);
     addLogEntry(
@@ -58,7 +61,7 @@ extension GameCardExt on Game {
 
   /// Whether this player is playing their card hidden.
   bool playsCardHidden(Player player) =>
-      player.role.playsCardHidden &&
+      (player as TBPlayer).role.playsCardHidden &&
       playOrder.indexOf(getPlayerIndex(player)) != 0;
 
   /// Method to skip the playing of a card.

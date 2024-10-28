@@ -1,12 +1,9 @@
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../cards/card_color.dart';
-import '../../../wrapper/rich_tr_object.dart';
-import '../../../wrapper/rich_tr_object_type.dart';
-import '../../../wrapper/tr_object.dart';
-import '../game.dart';
-import 'log_entry.dart';
-import 'log_entry_type.dart';
+import '../../../util/tb_rich_tr_object_type.dart';
+import 'tb_log_entry_type.dart';
 
 part 'trump_chosen.g.dart';
 
@@ -20,7 +17,7 @@ class LogTrumpChosen extends LogEntry {
     required this.chosenColor,
     int? indentLevel,
   }) : super(
-          entryType: LogEntryType.trumpChosen,
+          entryType: TBLogEntryType.trumpChosen,
           indentLevel: indentLevel ?? 0,
         );
 
@@ -48,7 +45,7 @@ class LogTrumpChosen extends LogEntry {
             RichTrType.player,
             value: playerIndex,
           ),
-          RichTrObject(RichTrType.color, value: chosenColor),
+          RichTrObject(TBRichTrType.color, value: chosenColor),
         ],
       );
 }

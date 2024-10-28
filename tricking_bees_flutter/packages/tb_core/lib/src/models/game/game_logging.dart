@@ -1,7 +1,7 @@
-part of 'game.dart';
+part of 'tb_game.dart';
 
 /// Handles the creation of log entries on the game.
-extension GameLogEntryExt on Game {
+extension GameLogEntryExt on TBGame {
   /// The player names, shortened to what's absolutely necessary.
   List<String> get shortenedPlayerNames =>
       getUniqueStartSubstrings(players.map((e) => e.displayName));

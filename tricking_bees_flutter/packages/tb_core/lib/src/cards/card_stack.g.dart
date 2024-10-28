@@ -6,12 +6,7 @@ part of 'card_stack.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CardStack _$CardStackFromJson(Map json) => CardStack(
-      cards: (json['_cards'] as List<dynamic>)
-          .map((e) => GameCard.fromJson((e as Map).cast<String, dynamic>()))
-          .toList(),
-    );
+CardStack _$CardStackFromJson(Map json) => CardStack();
 
-Map<String, dynamic> _$CardStackToJson(CardStack instance) => {
-      '_cards': instance._cards.map((e) => e.toJson()).toList(),
-    };
+Map<String, dynamic> _$CardStackToJson(CardStack instance) =>
+    <String, dynamic>{};

@@ -1,22 +1,28 @@
-part of 'game.dart';
+part of 'tb_game.dart';
 
 /// Handles the generation of status messages during the game
-extension GameStatusGenerationExt on Game {
+extension TBGameStatusGenerationExt on TBGame {
   /// Returns the status messages currently relevant for the given user.
   List<TrObject> getStatusMessages(YustUser? user) {
     if (user == null) return [];
     switch (gameState) {
       case GameState.waitingForPlayers:
         return [_getStatusMessageForWaitingForPlayers(user)];
-      case GameState.roleSelection:
-        return _getStatusMessagesForInProgress(user)
-          ..add(_getStartOfGameRoleStatus(user) ?? TrObject(''));
-      case GameState.playingTricks:
-        return _getStatusMessagesForInProgress(user)
-          ..add(_getCurrentRoleStatuses(user));
+      case GameState.running:
+        switch (tbGameState) {
+          case TBGameState.roleSelection:
+            return _getStatusMessagesForInProgress(user)
+              ..add(_getStartOfGameRoleStatus(user) ?? TrObject(''));
+          case TBGameState.playingTricks:
+            return _getStatusMessagesForInProgress(user)
+              ..add(_getCurrentRoleStatuses(user));
+          case TBGameState.notRunning:
+        }
       case GameState.finished:
         return _getGameFinishedStatus(user);
+      case GameState.abandoned:
     }
+    return [];
   }
 
   TrObject _getStatusMessageForWaitingForPlayers(YustUser user) =>
@@ -92,6 +98,7 @@ extension GameStatusGenerationExt on Game {
 
   /// Retrieve the status messages for roles at the start of the game.
   TrObject _getCurrentRoleStatuses(YustUser user) =>
-      getPlayer(user).role.getStatusWhileActive(this, user)
-        ..roleKey = getPlayer(user).roleKey;
+      ((getPlayer(user) as TBPlayer).role.getStatusWhileActive(this, user)
+          as TBTrObject)
+        ..roleKey = (getPlayer(user) as TBPlayer).roleKey;
 }

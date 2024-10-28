@@ -1,5 +1,5 @@
-import '../models/game/game.dart';
 import '../models/game/logging/cards_dealt.dart';
+import '../models/game/tb_game.dart';
 import 'role.dart';
 import 'role_catalog.dart';
 
@@ -10,7 +10,7 @@ class RoleF extends Role {
   RoleF() : super(key: RoleCatalog.roleF);
 
   @override
-  bool onStartOfSubgame(Game game) {
+  bool onStartOfSubgame(TBGame game) {
     // Deal the 12 additional cards.
     game.currentPlayer.dealCards(game.undealtCards.dealCards(cardNum: 12));
     game.addLogEntry(
@@ -20,12 +20,12 @@ class RoleF extends Role {
   }
 
   @override
-  Future<void> onStartOfTurn(Game game) async {
+  Future<void> onStartOfTurn(TBGame game) async {
     if (game.currentPlayer.roleKey == RoleCatalog.roleF) {
       game.inputRequirement = InputRequirement.twoCards;
     }
   }
 
   @override
-  int calculatePoints(Game game, int tricksWon) => tricksWon;
+  int calculatePoints(TBGame game, int tricksWon) => tricksWon;
 }
