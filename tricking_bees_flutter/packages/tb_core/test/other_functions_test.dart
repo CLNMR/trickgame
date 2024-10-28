@@ -1,4 +1,4 @@
-import 'package:tb_core/src/util/other_functions.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:test/test.dart';
 
 void main() {
