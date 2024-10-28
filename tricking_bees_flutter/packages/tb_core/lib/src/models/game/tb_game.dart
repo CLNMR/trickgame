@@ -33,7 +33,7 @@ part 'tb_game_pre_game_handling.dart';
 part 'tb_game_role_handling.dart';
 part 'tb_game_status_generation.dart';
 part 'tb_game.g.dart';
-part 'tb_game.service.dart';
+// part 'tb_game.service.dart'; // TODO: Configure builder
 
 @JsonSerializable()
 @GenerateService()
@@ -366,6 +366,11 @@ class TBGame extends Game {
   @override
   void start() {
     // TODO: implement start
+  }
+
+  /// Whether the given user is authenticated and fits with the player
+  bool isAuthenticatedPlayer(YustUser? user, Player player) {
+    return true; // TODO: Implement
   }
 }
 
