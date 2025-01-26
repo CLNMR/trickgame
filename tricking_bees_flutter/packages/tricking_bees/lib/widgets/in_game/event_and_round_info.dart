@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:tb_core/tb_core.dart';
-
-import '../own_text.dart';
 
 /// Display the currently active event, the round and whose turn it is.
 class EventAndRoundInfo extends StatelessWidget {
@@ -10,7 +10,7 @@ class EventAndRoundInfo extends StatelessWidget {
   const EventAndRoundInfo({super.key, required this.game});
 
   /// The game to show.
-  final Game game;
+  final TBGame game;
 
   @override
   Widget build(BuildContext context) => Column(

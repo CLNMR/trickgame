@@ -6,6 +6,7 @@ extension TBGamePreGameHandlingExt on TBGame {
 
   /// Starts the main game, if all players have joined.
   Future<void> customStartLogic() async {
+    // TODO: Look why this does not work
     gameState = GameState.running;
     tbGameState = TBGameState.roleSelection;
     await startNewSubgame();

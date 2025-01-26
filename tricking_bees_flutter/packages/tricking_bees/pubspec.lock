@@ -622,6 +622,20 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.5"
+  flutter_game_framework_core:
+    dependency: "direct main"
+    description:
+      path: "../../../../flutter_game_framework/flutter_game_framework_core"
+      relative: true
+    source: path
+    version: "0.0.1"
+  flutter_game_framework_ui:
+    dependency: "direct main"
+    description:
+      path: "../../../../flutter_game_framework/flutter_game_framework_ui"
+      relative: true
+    source: path
+    version: "0.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -1667,5 +1681,5 @@ packages:
     source: hosted
     version: "3.22.0"
 sdks:
-  dart: ">=3.3.0 <4.0.0"
+  dart: ">=3.4.1 <4.0.0"
   flutter: ">=3.19.2"

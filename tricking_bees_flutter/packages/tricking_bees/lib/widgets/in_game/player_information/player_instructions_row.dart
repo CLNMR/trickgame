@@ -1,10 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
-
-import '../../../util/context_extension.dart';
-import '../../../util/widget_ref_extension.dart';
 
 /// The widget giving the player instructions during the game.
 class PlayerInstructionsRow extends ConsumerWidget {
@@ -12,12 +10,12 @@ class PlayerInstructionsRow extends ConsumerWidget {
   const PlayerInstructionsRow({super.key, required this.game});
 
   /// The game to show.
-  final Game game;
+  final TBGame game;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Game>('game', game));
+    properties.add(DiagnosticsProperty<TBGame>('game', game));
   }
 
   @override

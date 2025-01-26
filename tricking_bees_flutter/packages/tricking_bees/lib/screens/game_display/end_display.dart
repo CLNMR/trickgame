@@ -3,13 +3,10 @@ import 'dart:math';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
-
-import '../../util/context_extension.dart';
-import '../../widgets/in_game/player_information/player_icon.dart';
-import '../../widgets/in_game/player_information/player_info_display.dart';
-import '../../widgets/own_text.dart';
 
 /// The display screen of the bidding.
 class EndDisplay extends ConsumerWidget {
@@ -17,7 +14,7 @@ class EndDisplay extends ConsumerWidget {
   const EndDisplay({super.key, required this.game});
 
   /// The game to show.
-  final Game game;
+  final TBGame game;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,7 +60,7 @@ class EndDisplay extends ConsumerWidget {
               'END:pointTooltip',
               richTrObjects: [
                 RichTrObject(RichTrType.number, value: e.points),
-                RichTrObject(RichTrType.role, value: e.roleKey),
+                RichTrObject(TBRichTrType.role, value: e.roleKey),
                 RichTrObject(
                   RichTrType.number,
                   value: e.tricksWon,

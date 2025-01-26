@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:tb_core/tb_core.dart';
-
-import '../player_information/player_icon.dart';
 
 /// A display for the current player order.
 class PlayerOrderColumn extends StatelessWidget {
@@ -13,7 +12,7 @@ class PlayerOrderColumn extends StatelessWidget {
   });
 
   /// The game for which to display the player order
-  final Game game;
+  final TBGame game;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -39,6 +38,6 @@ class PlayerOrderColumn extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Game>('game', game));
+    properties.add(DiagnosticsProperty<TBGame>('game', game));
   }
 }

@@ -1,16 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
-import '../../util/app_gradients.dart';
-import '../../util/context_extension.dart';
-import '../../util/widget_ref_extension.dart';
-import '../../widgets/in_game/player_information/player_icon.dart';
 import '../../widgets/in_game/player_information/player_instructions_row.dart';
-import '../../widgets/own_button.dart';
-import '../../widgets/own_text.dart';
 
 /// The display screen of the bidding.
 class WaitingDisplay extends ConsumerStatefulWidget {
@@ -21,12 +17,12 @@ class WaitingDisplay extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _WaitingDisplayState();
 
   /// The game to show.
-  final Game game;
+  final TBGame game;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Game>('game', game));
+    properties.add(DiagnosticsProperty<TBGame>('game', game));
   }
 }
 
@@ -251,7 +247,7 @@ class _WaitingDisplayState extends ConsumerState<WaitingDisplay> {
             ? Icons.arrow_circle_right_outlined
             : null,
         onPressed: () async =>
-            widget.game.arePlayersComplete ? widget.game.startMainGame() : null,
+            widget.game.arePlayersComplete ? widget.game.start() : null,
       );
 
   Future<void> _addPlayer() async {

@@ -13,6 +13,19 @@ import 'turn_start.dart';
 
 /// The different types of log entries we are allowing.
 class TBLogEntryType {
+  static const List<LogEntryType> values = [
+    subgameStarts,
+    roundStartPlayOrder,
+    trickWon,
+    cardPlayed,
+    cardsDealt,
+    roleChosen,
+    playerChosen,
+    trumpChosen,
+    skipTurn,
+    pointsAwarded,
+  ];
+
   /// Log the start of the subgame.
   static const subgameStarts =
       LogEntryType('subgameStarts', LogSubgameStarts.fromJson);

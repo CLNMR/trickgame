@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
-import '../../util/widget_ref_extension.dart';
 import '../../widgets/in_game/player_information/role_icon.dart';
-import '../../widgets/own_button.dart';
 import '../../widgets/single_card_display.dart';
 
 /// The display screen during role selection.
@@ -14,7 +14,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
   const RoleSelectionDisplay({super.key, required this.game});
 
   /// The id of the game to show.
-  final Game game;
+  final TBGame game;
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
       Center(child: _buildBody(context, ref));

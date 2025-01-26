@@ -1,12 +1,10 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
-
-import '../../util/app_gradients.dart';
-import '../../util/context_extension.dart';
-import '../own_text.dart';
 
 /// A list view for log entries.
 class LogEntryListDisplay extends ConsumerStatefulWidget {
@@ -17,7 +15,7 @@ class LogEntryListDisplay extends ConsumerStatefulWidget {
   });
 
   /// The game for which the logEntries should be shown.
-  final Game game;
+  final TBGame game;
 
   @override
   ConsumerState<LogEntryListDisplay> createState() =>
@@ -26,7 +24,7 @@ class LogEntryListDisplay extends ConsumerStatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Game>('game', game));
+    properties.add(DiagnosticsProperty<TBGame>('game', game));
   }
 }
 
@@ -197,19 +195,19 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
             ? TrObject('LOG:headerGameStart')
             : round == widget.game.totalRoundNum
                 ? TrObject('LOG:headerEndOfGame')
-                : Game.roundStartsSubgame(round)
+                : TBGame.roundStartsSubgame(round)
                     ? TrObject(
                         'LOG:headerSubgameStart',
                         namedArgs: {
                           'subgame':
-                              Game.getSubgameNumForRound(round).toString(),
+                              TBGame.getSubgameNumForRound(round).toString(),
                           'subgameNum': widget.game.subgameNum.toString(),
                         },
                       )
                     : TrObject(
                         'LOG:headerSubgameRound',
                         namedArgs: {
-                          'round': Game.getSubRoundNumber(round).toString(),
+                          'round': TBGame.getSubRoundNumber(round).toString(),
                         },
                       ),
         style: const TextStyle(

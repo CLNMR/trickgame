@@ -13,7 +13,7 @@ import '../../cards/trick.dart';
 import '../../roles/role.dart';
 import '../../roles/role_catalog.dart';
 import '../../util/custom_types.dart';
-import '../../util/tr_object.dart';
+import '../../util/tb_tr_object.dart';
 import '../tb_player.dart';
 import 'logging/card_played.dart';
 import 'logging/points_awarded.dart';

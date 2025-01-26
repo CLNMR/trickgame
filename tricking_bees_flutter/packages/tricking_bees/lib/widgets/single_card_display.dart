@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:tb_core/tb_core.dart';
-
-import 'own_text.dart';
 
 /// Widget to display a card.
 class SingleCardDisplay extends StatelessWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
-import '../../own_text.dart';
 import 'player_order_column.dart';
 import 'trick_display.dart';
 
@@ -16,7 +16,7 @@ class GameBoard extends ConsumerWidget {
   });
 
   /// The game to be displayed.
-  final Game game;
+  final TBGame game;
 
   /// The display names of the players.
   List<String> get playerNames =>
@@ -26,7 +26,7 @@ class GameBoard extends ConsumerWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<Game>('game', game))
+      ..add(DiagnosticsProperty<TBGame>('game', game))
       ..add(IterableProperty<String>('playerNames', playerNames));
   }
 
@@ -71,7 +71,7 @@ class GameBoard extends ConsumerWidget {
           hiddenPlayers: game.players
               .asMap()
               .entries
-              .where((e) => e.value.role.playsCardHidden)
+              .where((e) => (e.value as TBPlayer).role.playsCardHidden)
               .map((e) => e.key)
               .toList(),
         ),

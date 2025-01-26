@@ -3,18 +3,15 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
-import '../../util/app_gradients.dart';
-import '../../util/context_extension.dart';
-import '../../util/widget_ref_extension.dart';
 import '../../widgets/in_game/log_entry_list_display.dart';
 import '../../widgets/in_game/player_information/player_cards_row.dart';
 import '../../widgets/in_game/player_information/player_info_display.dart';
 import '../../widgets/in_game/player_information/player_instructions_row.dart';
-import '../../widgets/own_button.dart';
-import '../../widgets/own_text.dart';
 import '../../widgets/single_card_display.dart';
 
 /// The display screen of a game that is in progress.
@@ -29,7 +26,7 @@ class InGameDisplay extends ConsumerStatefulWidget {
   });
 
   /// The game for which the info is displayed.
-  final Game game;
+  final TBGame game;
 
   /// The child widget that is displayed in the central position.
   final Widget child;
@@ -40,7 +37,7 @@ class InGameDisplay extends ConsumerStatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Game>('game', game));
+    properties.add(DiagnosticsProperty<TBGame>('game', game));
   }
 }
 
@@ -71,7 +68,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    final player = widget.game.getPlayer(ref.user);
+    final player = widget.game.getPlayer(ref.user) as TBPlayer;
     return Center(
       child: Row(
         children: [
@@ -115,7 +112,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
   }
 
   Widget _buildSkipButton() => ref.user != null &&
-          widget.game.getPlayer(ref.user).role.canSkipTurn
+          (widget.game.getPlayer(ref.user) as TBPlayer).role.canSkipTurn
       ? Tooltip(
           message: 'BUT:SkipCardPlay'.tr(),
           child: Container(
@@ -191,7 +188,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
               'trumpDisplayTooltip',
               richTrObjects: [
                 RichTrObject(
-                  RichTrType.color,
+                  TBRichTrType.color,
                   value: widget.game.currentTrumpColor ?? CardColor.noColor,
                 ),
               ],
@@ -276,7 +273,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
       );
 
   Widget _buildPlayersInTopRow() {
-    final otherPlayers = widget.game.getOtherPlayers(ref.user);
+    final otherPlayers = widget.game.getOtherPlayers(ref.user).cast<TBPlayer>();
     if (widget.game.playerNum != 3) {
       otherPlayers
         ..removeAt(0)
@@ -294,7 +291,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
       : Column(
           children: [
             _buildPlayerOverlay(
-              widget.game.getOtherPlayers(ref.user)[0],
+              widget.game.getOtherPlayers(ref.user)[0] as TBPlayer,
               rotation: 1,
             ),
           ],
@@ -304,14 +301,14 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
       : Column(
           children: [
             _buildPlayerOverlay(
-              widget.game.getOtherPlayers(ref.user).last,
+              widget.game.getOtherPlayers(ref.user).last as TBPlayer,
               rotation: 3,
             ),
           ],
         );
 
   Widget _buildPlayerOverlay(
-    Player player, {
+    TBPlayer player, {
     int rotation = 2,
   }) =>
       Flexible(
@@ -346,7 +343,7 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
         ),
       );
 
-  Widget _buildPlayerCards(Player player, int rotation) => RotatedBox(
+  Widget _buildPlayerCards(TBPlayer player, int rotation) => RotatedBox(
         quarterTurns: rotation,
         child: ConstrainedBox(
           constraints: BoxConstraints(

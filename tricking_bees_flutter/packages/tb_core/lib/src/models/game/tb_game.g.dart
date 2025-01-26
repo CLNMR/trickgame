@@ -33,6 +33,9 @@ TBGame _$TBGameFromJson(Map json) => TBGame(
           .toList(),
       gameState: $enumDecodeNullable(_$GameStateEnumMap, json['gameState']) ??
           GameState.waitingForPlayers,
+      tbGameState:
+          $enumDecodeNullable(_$TBGameStateEnumMap, json['tbGameState']) ??
+              TBGameState.notRunning,
       currentSubgame: (json['currentSubgame'] as num?)?.toInt() ?? 0,
       currentRound: (json['currentRound'] as num?)?.toInt() ?? 0,
       currentTurnIndex: (json['currentTurnIndex'] as num?)?.toInt() ?? 0,
@@ -83,6 +86,7 @@ Map<String, dynamic> _$TBGameToJson(TBGame instance) => <String, dynamic>{
       'inputRequirement': _$InputRequirementEnumMap[instance.inputRequirement]!,
       'logEntries': instance.logEntries.map(
           (k, e) => MapEntry(k.toString(), e.map((e) => e.toJson()).toList())),
+      'tbGameState': instance.tbGameState.toJson(),
     };
 
 const _$GameStateEnumMap = {
@@ -90,6 +94,12 @@ const _$GameStateEnumMap = {
   GameState.running: 'running',
   GameState.finished: 'finished',
   GameState.abandoned: 'abandoned',
+};
+
+const _$TBGameStateEnumMap = {
+  TBGameState.notRunning: 'notRunning',
+  TBGameState.roleSelection: 'roleSelection',
+  TBGameState.playingTricks: 'playingTricks',
 };
 
 const _$InputRequirementEnumMap = {

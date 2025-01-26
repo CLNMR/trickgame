@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
-import '../../../util/app_gradients.dart';
-import '../../../util/widget_ref_extension.dart';
 import '../../single_card_display.dart';
 
 /// The widget displaying a player's remaining cards, and offering a skip turn
@@ -16,10 +16,10 @@ class PlayerCardsRow extends ConsumerStatefulWidget {
   const PlayerCardsRow({super.key, required this.game, required this.player});
 
   /// The game to show.
-  final Game game;
+  final TBGame game;
 
   /// The player whose cards to show.
-  final Player player;
+  final TBPlayer player;
 
   @override
   ConsumerState<PlayerCardsRow> createState() => _PlayerCardsRowState();
@@ -27,8 +27,8 @@ class PlayerCardsRow extends ConsumerStatefulWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<Game>('game', game))
-      ..add(DiagnosticsProperty<Player>('player', player));
+      ..add(DiagnosticsProperty<TBGame>('game', game))
+      ..add(DiagnosticsProperty<TBPlayer>('player', player));
   }
 }
 

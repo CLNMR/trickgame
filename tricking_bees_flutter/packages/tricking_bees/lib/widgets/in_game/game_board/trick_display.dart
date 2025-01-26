@@ -2,10 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:tb_core/tb_core.dart';
 
 import '../../single_card_display.dart';
-import '../player_information/player_icon.dart';
 
 /// A widget to display a given trick.
 class TrickDisplay extends StatelessWidget {

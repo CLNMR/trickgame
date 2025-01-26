@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:tb_core/tb_core.dart';
-
-import '../../own_text.dart';
 
 /// A widget representing a role with an icon and a name.
 class RoleIcon extends StatelessWidget {

@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
+import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 import 'package:yust_ui/yust_ui.dart';
 
-import '../codegen/annotations/screen.dart';
 import '../widgets/in_game/game_board/game_board.dart';
-import '../widgets/own_text.dart';
 import 'game_display/end_display.dart';
 import 'game_display/in_game_display.dart';
 import 'game_display/role_selection_display.dart';
@@ -32,7 +32,7 @@ class GameScreen extends ConsumerStatefulWidget {
 }
 
 class _GameScreenState extends ConsumerState<GameScreen> {
-  late Game statefulGame;
+  late TBGame statefulGame;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -46,7 +46,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         body: Padding(
           padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
           child: YustDocBuilder(
-            modelSetup: Game.setup(),
+            modelSetup: TBGame.setup(),
             id: widget.gameId,
             builder: (game, insights, context) {
               if (game == null) {
@@ -58,21 +58,28 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 switch (game.gameState) {
                   case GameState.waitingForPlayers:
                     return WaitingDisplay(game: game);
-                  case GameState.roleSelection:
-                    return InGameDisplay(
-                      game: game,
-                      child: RoleSelectionDisplay(game: game),
-                    );
-                  case GameState.playingTricks:
-                    return InGameDisplay(
-                      game: game,
-                      child: GameBoard(game: game),
-                    );
+                  case GameState.running:
+                    switch (game.tbGameState) {
+                      case TBGameState.roleSelection:
+                        return InGameDisplay(
+                          game: game,
+                          child: RoleSelectionDisplay(game: game),
+                        );
+                      case TBGameState.playingTricks:
+                        return InGameDisplay(
+                          game: game,
+                          child: GameBoard(game: game),
+                        );
+                      case TBGameState.notRunning:
+                        return const ErrorDisplay();
+                    }
                   case GameState.finished:
                     return InGameDisplay(
                       game: game,
                       child: EndDisplay(game: game),
                     );
+                  case GameState.abandoned:
+                    return const ErrorDisplay();
                 }
               }
             },
@@ -89,7 +96,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           onPressed: () async {
             statefulGame.gameState = state;
             // Reset the game if we try to set it in progress.
-            if (state == GameState.playingTricks) {
+            if (state == GameState.running) {
               statefulGame
                 ..currentRound = 0
                 ..logEntries.forEach((key, value) {
@@ -108,4 +115,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Game>('statefulGame', statefulGame));
   }
+}
+
+/// A display that shows an error message.
+class ErrorDisplay extends StatelessWidget {
+  /// Creates an [ErrorDisplay].
+  const ErrorDisplay({super.key});
+
+  // TODO: Add a proper error display
+  @override
+  Widget build(BuildContext context) => const Center(
+        child: Text('Game was abandoned'),
+      );
 }
