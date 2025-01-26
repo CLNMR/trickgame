@@ -2,7 +2,7 @@ name: tricking_bees
 
 packages:
     - packages/**
-    # - packages_external/**
+    - packages_external/**
 
 scripts:
     lint:

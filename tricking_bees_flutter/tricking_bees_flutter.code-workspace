@@ -8,6 +8,12 @@
 		},
 		{
 			"path": "../../flutter_game_framework"
+		},
+		{
+			"path": "../../yust"
+		},
+		{
+			"path": "../../yust_ui"
 		}
 	],
 	"settings": {

@@ -1,6 +1,14 @@
-# melos_managed_dependency_overrides: tb_core,flutter_painter
+# melos_managed_dependency_overrides: tb_core,flutter_painter,flutter_game_framework_core,flutter_game_framework_ui,yust,yust_ui
 dependency_overrides:
+  flutter_game_framework_core:
+    path: ../../packages_external/flutter_game_framework/flutter_game_framework_core
+  flutter_game_framework_ui:
+    path: ../../packages_external/flutter_game_framework/flutter_game_framework_ui
   flutter_painter:
-    git: https://github.com/Harishwarrior/flutter_painter.git
+    git: https://github.com/Zazo032/flutter_painter.git
   tb_core:
     path: ../tb_core
+  yust:
+    path: ../../packages_external/yust
+  yust_ui:
+    path: ../../packages_external/yust_ui
