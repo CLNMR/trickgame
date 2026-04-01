@@ -9,7 +9,6 @@ import 'game_card.dart';
 part 'card_stack.g.dart';
 
 @JsonSerializable()
-
 /// Represents a stack of cards (e.g. a player's hand, the full card deck etc.)
 class CardStack extends IterableBase<GameCard> {
   /// Creates a [CardStack]
@@ -24,7 +23,7 @@ class CardStack extends IterableBase<GameCard> {
         List.generate(
           highestNumber,
           (index) => GameCard(number: index + 1, color: color),
-        ),// ..add(GameCard(number: null, color: color, isQueen: true)),
+        ),
       );
     }
     return CardStack(cards: cards);
@@ -57,7 +56,7 @@ class CardStack extends IterableBase<GameCard> {
   /// Filters this card stack's cards for the given color, returning a new card
   /// stack.
   CardStack filterByColor(CardColor color, {required bool allowOtherQueens}) =>
-      CardStack(
+      .new(
         cards: _cards
             .where(
               (card) =>

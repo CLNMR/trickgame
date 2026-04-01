@@ -7,8 +7,8 @@ extension GameCardExt on TBGame {
 
   /// Determines whether the given user can currently any cards.
   bool canPlayAnyCards(Player player) =>
-      gameState == GameState.running &&
-      tbGameState == TBGameState.playingTricks &&
+      gameState == .running &&
+      tbGameState == .playingTricks &&
       (inputRequirement.isCard) &&
       (currentPlayer.id == player.id);
 
@@ -19,9 +19,9 @@ extension GameCardExt on TBGame {
 
   /// Whether the given player is able to remove a card.
   bool canRemoveCard(Player player) =>
-      gameState == GameState.running &&
-      tbGameState == TBGameState.roleSelection &&
-      inputRequirement == InputRequirement.selectCardToRemove &&
+      gameState == .running &&
+      tbGameState == .roleSelection &&
+      inputRequirement == .selectCardToRemove &&
       currentPlayer.id == player.id;
 
   /// Play a card for a player, or remove it if required.
@@ -31,7 +31,7 @@ extension GameCardExt on TBGame {
     YustUser? user,
   ) async {
     if (!isAuthenticatedPlayer(user, player)) return;
-    if (inputRequirement == InputRequirement.selectCardToRemove) {
+    if (inputRequirement == .selectCardToRemove) {
       if (!canRemoveCard(player)) return;
       await (player as TBPlayer).role.onSelectCardToRemove(this, cardKey);
       return;
@@ -47,7 +47,7 @@ extension GameCardExt on TBGame {
       ),
       absoluteIndentLevel: 1,
     );
-    if (inputRequirement == InputRequirement.twoCards) {
+    if (inputRequirement == .twoCards) {
       if (getFlag<bool>(_oneOfTwoCardsPlayedKey) ?? false) {
         setFlag(_oneOfTwoCardsPlayedKey, false);
       } else {
@@ -67,17 +67,12 @@ extension GameCardExt on TBGame {
   /// Method to skip the playing of a card.
   Future<void> skipCardPlay(YustUser? user) async {
     if (!canSkipTurn(user)) return;
-    addLogEntry(
-      LogSkipTurn(
-        playerIndex: currentPlayerIndex,
-        isCardSkip: true,
-      ),
-    );
+    addLogEntry(LogSkipTurn(playerIndex: currentPlayerIndex, isCardSkip: true));
     return nextPlayer();
   }
 
   /// Whether the given user can currently skip the rest of the turn.
   bool canSkipTurn(YustUser? user) =>
-      inputRequirement == InputRequirement.cardOrSkip &&
+      inputRequirement == .cardOrSkip &&
       isAuthenticatedPlayer(user, currentPlayer);
 }

@@ -9,7 +9,6 @@ import 'tb_log_entry_type.dart';
 part 'card_played.g.dart';
 
 @JsonSerializable()
-
 /// Log a player playing a card (without specifying the effects).
 class LogCardPlayed extends LogEntry {
   /// Creates a [LogCardPlayed].
@@ -19,9 +18,9 @@ class LogCardPlayed extends LogEntry {
     this.isHidden = false,
     int? indentLevel,
   }) : super(
-          entryType: TBLogEntryType.cardPlayed,
-          indentLevel: indentLevel ?? 2,
-        );
+         entryType: TBLogEntryType.cardPlayed,
+         indentLevel: indentLevel ?? 2,
+       );
 
   /// Creates a [LogCardPlayed] from a JSON map.
   factory LogCardPlayed.fromJson(Map<String, dynamic> json) =>
@@ -37,10 +36,9 @@ class LogCardPlayed extends LogEntry {
   final bool isHidden;
 
   @override
-  Map<String, dynamic> toJson() => _$LogCardPlayedToJson(this)
-    ..addEntries([
-      MapEntry('entryType', entryType.name),
-    ]);
+  Map<String, dynamic> toJson() =>
+      _$LogCardPlayedToJson(this)
+        ..addEntries([MapEntry('entryType', entryType.name)]);
 
   @override
   TrObject getDescription(Game game) {
@@ -48,7 +46,7 @@ class LogCardPlayed extends LogEntry {
     if (isHidden) {
       final isPlayedThisRound =
           (game as TBGame).logEntries[game.currentRound]?.contains(this) ??
-              false;
+          false;
       final suffix = isPlayedThisRound ? 'ThisRound' : 'Before';
       trKey = '${localizedKey}Hidden$suffix';
     }
@@ -56,10 +54,7 @@ class LogCardPlayed extends LogEntry {
   }
 
   List<RichTrObject> _getRichTrObjects() => [
-        RichTrObject(
-          RichTrType.player,
-          value: playerIndex,
-        ),
-        RichTrObject(TBRichTrType.card, value: cardKey),
-      ];
+    RichTrObject(.player, value: playerIndex),
+    RichTrObject(TBRichTrType.card, value: cardKey),
+  ];
 }

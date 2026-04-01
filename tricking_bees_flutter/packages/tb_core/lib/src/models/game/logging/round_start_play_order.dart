@@ -6,7 +6,6 @@ import 'tb_log_entry_type.dart';
 part 'round_start_play_order.g.dart';
 
 @JsonSerializable()
-
 ///
 class LogRoundStartPlayOrder extends LogEntry {
   /// Creates a [LogRoundStartPlayOrder].
@@ -15,9 +14,9 @@ class LogRoundStartPlayOrder extends LogEntry {
     required this.playOrder,
     int? indentLevel,
   }) : super(
-          entryType: TBLogEntryType.roundStartPlayOrder,
-          indentLevel: indentLevel ?? 0,
-        );
+         entryType: TBLogEntryType.roundStartPlayOrder,
+         indentLevel: indentLevel ?? 0,
+       );
 
   /// Creates a [LogRoundStartPlayOrder] from a JSON map.
   factory LogRoundStartPlayOrder.fromJson(Map<String, dynamic> json) =>
@@ -30,23 +29,16 @@ class LogRoundStartPlayOrder extends LogEntry {
   final List<int> playOrder;
 
   @override
-  Map<String, dynamic> toJson() => _$LogRoundStartPlayOrderToJson(this)
-    ..addEntries([
-      MapEntry('entryType', entryType.name),
-    ]);
+  Map<String, dynamic> toJson() =>
+      _$LogRoundStartPlayOrderToJson(this)
+        ..addEntries([MapEntry('entryType', entryType.name)]);
 
   @override
-  TrObject getDescription(Game game) => TrObject(
-        localizedKey,
-        richTrObjects: [
-          RichTrObject(
-            RichTrType.number,
-            value: round,
-          ),
-          RichTrObject(
-            RichTrType.playerList,
-            value: playOrder,
-          ),
-        ],
-      );
+  TrObject getDescription(Game game) => .new(
+    localizedKey,
+    richTrObjects: [
+      RichTrObject(.number, value: round),
+      RichTrObject(.playerList, value: playOrder),
+    ],
+  );
 }

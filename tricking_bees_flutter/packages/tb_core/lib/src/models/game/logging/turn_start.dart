@@ -7,17 +7,11 @@ import 'tb_log_entry_type.dart';
 part 'turn_start.g.dart';
 
 @JsonSerializable()
-
 ///
 class LogTrickWon extends LogEntry {
   /// Creates a [LogTrickWon].
-  LogTrickWon({
-    required this.playerIndex,
-    int? indentLevel,
-  }) : super(
-          entryType: TBLogEntryType.trickWon,
-          indentLevel: indentLevel ?? 1,
-        );
+  LogTrickWon({required this.playerIndex, int? indentLevel})
+    : super(entryType: TBLogEntryType.trickWon, indentLevel: indentLevel ?? 1);
 
   /// Creates a [LogTrickWon] from a JSON map.
   factory LogTrickWon.fromJson(Map<String, dynamic> json) =>
@@ -27,26 +21,20 @@ class LogTrickWon extends LogEntry {
   final int playerIndex;
 
   @override
-  Map<String, dynamic> toJson() => _$LogTrickWonToJson(this)
-    ..addEntries([
-      MapEntry('entryType', entryType.name),
-    ]);
+  Map<String, dynamic> toJson() =>
+      _$LogTrickWonToJson(this)
+        ..addEntries([MapEntry('entryType', entryType.name)]);
 
   @override
-  TrObject getDescription(Game game) => TrObject(
-        localizedKey,
-        richTrObjects: [
-          RichTrObject(RichTrType.player, value: playerIndex),
-        ],
-      );
+  TrObject getDescription(Game game) => .new(
+    localizedKey,
+    richTrObjects: [RichTrObject(.player, value: playerIndex)],
+  );
 
   @override
   Future<void> showEventDisplay(
     Game game,
-    Function(
-      TrObject title,
-      TrObject message,
-    ) displayEvent,
+    Function(TrObject title, TrObject message) displayEvent,
     Function() incrementLogDisplayCount,
   ) async {
     final playerInfo = (game as TBGame).currentPlayer;

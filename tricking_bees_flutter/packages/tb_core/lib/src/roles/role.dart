@@ -10,7 +10,7 @@ import 'role_catalog.dart';
 /// A role of the game.
 abstract class Role {
   /// Creates an [Role].
-  Role({required this.key, this.roleSortIndex = 0});
+  const Role({required this.key, this.roleSortIndex = 0});
 
   /// Creates an [Role] from an [RoleCatalog].
   factory Role.fromRoleCatalog(RoleCatalog roleType) =>
@@ -32,8 +32,8 @@ abstract class Role {
   /// color.
   CardStack getPlayableCards(CardStack hand, CardColor? compulsoryColor) =>
       (compulsoryColor == null || !hand.containsColor(compulsoryColor))
-          ? hand
-          : hand.filterByColor(compulsoryColor, allowOtherQueens: true);
+      ? hand
+      : hand.filterByColor(compulsoryColor, allowOtherQueens: true);
 
   /// Whether this role is able to skip their turn if they want to.
   bool get canSkipTurn => false;
@@ -87,5 +87,5 @@ abstract class Role {
   /// Retrieve the status message that is displayed whenever this role is
   /// active during the trick playing phase.
   TrObject getStatusWhileActive(TBGame game, YustUser? user) =>
-      TrObject(key.statusKey);
+      .new(key.statusKey);
 }

@@ -12,7 +12,6 @@ import 'game/tb_game.dart';
 part 'tb_player.g.dart';
 
 @JsonSerializable()
-
 /// A player of the game.
 class TBPlayer extends Player {
   /// Creates a [TBPlayer].
@@ -23,22 +22,18 @@ class TBPlayer extends Player {
     this.tricksWon = 0,
     this.pointTotal = 0,
     RoleCatalog? roleKey,
-  })  : roleKey = roleKey ?? RoleCatalog.noRole,
-        cards = cards ?? CardStack();
+  }) : roleKey = roleKey ?? .noRole,
+       cards = cards ?? CardStack();
 
   /// Creates a dummy [Player].
-  factory TBPlayer.dummy({CardStack? cards}) => TBPlayer(
-        id: 'dummy',
-        displayName: 'dummy',
-        cards: cards,
-      );
+  factory TBPlayer.dummy({CardStack? cards}) =>
+      TBPlayer(id: 'dummy', displayName: 'dummy', cards: cards);
 
   /// Creates a [Player] from a JSON map.
   factory TBPlayer.fromJson(Map<String, dynamic> json) =>
       _$TBPlayerFromJson(json);
 
   @override
-
   /// Converts the [Player] to a JSON map.
   Map<String, dynamic> toJson() => _$TBPlayerToJson(this);
 
@@ -55,7 +50,7 @@ class TBPlayer extends Player {
   int pointTotal;
 
   /// The role of the player.
-  Role get role => Role.fromRoleCatalog(roleKey);
+  Role get role => .fromRoleCatalog(roleKey);
 
   /// Awards points to this player.
   void awardPoints(TBGame game, int playerIndex) {
@@ -76,7 +71,7 @@ class TBPlayer extends Player {
   void resetForNewSubgame() {
     tricksWon = 0;
     cards = CardStack();
-    roleKey = RoleCatalog.noRole;
+    roleKey = .noRole;
   }
 
   /// Deal this player the given cards.

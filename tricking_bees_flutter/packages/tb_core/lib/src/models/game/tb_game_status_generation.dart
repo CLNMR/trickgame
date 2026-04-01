@@ -6,39 +6,39 @@ extension TBGameStatusGenerationExt on TBGame {
   List<TrObject> getStatusMessages(YustUser? user) {
     if (user == null) return [];
     switch (gameState) {
-      case GameState.waitingForPlayers:
+      case .waitingForPlayers:
         return [_getStatusMessageForWaitingForPlayers(user)];
-      case GameState.running:
+      case .running:
         switch (tbGameState) {
-          case TBGameState.roleSelection:
+          case .roleSelection:
             return _getStatusMessagesForInProgress(user)
               ..add(_getStartOfGameRoleStatus(user) ?? TrObject(''));
-          case TBGameState.playingTricks:
+          case .playingTricks:
             return _getStatusMessagesForInProgress(user)
               ..add(_getCurrentRoleStatuses(user));
-          case TBGameState.notRunning:
+          case .notRunning:
         }
-      case GameState.finished:
+      case .finished:
         return _getGameFinishedStatus(user);
-      case GameState.abandoned:
+      case .abandoned:
     }
     return [];
   }
 
   TrObject _getStatusMessageForWaitingForPlayers(YustUser user) =>
       !arePlayersComplete
-      ? TrObject(
+      ? .new(
           'STATUS:waitingForPlayers${public ? '' : 'Private'}',
           richTrObjects: [
-            RichTrObject(RichTrType.number, value: playerNum - players.length),
+            RichTrObject(.number, value: playerNum - players.length),
           ],
           namedArgs: {'gameId': gameId.toString(), 'password': password},
         )
       : !isUserOwner(user)
-      ? TrObject('STATUS:waitingForOwnerToStart')
+      ? .new('STATUS:waitingForOwnerToStart')
       : shufflePlayers
-      ? TrObject('STATUS:promptOwnerToStart')
-      : TrObject('STATUS:promptOwnerToStartWithoutShuffle');
+      ? .new('STATUS:promptOwnerToStart')
+      : .new('STATUS:promptOwnerToStartWithoutShuffle');
 
   List<TrObject> _getGameFinishedStatus(YustUser user) {
     // LATER: Handle same point amounts better (tiebreaker display)
@@ -50,21 +50,21 @@ extension TBGameStatusGenerationExt on TBGame {
       'STATUS:gameIsFinished',
       richTrObjects: [
         RichTrObject(
-          RichTrType.player,
+          .player,
           value: sortedWinners.first.key,
           keySuffix: 'Winner',
         ),
         RichTrObject(
-          RichTrType.number,
+          .number,
           value: sortedWinners.first.value,
           keySuffix: 'Winner',
         ),
         RichTrObject(
-          RichTrType.number,
+          .number,
           value: playerPoints[ownIndex],
           keySuffix: 'Player',
         ),
-        RichTrObject(RichTrType.number, value: ownRank, keySuffix: 'Rank'),
+        RichTrObject(.number, value: ownRank, keySuffix: 'Rank'),
       ],
     );
     return [endObj];
@@ -76,9 +76,7 @@ extension TBGameStatusGenerationExt on TBGame {
       : [
           TrObject(
             inputRequirement.getStatusKey(whileWaiting: true),
-            richTrObjects: [
-              RichTrObject(RichTrType.player, value: currentPlayerIndex),
-            ],
+            richTrObjects: [RichTrObject(.player, value: currentPlayerIndex)],
           ),
         ];
 

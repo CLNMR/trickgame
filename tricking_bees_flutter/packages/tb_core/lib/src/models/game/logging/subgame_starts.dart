@@ -9,7 +9,6 @@ import 'tb_log_entry_type.dart';
 part 'subgame_starts.g.dart';
 
 @JsonSerializable()
-
 /// Log the start of a new subgame.
 class LogSubgameStarts extends LogEntry {
   /// Creates a [LogSubgameStarts].
@@ -18,9 +17,9 @@ class LogSubgameStarts extends LogEntry {
     required this.trumpCard,
     int? indentLevel,
   }) : super(
-          entryType: TBLogEntryType.subgameStarts,
-          indentLevel: indentLevel ?? 0,
-        );
+         entryType: TBLogEntryType.subgameStarts,
+         indentLevel: indentLevel ?? 0,
+       );
 
   /// Creates a [LogSubgameStarts] from a JSON map.
   factory LogSubgameStarts.fromJson(Map<String, dynamic> json) =>
@@ -33,28 +32,21 @@ class LogSubgameStarts extends LogEntry {
   final GameCard trumpCard;
 
   @override
-  Map<String, dynamic> toJson() => _$LogSubgameStartsToJson(this)
-    ..addEntries([
-      MapEntry('entryType', entryType.name),
-    ]);
+  Map<String, dynamic> toJson() =>
+      _$LogSubgameStartsToJson(this)
+        ..addEntries([MapEntry('entryType', entryType.name)]);
 
   @override
-  TrObject getDescription(Game game) => TrObject(
-        localizedKey,
-        richTrObjects: [
-          RichTrObject(
-            RichTrType.number,
-            value: subgame,
-          ),
-          RichTrObject(
-            RichTrType.number,
-            value: (game as TBGame).subgameNum,
-            keySuffix: 'Tot',
-          ),
-          RichTrObject(
-            TBRichTrType.card,
-            value: trumpCard,
-          ),
-        ],
-      );
+  TrObject getDescription(Game game) => .new(
+    localizedKey,
+    richTrObjects: [
+      RichTrObject(.number, value: subgame),
+      RichTrObject(
+        .number,
+        value: (game as TBGame).subgameNum,
+        keySuffix: 'Tot',
+      ),
+      RichTrObject(TBRichTrType.card, value: trumpCard),
+    ],
+  );
 }

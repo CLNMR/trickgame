@@ -24,7 +24,7 @@ extension GameEndHandlingExt on TBGame {
     }
     // We need to convert it to a normal map as it otherwise is casted to an
     // IdentityMap.
-    return Map.from(ranks);
+    return Map.of(ranks);
   }
 
   /// Retrieve the ranke the given player achieved in the end.

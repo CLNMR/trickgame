@@ -34,7 +34,7 @@ enum RoleCatalog {
   final Role Function() roleConstructor;
 
   static List<RoleCatalog> get allChoosableRoles =>
-      values.where((e) => e != RoleCatalog.noRole).toList();
+      values.where((e) => e != .noRole).toList();
 
   /// The key for the status message while possessing this role.
   String get statusKey => 'STATUS:ROLE:$name';

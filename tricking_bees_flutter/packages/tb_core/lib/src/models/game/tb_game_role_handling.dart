@@ -12,11 +12,7 @@ extension TBGameEventHandlingExt on TBGame {
     currentPlayer.roleKey = roleKey;
     addLogEntry(LogRoleChosen(playerIndex: currentPlayerIndex, role: roleKey));
     currentPlayer.cards.addCard(
-      GameCard(
-        number: 0,
-        color: CardColor.noColor,
-        queenRole: roleKey,
-      ),
+      GameCard(number: 0, color: .noColor, queenRole: roleKey),
     );
     incrementTurnIndex();
     if (currentTurnIndex == 0) {
@@ -30,7 +26,7 @@ extension TBGameEventHandlingExt on TBGame {
   bool canChooseRole(RoleCatalog role, YustUser? user) =>
       (user != null) &&
       isAuthenticatedPlayer(user, currentPlayer) &&
-      inputRequirement == InputRequirement.selectRole &&
+      inputRequirement == .selectRole &&
       !currentRoles.map((e) => e.key).contains(role);
 
   /// Finishes the role selection and goes through the remaining players to
@@ -43,9 +39,9 @@ extension TBGameEventHandlingExt on TBGame {
       await endRoleSelectionAndStartTrickGame();
       return;
     }
-    inputRequirement = InputRequirement.selectRole;
+    inputRequirement = .selectRole;
     currentPlayer.role.onStartOfSubgame(this);
-    if (inputRequirement != InputRequirement.selectRole) {
+    if (inputRequirement != .selectRole) {
       await save();
       return;
     }
@@ -55,9 +51,9 @@ extension TBGameEventHandlingExt on TBGame {
 
   /// Finishes the role selection and advances the game to the next player.
   Future<void> endRoleSelectionAndStartTrickGame() async {
-    gameState = GameState.running;
-    tbGameState = TBGameState.playingTricks;
-    inputRequirement = InputRequirement.card;
+    gameState = .running;
+    tbGameState = .playingTricks;
+    inputRequirement = .card;
     playOrder = List.generate(
       playerNum,
       (index) => (index + currentSubgame - 1) % playerNum,
@@ -75,16 +71,13 @@ extension TBGameEventHandlingExt on TBGame {
   }
 
   /// Retrieve the first player with the given role.
-  int? getFirstPlayerWithRole(RoleCatalog roleKey) =>
+  int getFirstPlayerWithRole(RoleCatalog roleKey) =>
       players.indexWhere((e) => (e as TBPlayer).roleKey == roleKey);
 
   /// Sets a flag for the current card or event.
   void setFlag(String key, dynamic value) {
     var val = value;
     if (value is Map) {
-      // print(val); // The problem seems to be that e.g. {1: (2, false)} is not
-      // json serializable since the tuple is not json serializable by default.
-      // We'll need to write a custom serializer for this.
       val = Map<String, dynamic>.from(value);
     }
     flags[key] = val;
@@ -93,7 +86,7 @@ extension TBGameEventHandlingExt on TBGame {
   /// Sets the flag for a map mapping a integers to tuples of integers/booleans.
   void setMapTupleFlag(String key, Map<int, (int, bool)> value) {
     final jsonValue = value.map(
-      (k, v) => MapEntry(k.toString(), [v.$1.toString(), v.$2.toString()]),
+      (k, v) => MapEntry('$k', ['${v.$1}', v.$2.toString()]),
     );
     setFlag(key, jsonValue);
   }
@@ -110,7 +103,6 @@ extension TBGameEventHandlingExt on TBGame {
   /// Deletes a flag for the current card or event.
   void deleteFlag(String key) {
     flags.remove(key);
-    // if (flags.containsKey(key)) flags[key] = FieldValue.delete();
   }
 
   /// Checks if a flag is currently registered.
@@ -132,7 +124,6 @@ extension TBGameEventHandlingExt on TBGame {
       );
     }
     return List<T>.from(flags[key]);
-    // (flags[key] as List).cast<T>();
   }
 
   /// Gets a flag for the current card or event.
@@ -144,6 +135,6 @@ extension TBGameEventHandlingExt on TBGame {
         'Value must be a map, not ${flags[key].runtimeType}',
       );
     }
-    return (flags[key] as Map).cast<A, B>();
+    return (flags[key] as Map).cast();
   }
 }

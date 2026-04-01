@@ -4,7 +4,7 @@ part of 'tb_game.dart';
 extension TBGamePreGameHandlingExt on TBGame {
   /// Starts the main game, if all players have joined.
   Future<void> customStartLogic() async {
-    tbGameState = TBGameState.roleSelection;
+    tbGameState = .roleSelection;
     await startNewSubgame();
   }
 }

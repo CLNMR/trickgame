@@ -6,7 +6,6 @@ import 'tb_log_entry_type.dart';
 part 'cards_dealt.g.dart';
 
 @JsonSerializable()
-
 /// Log a player playing a card (without specifying the effects).
 class LogCardsDealt extends LogEntry {
   /// Creates a [LogCardsDealt].
@@ -15,9 +14,9 @@ class LogCardsDealt extends LogEntry {
     required this.playerIndex,
     int? indentLevel,
   }) : super(
-          entryType: TBLogEntryType.cardsDealt,
-          indentLevel: indentLevel ?? 2,
-        );
+         entryType: TBLogEntryType.cardsDealt,
+         indentLevel: indentLevel ?? 2,
+       );
 
   /// Creates a [LogCardsDealt] from a JSON map.
   factory LogCardsDealt.fromJson(Map<String, dynamic> json) =>
@@ -30,20 +29,16 @@ class LogCardsDealt extends LogEntry {
   final PlayerIndex playerIndex;
 
   @override
-  Map<String, dynamic> toJson() => _$LogCardsDealtToJson(this)
-    ..addEntries([
-      MapEntry('entryType', entryType.name),
-    ]);
+  Map<String, dynamic> toJson() =>
+      _$LogCardsDealtToJson(this)
+        ..addEntries([MapEntry('entryType', entryType.name)]);
 
   @override
   TrObject getDescription(Game game) =>
-      TrObject(localizedKey, richTrObjects: _getRichTrObjects());
+      .new(localizedKey, richTrObjects: _getRichTrObjects());
 
   List<RichTrObject> _getRichTrObjects() => [
-        RichTrObject(
-          RichTrType.player,
-          value: playerIndex,
-        ),
-        RichTrObject(RichTrType.number, value: cardAmount),
-      ];
+    RichTrObject(.player, value: playerIndex),
+    RichTrObject(.number, value: cardAmount),
+  ];
 }

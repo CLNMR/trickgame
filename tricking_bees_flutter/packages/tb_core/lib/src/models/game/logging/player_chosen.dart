@@ -8,7 +8,6 @@ import 'tb_log_entry_type.dart';
 part 'player_chosen.g.dart';
 
 @JsonSerializable()
-
 /// Log a player choosing a role.
 class LogPlayerChosen extends LogEntry {
   /// Creates a [LogPlayerChosen].
@@ -18,9 +17,9 @@ class LogPlayerChosen extends LogEntry {
     required this.roleKey,
     int? indentLevel,
   }) : super(
-          entryType: TBLogEntryType.playerChosen,
-          indentLevel: indentLevel ?? 0,
-        );
+         entryType: TBLogEntryType.playerChosen,
+         indentLevel: indentLevel ?? 0,
+       );
 
   /// Creates a [LogPlayerChosen] from a JSON map.
   factory LogPlayerChosen.fromJson(Map<String, dynamic> json) =>
@@ -36,25 +35,17 @@ class LogPlayerChosen extends LogEntry {
   final RoleCatalog roleKey;
 
   @override
-  Map<String, dynamic> toJson() => _$LogPlayerChosenToJson(this)
-    ..addEntries([
-      MapEntry('entryType', entryType.name),
-    ]);
+  Map<String, dynamic> toJson() =>
+      _$LogPlayerChosenToJson(this)
+        ..addEntries([MapEntry('entryType', entryType.name)]);
 
   @override
-  TrObject getDescription(Game game) => TrObject(
-        localizedKey,
-        richTrObjects: [
-          RichTrObject(
-            RichTrType.player,
-            value: playerIndex,
-          ),
-          RichTrObject(
-            RichTrType.player,
-            value: playerChosenIndex,
-            keySuffix: 'Chosen',
-          ),
-          RichTrObject(TBRichTrType.role, value: roleKey),
-        ],
-      );
+  TrObject getDescription(Game game) => .new(
+    localizedKey,
+    richTrObjects: [
+      RichTrObject(.player, value: playerIndex),
+      RichTrObject(.player, value: playerChosenIndex, keySuffix: 'Chosen'),
+      RichTrObject(TBRichTrType.role, value: roleKey),
+    ],
+  );
 }

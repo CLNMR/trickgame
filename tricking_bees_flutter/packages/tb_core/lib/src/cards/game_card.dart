@@ -8,15 +8,10 @@ part 'game_card.g.dart';
 
 @JsonSerializable()
 @immutable
-
 /// A card in the game.
 class GameCard {
   /// Creates a [GameCard].
-  const GameCard({
-    required this.number,
-    required this.color,
-    this.queenRole,
-  });
+  const GameCard({required this.number, required this.color, this.queenRole});
 
   /// Create a [GameCard] from a JSON map.
   factory GameCard.fromJson(Map<String, dynamic> json) =>
@@ -46,10 +41,10 @@ class GameCard {
 
   /// A short description.
   String get name =>
-      isQueen ? '${queenRole!.statusKey} Queen' : '${color.name} $number';
+      isQueen ? '${queenRole!.statusKey} Queen' : '${color.name} ${number!}';
 
   /// The display name of the card, might need to be localized.
-  String get displayName => isQueen ? 'Q' : number.toString();
+  String get displayName => isQueen ? 'Q' : '${number!}';
 
   /// Custom sorting function for GameCard objects.
   static int sort(GameCard a, GameCard b) {

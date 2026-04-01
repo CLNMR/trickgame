@@ -5,19 +5,18 @@ import '../models/game/logging/player_chosen.dart';
 import '../models/game/tb_game.dart';
 import '../models/tb_player.dart';
 import 'role.dart';
-import 'role_catalog.dart';
 
 /// They get the mean of the trumps of two players of their choice.
 class RoleH extends Role {
   /// Creates a [RoleH].
-  RoleH() : super(key: RoleCatalog.roleH);
+  RoleH() : super(key: .roleH);
 
   // Store the chosen players in a list.
   final String _chosenPlayersKey = 'RoleHChosenPlayerIndexes';
 
   /// Get the players chosen so far.
   List<int> getChosenPlayers(TBGame game) =>
-      game.getFlagList<int>(_chosenPlayersKey) ?? <int>[];
+      game.getFlagList(_chosenPlayersKey) ?? [];
 
   /// Add a player to the list of chosen players.
   void addSelectedPlayer(TBGame game, int selectedPlayerIndex) {
@@ -39,7 +38,7 @@ class RoleH extends Role {
         });
       return false;
     }
-    game.inputRequirement = InputRequirement.selectPlayer;
+    game.inputRequirement = .selectPlayer;
     return true;
   }
 
@@ -51,7 +50,7 @@ class RoleH extends Role {
   /// Select a player.
   @override
   Future<void> selectPlayer(TBGame game, int selectedPlayerIndex) async {
-    if (game.inputRequirement != InputRequirement.selectPlayer) return;
+    if (game.inputRequirement != .selectPlayer) return;
     if (isPlayerSelected(game, selectedPlayerIndex)) return;
     // A player cannot select themselves.
     if (selectedPlayerIndex == game.currentTurnIndex) return;
@@ -86,7 +85,7 @@ class RoleH extends Role {
   }
 
   @override
-  TrObject? getStatusAtStartOfGame(TBGame game, YustUser? user) {
+  TrObject getStatusAtStartOfGame(TBGame game, YustUser? user) {
     final keyBase = '${key.statusKey}:START:';
     final chosenPlayers = getChosenPlayers(game);
     final keySuffix = chosenPlayers.isEmpty ? 'SelectTwo' : 'SelectOne';
@@ -95,22 +94,20 @@ class RoleH extends Role {
             '$keyBase$keySuffix',
             richTrObjects: [
               if (chosenPlayers.isNotEmpty)
-                RichTrObject(RichTrType.player, value: chosenPlayers.first),
+                RichTrObject(.player, value: chosenPlayers.first),
             ],
           )
         : TrObject(
             '${keyBase}Wait',
             richTrObjects: [
-              RichTrObject(RichTrType.player, value: game.currentTurnIndex),
+              RichTrObject(.player, value: game.currentTurnIndex),
             ],
           );
   }
 
   @override
-  TrObject getStatusWhileActive(TBGame game, YustUser? user) => TrObject(
-        key.statusKey,
-        richTrObjects: [
-          RichTrObject(RichTrType.playerList, value: getChosenPlayers(game)),
-        ],
-      );
+  TrObject getStatusWhileActive(TBGame game, YustUser? user) => .new(
+    key.statusKey,
+    richTrObjects: [RichTrObject(.playerList, value: getChosenPlayers(game))],
+  );
 }

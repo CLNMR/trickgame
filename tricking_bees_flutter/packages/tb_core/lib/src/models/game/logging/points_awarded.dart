@@ -8,7 +8,6 @@ import 'tb_log_entry_type.dart';
 part 'points_awarded.g.dart';
 
 @JsonSerializable()
-
 /// An entry to a card that the solo player chooses.
 class LogPointsAwarded extends LogEntry {
   /// Creates a [LogPointsAwarded].
@@ -19,9 +18,9 @@ class LogPointsAwarded extends LogEntry {
     required this.points,
     required this.tricksWon,
   }) : super(
-          entryType: TBLogEntryType.pointsAwarded,
-          indentLevel: indentLevel ?? 0,
-        );
+         entryType: TBLogEntryType.pointsAwarded,
+         indentLevel: indentLevel ?? 0,
+       );
 
   /// Creates a [LogPointsAwarded] from a JSON.
   factory LogPointsAwarded.fromJson(Map<String, dynamic> json) =>
@@ -40,24 +39,19 @@ class LogPointsAwarded extends LogEntry {
   final int tricksWon;
 
   @override
-  Map<String, dynamic> toJson() => _$LogPointsAwardedToJson(this)
-    ..addEntries([
-      MapEntry('entryType', entryType.name),
-    ]);
+  Map<String, dynamic> toJson() =>
+      _$LogPointsAwardedToJson(this)
+        ..addEntries([MapEntry('entryType', entryType.name)]);
 
   @override
-  TrObject getDescription(Game game) => TrObject(
-        localizedKey,
-        richTrObjects: [
-          RichTrObject(RichTrType.player, value: playerIndex),
-          RichTrObject(TBRichTrType.role, value: roleKey),
-          RichTrObject(
-            RichTrType.number,
-            value: tricksWon,
-            keySuffix: 'Tricks',
-          ),
-          RichTrObject(RichTrType.number, value: points, keySuffix: 'Points'),
-        ],
-        namedArgs: {'gameId': game.gameId.toString()},
-      );
+  TrObject getDescription(Game game) => .new(
+    localizedKey,
+    richTrObjects: [
+      RichTrObject(.player, value: playerIndex),
+      RichTrObject(TBRichTrType.role, value: roleKey),
+      RichTrObject(.number, value: tricksWon, keySuffix: 'Tricks'),
+      RichTrObject(.number, value: points, keySuffix: 'Points'),
+    ],
+    namedArgs: {'gameId': game.gameId.toString()},
+  );
 }

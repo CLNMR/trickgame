@@ -4,35 +4,38 @@ part of 'tb_game.dart';
 extension GameAutoPlayExt on TBGame {
   /// Performs a random action that is currently possible.
   Future<void> performRandomPossibleAction() async {
-    if ([GameState.finished, GameState.waitingForPlayers].contains(gameState)) {
-      return;
+    switch (gameState) {
+      case .finished:
+      case .waitingForPlayers:
+      case .abandoned:
+        return;
+      case .running:
     }
     // Generate a decoy user resembling the current player.
     final user = YustUser(email: 'test', firstName: '', lastName: '')
       ..id = currentPlayer.id;
     switch (inputRequirement) {
-      case InputRequirement.selectRole:
+      case .selectRole:
         final availRoles = RoleCatalog.allChoosableRoles
             .where((e) => canChooseRole(e, user))
             .toList();
         final index = Random().nextInt(availRoles.length);
         if (availRoles.isEmpty) return;
         await chooseRole(availRoles[index]);
-      case InputRequirement.selectCardToRemove:
-      case InputRequirement.twoCards:
-      case InputRequirement.card:
+      case .selectCardToRemove:
+      case .twoCards:
+      case .card:
         await _playRandomCard(user);
-      case InputRequirement.selectPlayer:
+      case .selectPlayer:
         await _selectRandomPlayer(user);
-      case InputRequirement.selectTrump:
+      case .selectTrump:
         await _selectRandomTrump();
-      case InputRequirement.cardOrSkip:
+      case .cardOrSkip:
         await _playRandomCard(user, allowSkip: true);
     }
   }
 
-  Future<void> _playRandomCard(YustUser? user, {bool allowSkip = false}) async {
-    if (user == null) return;
+  Future<void> _playRandomCard(YustUser user, {bool allowSkip = false}) async {
     final player = getPlayer(user) as TBPlayer;
     final cards = player.cards
         .where((e) => player.canPlayCard(e, compulsoryColor))
@@ -47,13 +50,10 @@ extension GameAutoPlayExt on TBGame {
     await handleCardTap(cards[index], player, user);
   }
 
-  Future<void> _selectRandomPlayer(YustUser? user) async {
-    if (user == null) return;
+  Future<void> _selectRandomPlayer(YustUser user) async {
     final player = getPlayer(user) as TBPlayer;
     final players = getOtherPlayers(user)
-        .where(
-          (p) => !player.role.isPlayerSelected(this, getPlayerIndex(p)),
-        )
+        .where((p) => !player.role.isPlayerSelected(this, getPlayerIndex(p)))
         .toList();
     if (players.isEmpty) return;
     final index = Random().nextInt(players.length);

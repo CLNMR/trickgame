@@ -126,5 +126,19 @@ dart_code_metrics:
     rules:
         avoid-dynamic: false
         avoid-throw-in-catch-block: false
+        # Game logic intentionally uses indexed access and firstWhere on known-valid data.
+        avoid-unsafe-collection-methods: false
+        # Not all classes need toString for debug purposes.
+        avoid-default-tostring: false
+        # Part files and log entry classes intentionally differ from file names.
+        prefer-match-file-name: false
+        # Base class event handlers have intentionally empty default implementations.
+        no-empty-block: false
+        # Game-internal number display doesn't need NumberFormat.
+        prefer-number-format: false
+        # Callback field naming convention doesn't fit game role patterns.
+        prefer-correct-callback-field-name: false
+        # Extension methods intentionally shadow base class defaults (e.g. getStatusMessages, save).
+        avoid-shadowed-extension-methods: false
     pubspec-rules:
         prefer-caret-version-syntax: false

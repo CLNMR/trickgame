@@ -17,7 +17,7 @@ class TBGameService {
   /// Whenever another user makes a change, a new version of the document is returned.
   ///
   static Stream<TBGame?> getStream(String id) =>
-      Yust.databaseService.getStream<TBGame>(TBGame.setup(), id);
+      Yust.databaseService.getStream(TBGame.setup(), id);
 
   /// Returns a stream of the first [TBGame].
   ///
@@ -27,7 +27,7 @@ class TBGameService {
   static Stream<TBGame?> getFirstStream({
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
-  }) => Yust.databaseService.getFirstStream<TBGame>(
+  }) => Yust.databaseService.getFirstStream(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -49,7 +49,7 @@ class TBGameService {
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
     int? limit,
-  }) => Yust.databaseService.getListStream<TBGame>(
+  }) => Yust.databaseService.getListStream(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -61,8 +61,8 @@ class TBGameService {
   ///
   /// Be careful with offline functionality.
   ///
-  static Future<TBGame?> getFromDB(String id) async =>
-      Yust.databaseService.getFromDB<TBGame>(TBGame.setup(), id);
+  static Future<TBGame?> getFromDB(String id) =>
+      Yust.databaseService.getFromDB(TBGame.setup(), id);
 
   /// Returns the first [TBGame] directly from the server, if available, otherwise from the cache.
   ///
@@ -72,7 +72,7 @@ class TBGameService {
   static Future<TBGame?> getFirstFromDB({
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
-  }) async => Yust.databaseService.getFirstFromDB<TBGame>(
+  }) => Yust.databaseService.getFirstFromDB(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -94,7 +94,7 @@ class TBGameService {
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
     int? limit,
-  }) async => Yust.databaseService.getListFromDB<TBGame>(
+  }) => Yust.databaseService.getListFromDB(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -106,8 +106,8 @@ class TBGameService {
   ///
   /// Be careful with offline functionality.
   ///
-  static Future<TBGame?> getFromCache(String id) async =>
-      Yust.databaseService.getFromCache<TBGame>(TBGame.setup(), id);
+  static Future<TBGame?> getFromCache(String id) =>
+      Yust.databaseService.getFromCache(TBGame.setup(), id);
 
   /// Returns the first [TBGame] from the cache, if available, otherwise from the server.
   /// The cached documents may not be up to date!
@@ -117,7 +117,7 @@ class TBGameService {
   static Future<TBGame?> getFirstFromCache({
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
-  }) async => Yust.databaseService.getFirstFromCache<TBGame>(
+  }) => Yust.databaseService.getFirstFromCache(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -139,7 +139,7 @@ class TBGameService {
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
     int? limit,
-  }) async => Yust.databaseService.getListFromCache<TBGame>(
+  }) => Yust.databaseService.getListFromCache(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -151,8 +151,8 @@ class TBGameService {
   ///
   /// Be careful with offline functionality.
   ///
-  static Future<TBGame?> get(String id) async =>
-      Yust.databaseService.get<TBGame>(TBGame.setup(), id);
+  static Future<TBGame?> get(String id) =>
+      Yust.databaseService.get(TBGame.setup(), id);
 
   /// Returns the first [TBGame] from the server, if available, otherwise from the cache.
   /// The cached documents may not be up to date!
@@ -162,7 +162,7 @@ class TBGameService {
   static Future<TBGame?> getFirst({
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
-  }) async => Yust.databaseService.getFirst<TBGame>(
+  }) => Yust.databaseService.getFirst(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -184,7 +184,7 @@ class TBGameService {
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
     int? limit,
-  }) async => Yust.databaseService.getList<TBGame>(
+  }) => Yust.databaseService.getList(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -215,7 +215,7 @@ class TBGameService {
     List<YustFilter>? filters,
     List<YustOrderBy>? orderBy,
     int pageSize = 5000,
-  }) => Yust.databaseService.getListChunked<TBGame>(
+  }) => Yust.databaseService.getListChunked(
     TBGame.setup(),
     filters: filters,
     orderBy: orderBy,
@@ -232,22 +232,22 @@ class TBGameService {
   ///
   ///
   static Future<int> count({List<YustFilter>? filters}) =>
-      Yust.databaseService.count<TBGame>(TBGame.setup(), filters: filters);
+      Yust.databaseService.count(TBGame.setup(), filters: filters);
 
   /// Initializes a [TBGame] with an id and the time it was created.
   ///
   /// Optionally an existing [TBGame] can be given, which will still be
   /// assigned a new id becoming a new [TBGame] if it had an id previously.
   static TBGame init([TBGame? doc]) =>
-      Yust.databaseService.initDoc<TBGame>(TBGame.setup(), doc);
+      Yust.databaseService.initDoc(TBGame.setup(), doc);
 
   /// Delete all [TBGame]s in the filter.
   static Future<void> deleteAll({List<YustFilter>? filters}) =>
-      Yust.databaseService.deleteDocs<TBGame>(TBGame.setup(), filters: filters);
+      Yust.databaseService.deleteDocs(TBGame.setup(), filters: filters);
 
   /// Delete a [TBGame].
   static Future<void> deleteById(String id) =>
-      Yust.databaseService.deleteDocById<TBGame>(TBGame.setup(), id);
+      Yust.databaseService.deleteDocById(TBGame.setup(), id);
 }
 
 /// An extension to save and delete elements of [TBGame].
@@ -260,7 +260,7 @@ extension TBGameSave on TBGame {
     bool? removeNullValues,
     bool doNotCreate = false,
   }) async {
-    await Yust.databaseService.saveDoc<TBGame>(
+    await Yust.databaseService.saveDoc(
       TBGame.setup(),
       this,
       trackModification: trackModification ?? false,
@@ -276,7 +276,7 @@ extension TBGameSave on TBGame {
     List<YustFieldTransform> fieldTransforms, {
     bool? removeNullValues,
     bool skipOnSave = false,
-  }) async => Yust.databaseService.updateDocByTransform<TBGame>(
+  }) => Yust.databaseService.updateDocByTransform(
     TBGame.setup(),
     id,
     fieldTransforms,
@@ -285,6 +285,5 @@ extension TBGameSave on TBGame {
   );
 
   /// Deletes the document.
-  Future<void> delete() async =>
-      Yust.databaseService.deleteDoc<TBGame>(TBGame.setup(), this);
+  Future<void> delete() => Yust.databaseService.deleteDoc(TBGame.setup(), this);
 }

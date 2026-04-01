@@ -6,7 +6,6 @@ import 'tb_log_entry_type.dart';
 part 'skip_turn.g.dart';
 
 @JsonSerializable()
-
 /// Log whenever a player skips their turn.
 class LogSkipTurn extends LogEntry {
   /// Creates a [LogSkipTurn].
@@ -14,10 +13,7 @@ class LogSkipTurn extends LogEntry {
     required this.playerIndex,
     this.isCardSkip = false,
     int? indentLevel,
-  }) : super(
-          entryType: TBLogEntryType.skipTurn,
-          indentLevel: indentLevel ?? 2,
-        );
+  }) : super(entryType: TBLogEntryType.skipTurn, indentLevel: indentLevel ?? 2);
 
   /// Creates a [LogSkipTurn] from a JSON map.
   factory LogSkipTurn.fromJson(Map<String, dynamic> json) =>
@@ -30,14 +26,13 @@ class LogSkipTurn extends LogEntry {
   final bool isCardSkip;
 
   @override
-  Map<String, dynamic> toJson() => _$LogSkipTurnToJson(this)
-    ..addEntries([
-      MapEntry('entryType', entryType.name),
-    ]);
+  Map<String, dynamic> toJson() =>
+      _$LogSkipTurnToJson(this)
+        ..addEntries([MapEntry('entryType', entryType.name)]);
 
   @override
-  TrObject getDescription(Game game) => TrObject(
-        localizedKey,
-        richTrObjects: [RichTrObject(RichTrType.player, value: playerIndex)],
-      );
+  TrObject getDescription(Game game) => .new(
+    localizedKey,
+    richTrObjects: [RichTrObject(.player, value: playerIndex)],
+  );
 }

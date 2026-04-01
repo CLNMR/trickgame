@@ -9,7 +9,7 @@ import 'game_card.dart';
 /// A trick in the game.
 class Trick {
   /// Creates a [Trick].
-  Trick({required this.cardMap});
+  const Trick({required this.cardMap});
 
   /// Creates a [Trick] from a JSON map. This implementation ensures the order
   /// of the linked hash map.
@@ -18,10 +18,8 @@ class Trick {
     // ignore: prefer_collection_literals
     final cardMap = LinkedHashMap<GameCard, PlayerIndex>();
     for (final item in cardMapList) {
-      final card = GameCard.fromJson(
-        (item['key'] as LinkedHashMap).cast<String, dynamic>(),
-      );
-      cardMap[card] = int.parse(item['value']);
+      cardMap[GameCard.fromJson((item['key'] as LinkedHashMap).cast())] =
+          int.parse(item['value']);
     }
     return Trick(cardMap: cardMap);
   }
@@ -38,16 +36,13 @@ class Trick {
   /// of the linked hash map.
   Map<String, dynamic> toJson() {
     final cardMapList = cardMap.entries
-        .map(
-          (entry) =>
-              {'key': entry.key.toJson(), 'value': entry.value.toString()},
-        )
+        .map((entry) => {'key': entry.key.toJson(), 'value': entry.value})
         .toList();
     return {'cardMap': cardMapList};
   }
 
   /// The cards in the trick.
-  CardStack get cards => CardStack(cards: cardMap.keys.toList());
+  CardStack get cards => .new(cards: cardMap.keys.toList());
 
   /// The amount of cards currently in the trick.
   int get length => cards.length;
@@ -74,8 +69,9 @@ class Trick {
     CardColor? trumpColor, {
     GameCard? excludedCardFromTrump,
   }) {
-    final filteredCards =
-        cards.where((element) => element != excludedCardFromTrump);
+    final filteredCards = cards.where(
+      (element) => element != excludedCardFromTrump,
+    );
     if (filteredCards.isEmpty) return null;
     if (containsQueen) {
       return cards.firstWhere((card) => card.isQueen);
@@ -83,16 +79,14 @@ class Trick {
     // Check whether anyone has put a trump in the non-trump mix
     if (compulsoryColor != trumpColor &&
         filteredCards.any((card) => card.color == trumpColor)) {
-      final sortedCards = filteredCards
-          .where((card) => card.color == trumpColor)
-          .toList()
-        ..sort(GameCard.sort);
+      final sortedCards =
+          filteredCards.where((card) => card.color == trumpColor).toList()
+            ..sort(GameCard.sort);
       return sortedCards.last;
     }
-    final sortedCards = cards
-        .where((card) => card.color == compulsoryColor)
-        .toList()
-      ..sort(GameCard.sort);
+    final sortedCards =
+        cards.where((card) => card.color == compulsoryColor).toList()
+          ..sort(GameCard.sort);
     return sortedCards.last;
   }
 

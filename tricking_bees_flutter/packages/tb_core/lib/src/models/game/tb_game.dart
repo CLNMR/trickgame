@@ -123,7 +123,7 @@ class TBGame extends Game {
   Map<String, dynamic> toJson() => _$TBGameToJson(this);
 
   /// The setup for the [Game] model.
-  static YustDocSetup<TBGame> setup() => YustDocSetup<TBGame>(
+  static YustDocSetup<TBGame> setup() => .new(
     collectionName: 'games',
     fromJson: TBGame.fromJson,
     newDoc: TBGame.new,
@@ -144,8 +144,7 @@ class TBGame extends Game {
 
   /// Whether the trump color has been overridden.
   bool get hasOverridingTrumpColor =>
-      CardColor.tryParse(getFlag<String>(_overridingTrumpColorKey) ?? '') !=
-      null;
+      CardColor.tryParse(getFlag(_overridingTrumpColorKey) ?? '') != null;
 
   /// The index of the current player with respect to the [players] list.
   PlayerIndex get currentPlayerIndex => playOrder[currentTurnIndex];
@@ -213,13 +212,11 @@ class TBGame extends Game {
       (players[i] as TBPlayer).resetForNewSubgame();
       (players[i] as TBPlayer).dealCards(
         CardStack(
-          cards: [
-            GameCard(number: getRankForPlayer(i), color: CardColor.yellow),
-          ],
+          cards: [GameCard(number: getRankForPlayer(i), color: .yellow)],
         ),
       );
     }
-    gameState = GameState.finished;
+    gameState = .finished;
     addLogEntry(LogEndOfGame());
   }
 
@@ -239,7 +236,7 @@ class TBGame extends Game {
       (players[i] as TBPlayer).dealCards(undealtCards.dealCards());
     }
     currentTrump = undealtCards.getRandomCard();
-    inputRequirement = InputRequirement.selectRole;
+    inputRequirement = .selectRole;
     addLogEntry(
       LogSubgameStarts(subgame: currentSubgame, trumpCard: currentTrump!),
     );
@@ -262,7 +259,7 @@ class TBGame extends Game {
 
   /// Advance the game to the next turn during the trick-playing phase.
   Future<void> goToNextTurn() async {
-    inputRequirement = InputRequirement.card;
+    inputRequirement = .card;
 
     for (final role in currentRoles) {
       await role.onStartOfTurn(this);
@@ -327,10 +324,10 @@ class TBGame extends Game {
   static int getSubRoundNumber(RoundNumber round) => round % 13;
 
   @override
-  TBGame copy() => TBGame.fromJson(toJson());
+  TBGame copy() => .fromJson(toJson());
 
   @override
-  TBGame init() => Yust.databaseService.initDoc<TBGame>(TBGame.setup(), this);
+  TBGame init() => Yust.databaseService.initDoc(TBGame.setup(), this);
 
   @override
   /// Saves the document.
@@ -341,7 +338,7 @@ class TBGame extends Game {
     bool? removeNullValues,
     bool doNotCreate = false,
   }) async {
-    await Yust.databaseService.saveDoc<TBGame>(
+    await Yust.databaseService.saveDoc(
       TBGame.setup(),
       this,
       trackModification: trackModification ?? false,

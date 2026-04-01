@@ -7,19 +7,18 @@ import '../models/game/logging/cards_dealt.dart';
 import '../models/game/tb_game.dart';
 import '../util/tb_rich_tr_object_type.dart';
 import 'role.dart';
-import 'role_catalog.dart';
 
 /// They get to see and exchange from two extra cards.
 class RoleC extends Role {
   /// Creates a [RoleC].
-  RoleC() : super(key: RoleCatalog.roleC);
+  RoleC() : super(key: .roleC);
 
   final String _discardedCardsKey = 'RoleCDiscardedCards';
 
   /// Choose players at the start of the game.
   @override
   bool onStartOfSubgame(TBGame game) {
-    game.inputRequirement = InputRequirement.selectCardToRemove;
+    game.inputRequirement = .selectCardToRemove;
     game.currentPlayer.dealCards(game.undealtCards.dealCards(cardNum: 3));
     game.addLogEntry(
       LogCardsDealt(cardAmount: 3, playerIndex: game.currentPlayerIndex),
@@ -28,9 +27,9 @@ class RoleC extends Role {
   }
 
   /// Get the discarded cards.
-  CardStack getDiscardedCards(TBGame game) => CardStack.fromJson(
-        game.getFlagMap<String, dynamic>(_discardedCardsKey) ?? {'_cards': []},
-      );
+  CardStack getDiscardedCards(TBGame game) => .fromJson(
+    game.getFlagMap<String, dynamic>(_discardedCardsKey) ?? {'_cards': []},
+  );
 
   /// Select a card to remove.
   void discardCard(TBGame game, GameCard card) {
@@ -42,7 +41,7 @@ class RoleC extends Role {
 
   @override
   Future<void> onSelectCardToRemove(TBGame game, GameCard card) async {
-    if (game.inputRequirement != InputRequirement.selectCardToRemove) return;
+    if (game.inputRequirement != .selectCardToRemove) return;
     discardCard(game, card);
     if (getDiscardedCards(game).length == 3) {
       await game.finishRoleSelection();
@@ -57,22 +56,22 @@ class RoleC extends Role {
   }
 
   @override
-  TrObject getStatusWhileActive(TBGame game, YustUser? user) => TrObject(
-        key.statusKey,
-        richTrObjects: [
-          RichTrObject(TBRichTrType.cardList, value: getDiscardedCards(game)),
-        ],
-      );
+  TrObject getStatusWhileActive(TBGame game, YustUser? user) => .new(
+    key.statusKey,
+    richTrObjects: [
+      RichTrObject(TBRichTrType.cardList, value: getDiscardedCards(game)),
+    ],
+  );
 
   @override
-  TrObject? getStatusAtStartOfGame(TBGame game, YustUser? user) {
+  TrObject getStatusAtStartOfGame(TBGame game, YustUser? user) {
     final keyBase = '${key.statusKey}:START:';
     final discardedCards = getDiscardedCards(game);
     final keySuffix = discardedCards.isEmpty
         ? 'SelectThree'
         : discardedCards.length == 1
-            ? 'SelectTwo'
-            : 'SelectOne';
+        ? 'SelectTwo'
+        : 'SelectOne';
     return game.isCurrentPlayer(user)
         ? TrObject(
             '$keyBase$keySuffix',
@@ -90,7 +89,7 @@ class RoleC extends Role {
         : TrObject(
             '${keyBase}Wait',
             richTrObjects: [
-              RichTrObject(RichTrType.player, value: game.currentTurnIndex),
+              RichTrObject(.player, value: game.currentTurnIndex),
             ],
           );
   }
