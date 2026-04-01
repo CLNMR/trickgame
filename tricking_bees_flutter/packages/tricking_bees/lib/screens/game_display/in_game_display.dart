@@ -65,6 +65,11 @@ class _GameDisplayState extends ConsumerState<InGameDisplay> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.game.isUserSpectator(ref.user)) {
+      return const Center(
+        child: OwnText(text: 'You are spectating this game.', translate: false),
+      );
+    }
     final player = widget.game.getPlayer(ref.user) as TBPlayer;
     return Center(
       child: Row(

@@ -9,7 +9,7 @@
             "type": "dart",
             "request": "launch",
             "program": "packages/tricking_bees/lib/main.dart",
-            "toolArgs": ["--dart-define", "environment=prod", "--dart-define", "testMode=true"]
+            "toolArgs": ["--dart-define", "environment=prod", "--dart-define", "noAuth=true"]
         },
         {
             "name": "Launch Emu",

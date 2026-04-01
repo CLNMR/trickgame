@@ -49,6 +49,7 @@
   "LOG:subgameStarts": "The cards for game {number} of {numberTot} are distributed. {card} is revealed to be the trump card this time.",
   "LOG:trickWon": "{player} wins the trick.",
   "LOG:trumpChosen": "{player} chooses {color} as the new trump color.",
+  "NEWGAME:gameIdHeader": "Game ID: ",
   "PLAYERINFO:currentPoints": "Points you would receive at the end of this round through your current role",
   "PLAYERINFO:totalPoints": "Points",
   "PLAYERINFO:tricksWon": "Number of Tricks Won",
@@ -125,5 +126,12 @@
   "cardColorSuffix": "",
   "connectiveAnd": ", and ",
   "roleTargetsPlayerTooltip": "This player was selected with the role {role}.",
-  "trumpDisplayTooltip": "In this game, you can trump with {color}."
+  "trumpDisplayTooltip": "In this game, you can trump with {color}.",
+  "WAITING:connectiveOf": " of ",
+  "WAITING:gameInformationHeader": "Game Information",
+  "WAITING:playersHeader": "Players: ",
+  "WAITING:removePlayerTooltip": "Remove this player",
+  "WAITING:removePlayerTooltipDisabled": "Cannot remove the game owner",
+  "WAITING:shufflePlayers": "Players will be shuffled at game start.",
+  "WAITING:subgameNumInfo": "Playing {number} subgames."
 }
