@@ -4,6 +4,7 @@ import 'package:flutter_game_framework_ui/flutter_game_framework_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tb_core/tb_core.dart';
 
+import 'design/tb_theme.dart';
 import 'screens/game_screen.r.dart';
 
 /// Fill in the following line, if you want to use a local emulated Firebase
@@ -31,7 +32,7 @@ void main() async {
           'packages/flutter_game_framework_ui/assets/localizables',
           'assets/localizables',
         ]),
-        child: const GameFramework(),
+        child: GameFramework(lightTheme: tbLightTheme),
       ),
     ),
   );
