@@ -33,7 +33,7 @@ enum RoleCatalog {
   /// The constructor of the role.
   final Role Function() roleConstructor;
 
-  static List<RoleCatalog> get allChoosableRoles =>
+  static List<RoleCatalog> get allAvailableRoles =>
       values.where((e) => e != .noRole).toList();
 
   /// The key for the status message while possessing this role.

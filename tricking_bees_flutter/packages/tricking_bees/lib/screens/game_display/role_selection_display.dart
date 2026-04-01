@@ -71,17 +71,17 @@ class RoleSelectionDisplay extends ConsumerWidget {
   );
 
   Widget _buildRoleButtonGrid(BuildContext context, WidgetRef ref) {
-    final choosableRoles = RoleCatalog.allChoosableRoles;
+    final available = RoleCatalog.allAvailableRoles;
     return GridView.builder(
       shrinkWrap: true,
-      itemCount: choosableRoles.length,
+      itemCount: available.length,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 100,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
       itemBuilder: (context, index) {
-        final roleKey = choosableRoles[index];
+        final roleKey = available[index];
         return SizedBox(
           height: 70,
           width: 100,
@@ -90,7 +90,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
                 ? game.chooseRole(roleKey)
                 : null,
             child: RoleIcon(
-              isChoosable: game.canChooseRole(roleKey, ref.user),
+              isAvailable: game.canChooseRole(roleKey, ref.user),
               roleKey: roleKey,
             ),
           ),

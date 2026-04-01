@@ -1,0 +1,10 @@
+# Local path dependency overrides (machine-specific)
+**/pubspec_overrides.yaml
+
+# Symlinked external packages
+packages_external/yust
+packages_external/yust_ui
+
+# macOS metadata
+.DS_Store
+**/.DS_Store

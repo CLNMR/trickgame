@@ -7,13 +7,13 @@ import 'package:tb_core/tb_core.dart';
 /// A widget representing a role with an icon and a name.
 class RoleIcon extends StatelessWidget {
   /// Creates an [RoleIcon].
-  const RoleIcon({super.key, required this.roleKey, this.isChoosable = true});
+  const RoleIcon({super.key, required this.roleKey, this.isAvailable = true});
 
   /// The role to be displayed.
   final RoleCatalog roleKey;
 
-  /// Whether the role is currently choosable.
-  final bool isChoosable;
+  /// Whether the role is currently available.
+  final bool isAvailable;
 
   @override
   Widget build(BuildContext context) => Tooltip(
@@ -55,7 +55,7 @@ class RoleIcon extends StatelessWidget {
                     roleKey.imagePathBenefits,
                     roleKey.descBenefits.tr(),
                   ),
-                  if (!isChoosable)
+                  if (!isAvailable)
                     Icon(
                       Icons.lock,
                       color: Colors.deepOrangeAccent[700]!.withValues(
@@ -95,6 +95,6 @@ class RoleIcon extends StatelessWidget {
     super.debugFillProperties(properties);
     properties
       ..add(EnumProperty<RoleCatalog>('roleKey', roleKey))
-      ..add(DiagnosticsProperty<bool>('isChoosable', isChoosable));
+      ..add(DiagnosticsProperty<bool>('isAvailable', isAvailable));
   }
 }

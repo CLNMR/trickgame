@@ -1,7 +1,7 @@
 name: tb_core
 description: A new Flutter package project.
-version: 0.0.1
 publish_to: none
+version: 0.0.1
 
 environment:
   sdk: '>=3.10.0 <4.0.0'
@@ -26,4 +26,3 @@ dev_dependencies:
     json_serializable: ^6.9.0
     lints: ^3.0.0
     matcher: ^0.12.17
-

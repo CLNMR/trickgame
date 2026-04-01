@@ -16,7 +16,7 @@ extension GameAutoPlayExt on TBGame {
       ..id = currentPlayer.id;
     switch (inputRequirement) {
       case .selectRole:
-        final availRoles = RoleCatalog.allChoosableRoles
+        final availRoles = RoleCatalog.allAvailableRoles
             .where((e) => canChooseRole(e, user))
             .toList();
         final index = Random().nextInt(availRoles.length);
