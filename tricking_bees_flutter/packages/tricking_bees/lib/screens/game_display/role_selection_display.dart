@@ -28,7 +28,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
       case InputRequirement.selectTrump:
         return _buildTrumpSelectGrid(context, ref);
       case InputRequirement.selectCardToRemove:
-        return const Text('CardRemovalPlaceholder'); // _buildCardRemovalArea();
+        return _buildCardRemovalArea(context, ref);
       default:
         return Center(
           child: Column(
@@ -45,6 +45,17 @@ class RoleSelectionDisplay extends ConsumerWidget {
           ),
         );
     }
+  }
+
+  Widget _buildCardRemovalArea(BuildContext context, WidgetRef ref) {
+    final isSelecting = isAuthenticatedPlayer(ref.user, game.currentPlayer);
+    return Center(
+      child: OwnText(
+        text: isSelecting
+            ? 'ROLE:C:selectCardsFromHand'
+            : 'ROLE:C:waitingForCardRemoval',
+      ),
+    );
   }
 
   Widget _buildRoleSelection(BuildContext context, WidgetRef ref) => Column(

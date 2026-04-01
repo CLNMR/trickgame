@@ -16,9 +16,9 @@ LogRoundStartPlayOrder _$LogRoundStartPlayOrderFromJson(Map json) =>
     );
 
 Map<String, dynamic> _$LogRoundStartPlayOrderToJson(
-        LogRoundStartPlayOrder instance) =>
-    <String, dynamic>{
-      'indentLevel': instance.indentLevel,
-      'round': instance.round,
-      'playOrder': instance.playOrder,
-    };
+  LogRoundStartPlayOrder instance,
+) => <String, dynamic>{
+  'indentLevel': instance.indentLevel,
+  'round': instance.round,
+  'playOrder': instance.playOrder,
+};

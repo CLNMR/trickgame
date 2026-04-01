@@ -7,10 +7,10 @@ part of 'cards_dealt.dart';
 // **************************************************************************
 
 LogCardsDealt _$LogCardsDealtFromJson(Map json) => LogCardsDealt(
-      cardAmount: (json['cardAmount'] as num).toInt(),
-      playerIndex: (json['playerIndex'] as num).toInt(),
-      indentLevel: (json['indentLevel'] as num?)?.toInt(),
-    );
+  cardAmount: (json['cardAmount'] as num).toInt(),
+  playerIndex: (json['playerIndex'] as num).toInt(),
+  indentLevel: (json['indentLevel'] as num?)?.toInt(),
+);
 
 Map<String, dynamic> _$LogCardsDealtToJson(LogCardsDealt instance) =>
     <String, dynamic>{

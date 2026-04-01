@@ -7,9 +7,9 @@ part of 'turn_start.dart';
 // **************************************************************************
 
 LogTrickWon _$LogTrickWonFromJson(Map json) => LogTrickWon(
-      playerIndex: (json['playerIndex'] as num).toInt(),
-      indentLevel: (json['indentLevel'] as num?)?.toInt(),
-    );
+  playerIndex: (json['playerIndex'] as num).toInt(),
+  indentLevel: (json['indentLevel'] as num?)?.toInt(),
+);
 
 Map<String, dynamic> _$LogTrickWonToJson(LogTrickWon instance) =>
     <String, dynamic>{

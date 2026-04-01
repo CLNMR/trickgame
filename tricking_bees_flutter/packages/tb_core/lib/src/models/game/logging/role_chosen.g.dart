@@ -7,10 +7,10 @@ part of 'role_chosen.dart';
 // **************************************************************************
 
 LogRoleChosen _$LogRoleChosenFromJson(Map json) => LogRoleChosen(
-      playerIndex: (json['playerIndex'] as num).toInt(),
-      role: $enumDecode(_$RoleCatalogEnumMap, json['role']),
-      indentLevel: (json['indentLevel'] as num?)?.toInt(),
-    );
+  playerIndex: (json['playerIndex'] as num).toInt(),
+  role: $enumDecode(_$RoleCatalogEnumMap, json['role']),
+  indentLevel: (json['indentLevel'] as num?)?.toInt(),
+);
 
 Map<String, dynamic> _$LogRoleChosenToJson(LogRoleChosen instance) =>
     <String, dynamic>{

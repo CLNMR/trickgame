@@ -27,27 +27,21 @@ extension TBGameStatusGenerationExt on TBGame {
 
   TrObject _getStatusMessageForWaitingForPlayers(YustUser user) =>
       !arePlayersComplete
-          ? TrObject(
-              'STATUS:waitingForPlayers${public ? '' : 'Private'}',
-              richTrObjects: [
-                RichTrObject(
-                  RichTrType.number,
-                  value: playerNum - players.length,
-                ),
-              ],
-              namedArgs: {
-                'gameId': gameId.toString(),
-                'password': password,
-              },
-            )
-          : !isUserOwner(user)
-              ? TrObject('STATUS:waitingForOwnerToStart')
-              : shufflePlayers
-                  ? TrObject('STATUS:promptOwnerToStart')
-                  : TrObject('STATUS:promptOwnerToStartWithoutShuffle');
+      ? TrObject(
+          'STATUS:waitingForPlayers${public ? '' : 'Private'}',
+          richTrObjects: [
+            RichTrObject(RichTrType.number, value: playerNum - players.length),
+          ],
+          namedArgs: {'gameId': gameId.toString(), 'password': password},
+        )
+      : !isUserOwner(user)
+      ? TrObject('STATUS:waitingForOwnerToStart')
+      : shufflePlayers
+      ? TrObject('STATUS:promptOwnerToStart')
+      : TrObject('STATUS:promptOwnerToStartWithoutShuffle');
 
   List<TrObject> _getGameFinishedStatus(YustUser user) {
-    // TODO: Currently handles same point amounts poorly
+    // LATER: Handle same point amounts better (tiebreaker display)
     final sortedWinners = playerPoints.entries.toList()
       ..sort((a, b) => a.value.compareTo(b.value));
     final ownIndex = getPlayerIndex(getPlayer(user));
@@ -70,11 +64,7 @@ extension TBGameStatusGenerationExt on TBGame {
           value: playerPoints[ownIndex],
           keySuffix: 'Player',
         ),
-        RichTrObject(
-          RichTrType.number,
-          value: ownRank,
-          keySuffix: 'Rank',
-        ),
+        RichTrObject(RichTrType.number, value: ownRank, keySuffix: 'Rank'),
       ],
     );
     return [endObj];
@@ -82,15 +72,15 @@ extension TBGameStatusGenerationExt on TBGame {
 
   List<TrObject> _getStatusMessagesForInProgress(YustUser user) =>
       isCurrentPlayer(user)
-          ? [TrObject(inputRequirement.getStatusKey())]
-          : [
-              TrObject(
-                inputRequirement.getStatusKey(whileWaiting: true),
-                richTrObjects: [
-                  RichTrObject(RichTrType.player, value: currentPlayerIndex),
-                ],
-              ),
-            ];
+      ? [TrObject(inputRequirement.getStatusKey())]
+      : [
+          TrObject(
+            inputRequirement.getStatusKey(whileWaiting: true),
+            richTrObjects: [
+              RichTrObject(RichTrType.player, value: currentPlayerIndex),
+            ],
+          ),
+        ];
 
   /// Retrieve the status messages for roles at the start of the game.
   TrObject? _getStartOfGameRoleStatus(YustUser user) =>
@@ -99,6 +89,6 @@ extension TBGameStatusGenerationExt on TBGame {
   /// Retrieve the status messages for roles at the start of the game.
   TrObject _getCurrentRoleStatuses(YustUser user) =>
       ((getPlayer(user) as TBPlayer).role.getStatusWhileActive(this, user)
-          as TBTrObject)
+            as TBTrObject)
         ..roleKey = (getPlayer(user) as TBPlayer).roleKey;
 }

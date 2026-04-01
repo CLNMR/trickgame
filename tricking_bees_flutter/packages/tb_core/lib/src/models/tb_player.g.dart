@@ -7,24 +7,24 @@ part of 'tb_player.dart';
 // **************************************************************************
 
 TBPlayer _$TBPlayerFromJson(Map json) => TBPlayer(
-      id: json['id'] as String,
-      displayName: json['displayName'] as String,
-      cards: json['cards'] == null
-          ? null
-          : CardStack.fromJson(Map<String, dynamic>.from(json['cards'] as Map)),
-      tricksWon: (json['tricksWon'] as num?)?.toInt() ?? 0,
-      pointTotal: (json['pointTotal'] as num?)?.toInt() ?? 0,
-      roleKey: $enumDecodeNullable(_$RoleCatalogEnumMap, json['roleKey']),
-    );
+  id: json['id'] as String,
+  displayName: json['displayName'] as String,
+  cards: json['cards'] == null
+      ? null
+      : CardStack.fromJson(Map<String, dynamic>.from(json['cards'] as Map)),
+  tricksWon: (json['tricksWon'] as num?)?.toInt() ?? 0,
+  pointTotal: (json['pointTotal'] as num?)?.toInt() ?? 0,
+  roleKey: $enumDecodeNullable(_$RoleCatalogEnumMap, json['roleKey']),
+);
 
 Map<String, dynamic> _$TBPlayerToJson(TBPlayer instance) => <String, dynamic>{
-      'id': instance.id,
-      'displayName': instance.displayName,
-      'tricksWon': instance.tricksWon,
-      'cards': instance.cards.toJson(),
-      'roleKey': _$RoleCatalogEnumMap[instance.roleKey]!,
-      'pointTotal': instance.pointTotal,
-    };
+  'id': instance.id,
+  'displayName': instance.displayName,
+  'tricksWon': instance.tricksWon,
+  'cards': instance.cards.toJson(),
+  'roleKey': _$RoleCatalogEnumMap[instance.roleKey]!,
+  'pointTotal': instance.pointTotal,
+};
 
 const _$RoleCatalogEnumMap = {
   RoleCatalog.roleA: 'roleA',

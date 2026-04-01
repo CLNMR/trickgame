@@ -122,7 +122,7 @@ class ErrorDisplay extends StatelessWidget {
   /// Creates an [ErrorDisplay].
   const ErrorDisplay({super.key});
 
-  // TODO: Add a proper error display
+  // LATER: Add a proper error display
   @override
   Widget build(BuildContext context) => const Center(
         child: Text('Game was abandoned'),

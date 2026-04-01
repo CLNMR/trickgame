@@ -7,10 +7,10 @@ part of 'trump_chosen.dart';
 // **************************************************************************
 
 LogTrumpChosen _$LogTrumpChosenFromJson(Map json) => LogTrumpChosen(
-      playerIndex: (json['playerIndex'] as num).toInt(),
-      chosenColor: $enumDecode(_$CardColorEnumMap, json['chosenColor']),
-      indentLevel: (json['indentLevel'] as num?)?.toInt(),
-    );
+  playerIndex: (json['playerIndex'] as num).toInt(),
+  chosenColor: $enumDecode(_$CardColorEnumMap, json['chosenColor']),
+  indentLevel: (json['indentLevel'] as num?)?.toInt(),
+);
 
 Map<String, dynamic> _$LogTrumpChosenToJson(LogTrumpChosen instance) =>
     <String, dynamic>{

@@ -33,11 +33,9 @@ part 'tb_game_pre_game_handling.dart';
 part 'tb_game_role_handling.dart';
 part 'tb_game_status_generation.dart';
 part 'tb_game.g.dart';
-// part 'tb_game.service.dart'; // TODO: Configure builder
 
 @JsonSerializable()
 @GenerateService()
-
 /// A game of TrickingBees.
 class TBGame extends Game {
   /// Creates a [Game].
@@ -72,12 +70,13 @@ class TBGame extends Game {
     this.inputRequirement = InputRequirement.card,
     Map<RoundNumber, List<LogEntry>>? existingLogEntries,
     Map<String, dynamic>? cardAndEventFlags,
-  })  : undealtCards =
-            undealtCards ?? CardStack.initialDeck(playerNum: playerNum),
-        logEntries = existingLogEntries ??
-            {
-              -1: [LogStartOfGame(indentLevel: 0)],
-            };
+  }) : undealtCards =
+           undealtCards ?? CardStack.initialDeck(playerNum: playerNum),
+       logEntries =
+           existingLogEntries ??
+           {
+             -1: [LogStartOfGame(indentLevel: 0)],
+           };
 
   /// Creates a [Game] from JSON data.
   factory TBGame.fromJson(Map<String, dynamic> json) => _$TBGameFromJson(json);
@@ -95,6 +94,7 @@ class TBGame extends Game {
   SubgameNumber currentSubgame;
 
   /// The current round during the Subgame. 0 denotes the role selection phase.
+  @override
   RoundNumber currentRound;
 
   /// The index of the current player WITH RESPECT TO the current [playOrder].
@@ -124,10 +124,10 @@ class TBGame extends Game {
 
   /// The setup for the [Game] model.
   static YustDocSetup<TBGame> setup() => YustDocSetup<TBGame>(
-        collectionName: 'games',
-        fromJson: TBGame.fromJson,
-        newDoc: TBGame.new,
-      );
+    collectionName: 'games',
+    fromJson: TBGame.fromJson,
+    newDoc: TBGame.new,
+  );
 
   final _overridingTrumpColorKey = 'overridingTrumpColor';
 
@@ -163,9 +163,9 @@ class TBGame extends Game {
   /// The trick of the previous round, inferred from the cardPlay log entries.
   Trick? get previousTrick {
     if (currentRound == 0) return null;
-    final trickLogEntries =
-        getLogEntries<LogCardPlayed>(round: currentRound - 1)
-            .map((e) => MapEntry(e.cardKey, e.playerIndex));
+    final trickLogEntries = getLogEntries<LogCardPlayed>(
+      round: currentRound - 1,
+    ).map((e) => MapEntry(e.cardKey, e.playerIndex));
     if (trickLogEntries.isEmpty) return null;
     return Trick(cardMap: LinkedHashMap.fromEntries(trickLogEntries));
   }
@@ -239,7 +239,6 @@ class TBGame extends Game {
       (players[i] as TBPlayer).dealCards(undealtCards.dealCards());
     }
     currentTrump = undealtCards.getRandomCard();
-    // gameState = GameState.roleSelection; // TODO: Add new SubGameState
     inputRequirement = InputRequirement.selectRole;
     addLogEntry(
       LogSubgameStarts(subgame: currentSubgame, trumpCard: currentTrump!),
@@ -263,9 +262,6 @@ class TBGame extends Game {
 
   /// Advance the game to the next turn during the trick-playing phase.
   Future<void> goToNextTurn() async {
-    // if (gameState == GameState.roleSelection) {
-    //   return;
-    // } // TODO: Add new SubGameState
     inputRequirement = InputRequirement.card;
 
     for (final role in currentRoles) {
@@ -331,19 +327,12 @@ class TBGame extends Game {
   static int getSubRoundNumber(RoundNumber round) => round % 13;
 
   @override
-  Game copy() {
-    // TODO: implement copy
-    throw UnimplementedError();
-  }
+  TBGame copy() => TBGame.fromJson(toJson());
 
   @override
-  Game init() {
-    // TODO: implement init
-    throw UnimplementedError();
-  }
+  TBGame init() => Yust.databaseService.initDoc<TBGame>(TBGame.setup(), this);
 
   @override
-
   /// Saves the document.
   Future<void> save({
     bool merge = true,
@@ -365,12 +354,7 @@ class TBGame extends Game {
 
   @override
   void start() {
-    // TODO: implement start
-  }
-
-  /// Whether the given user is authenticated and fits with the player
-  bool isAuthenticatedPlayer(YustUser? user, Player player) {
-    return true; // TODO: Implement
+    unawaited(startGame());
   }
 }
 

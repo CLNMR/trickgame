@@ -7,12 +7,12 @@ part of 'points_awarded.dart';
 // **************************************************************************
 
 LogPointsAwarded _$LogPointsAwardedFromJson(Map json) => LogPointsAwarded(
-      indentLevel: (json['indentLevel'] as num?)?.toInt(),
-      playerIndex: (json['playerIndex'] as num).toInt(),
-      roleKey: $enumDecode(_$RoleCatalogEnumMap, json['roleKey']),
-      points: (json['points'] as num).toInt(),
-      tricksWon: (json['tricksWon'] as num).toInt(),
-    );
+  indentLevel: (json['indentLevel'] as num?)?.toInt(),
+  playerIndex: (json['playerIndex'] as num).toInt(),
+  roleKey: $enumDecode(_$RoleCatalogEnumMap, json['roleKey']),
+  points: (json['points'] as num).toInt(),
+  tricksWon: (json['tricksWon'] as num).toInt(),
+);
 
 Map<String, dynamic> _$LogPointsAwardedToJson(LogPointsAwarded instance) =>
     <String, dynamic>{
