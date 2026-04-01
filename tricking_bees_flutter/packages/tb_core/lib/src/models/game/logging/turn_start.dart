@@ -34,13 +34,21 @@ class LogTrickWon extends LogEntry {
   @override
   Future<void> showEventDisplay(
     Game game,
-    Function(TrObject title, TrObject message) displayEvent,
+    Function(
+      TrObject title,
+      TrObject message,
+      String? imagePath,
+      int? colorCode,
+    )
+    displayEvent,
     Function() incrementLogDisplayCount,
   ) async {
     final playerInfo = (game as TBGame).currentPlayer;
     await displayEvent(
       TrObject("${playerInfo.displayName}'s turn starts"),
       TrObject(''),
+      null,
+      null,
     );
     incrementLogDisplayCount();
   }
