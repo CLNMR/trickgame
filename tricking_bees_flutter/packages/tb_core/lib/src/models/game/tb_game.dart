@@ -29,7 +29,6 @@ part 'game_automatic_playing.dart';
 part 'game_card_playing.dart';
 part 'game_end_handling.dart';
 part 'game_logging.dart';
-part 'tb_game_pre_game_handling.dart';
 part 'tb_game_role_handling.dart';
 part 'tb_game_status_generation.dart';
 part 'tb_game.g.dart';
@@ -347,6 +346,12 @@ class TBGame extends Game {
       merge: merge,
       removeNullValues: removeNullValues,
     );
+  }
+
+  @override
+  Future<void> customStartLogic() async {
+    tbGameState = .roleSelection;
+    await startNewSubgame();
   }
 
   @override
