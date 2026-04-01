@@ -59,17 +59,16 @@ class RoleSelectionDisplay extends ConsumerWidget {
   }
 
   Widget _buildRoleSelection(BuildContext context, WidgetRef ref) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(child: _buildRoleButtonGrid(context, ref)),
-          if (noAuth &&
-              !game.currentRoles.any((e) => e.key != RoleCatalog.noRole))
-            OwnButton(
-              text: 'PlayWithoutRoles',
-              onPressed: () async => game.finishRoleSelection(firstTime: true),
-            ),
-        ],
-      );
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Expanded(child: _buildRoleButtonGrid(context, ref)),
+      if (noAuth && !game.currentRoles.any((e) => e.key != RoleCatalog.noRole))
+        OwnButton(
+          text: 'PlayWithoutRoles',
+          onPressed: () async => game.finishRoleSelection(firstTime: true),
+        ),
+    ],
+  );
 
   Widget _buildRoleButtonGrid(BuildContext context, WidgetRef ref) {
     final choosableRoles = RoleCatalog.allChoosableRoles;
@@ -134,7 +133,7 @@ class RoleSelectionDisplay extends ConsumerWidget {
   Widget _buildPlayerSelectGrid(BuildContext context, WidgetRef ref) {
     final selectingPlayer = game.currentPlayer;
     final players = game.getNonCurrentPlayers();
-    final userIsSelecting = selectingPlayer.id == game.getPlayer(ref.user!).id;
+    final userIsSelecting = selectingPlayer.id == game.getPlayer(ref.user).id;
     return Center(
       child: GridView.builder(
         itemCount: players.length,
@@ -146,8 +145,10 @@ class RoleSelectionDisplay extends ConsumerWidget {
         itemBuilder: (context, index) {
           final player = players[index];
           final playerIndex = game.getPlayerIndex(player);
-          final isAlreadySelected =
-              selectingPlayer.role.isPlayerSelected(game, playerIndex);
+          final isAlreadySelected = selectingPlayer.role.isPlayerSelected(
+            game,
+            playerIndex,
+          );
           return SizedBox(
             width: 50,
             height: 50,

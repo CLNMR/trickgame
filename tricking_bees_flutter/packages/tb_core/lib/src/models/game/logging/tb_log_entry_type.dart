@@ -13,6 +13,7 @@ import 'turn_start.dart';
 
 /// The different types of log entries we are allowing.
 class TBLogEntryType {
+  /// All log entry types for TrickingBees.
   static const List<LogEntryType> values = [
     subgameStarts,
     roundStartPlayOrder,
@@ -27,12 +28,16 @@ class TBLogEntryType {
   ];
 
   /// Log the start of the subgame.
-  static const subgameStarts =
-      LogEntryType('subgameStarts', LogSubgameStarts.fromJson);
+  static const subgameStarts = LogEntryType(
+    'subgameStarts',
+    LogSubgameStarts.fromJson,
+  );
 
   /// Log the start of a new round and which event is revealed.
-  static const roundStartPlayOrder =
-      LogEntryType('roundStartPlayOrder', LogRoundStartPlayOrder.fromJson);
+  static const roundStartPlayOrder = LogEntryType(
+    'roundStartPlayOrder',
+    LogRoundStartPlayOrder.fromJson,
+  );
 
   /// Log the start of a new turn.
   static const trickWon = LogEntryType('trickWon', LogTrickWon.fromJson);
@@ -47,17 +52,23 @@ class TBLogEntryType {
   static const roleChosen = LogEntryType('roleChosen', LogRoleChosen.fromJson);
 
   /// Log choosing a player.
-  static const playerChosen =
-      LogEntryType('playerChosen', LogPlayerChosen.fromJson);
+  static const playerChosen = LogEntryType(
+    'playerChosen',
+    LogPlayerChosen.fromJson,
+  );
 
   /// Log choosing a trump color.
-  static const trumpChosen =
-      LogEntryType('trumpChosen', LogTrumpChosen.fromJson);
+  static const trumpChosen = LogEntryType(
+    'trumpChosen',
+    LogTrumpChosen.fromJson,
+  );
 
   /// Log when a turn is skipped.
   static const skipTurn = LogEntryType('skipTurn', LogSkipTurn.fromJson);
 
   /// Log the end of a subgame.
-  static const pointsAwarded =
-      LogEntryType('pointsAwarded', LogPointsAwarded.fromJson);
+  static const pointsAwarded = LogEntryType(
+    'pointsAwarded',
+    LogPointsAwarded.fromJson,
+  );
 }

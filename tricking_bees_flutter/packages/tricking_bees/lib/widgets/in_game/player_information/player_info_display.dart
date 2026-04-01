@@ -56,7 +56,9 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
       value: 1,
       duration: const Duration(seconds: 2),
       vsync: this,
-    )..repeat(reverse: true);
+    );
+    // ignore: discarded_futures
+    _controller.repeat(reverse: true);
   }
 
   @override
@@ -67,58 +69,57 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) => Container(
-          width: 120,
-          height: 100,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: widget.hasCurrentTurn
-                  ? Colors.redAccent[700]!.withOpacity(_controller.value)
-                  : PlayerOrderCatalog.fromIndex(
-                      widget.game.getPlayerIndex(widget.player),
-                    ).color,
-              width: widget.hasCurrentTurn ? 5 : 3,
-            ),
-            color: Colors.white.lighten(20),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          padding: EdgeInsets.all(widget.hasCurrentTurn ? 1 : 2),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              const Divider(height: 3, thickness: 1),
-              _buildStatusInfo(),
-            ],
-          ),
+    animation: _controller,
+    builder: (context, child) => Container(
+      width: 120,
+      height: 100,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: widget.hasCurrentTurn
+              ? Colors.redAccent[700]!.withValues(alpha: _controller.value)
+              : PlayerOrderCatalog.fromIndex(
+                  widget.game.getPlayerIndex(widget.player),
+                ).color,
+          width: widget.hasCurrentTurn ? 5 : 3,
         ),
-      );
+        color: Colors.white.lighten(20),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      padding: EdgeInsets.all(widget.hasCurrentTurn ? 1 : 2),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(),
+          const Divider(height: 3, thickness: 1),
+          _buildStatusInfo(),
+        ],
+      ),
+    ),
+  );
 
   Widget _buildHeader() => Flexible(
-        child: Row(
-          children: [
-            _buildTargetIcon(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 1),
-              child: PlayerIcon(
-                index: widget.playerIndex,
-                isHighlighted:
-                    widget.game.currentPlayerIndex == widget.playerIndex,
-              ),
-            ),
-            OwnText(text: widget.player.displayName, translate: false),
-            const Spacer(),
-            IconWithNumber(
-              iconData: Icons.emoji_events,
-              displayNum: widget.player.pointTotal,
-              tooltip: 'PLAYERINFO:totalPoints',
-              iconSize: 20,
-            ),
-          ],
+    child: Row(
+      children: [
+        _buildTargetIcon(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 1),
+          child: PlayerIcon(
+            index: widget.playerIndex,
+            isHighlighted: widget.game.currentPlayerIndex == widget.playerIndex,
+          ),
         ),
-      );
+        OwnText(text: widget.player.displayName, translate: false),
+        const Spacer(),
+        IconWithNumber(
+          iconData: Icons.emoji_events,
+          displayNum: widget.player.pointTotal,
+          tooltip: 'PLAYERINFO:totalPoints',
+          iconSize: 20,
+        ),
+      ],
+    ),
+  );
 
   Widget _buildTargetIcon() {
     final userPlayer = widget.game.getPlayer(ref.user) as TBPlayer;
@@ -129,8 +130,9 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
       return const SizedBox();
     }
     return Tooltip(
-      message: 'roleTargetsPlayerTooltip'
-          .tr(namedArgs: {'role': userPlayer.roleKey.locName.tr()}),
+      message: 'roleTargetsPlayerTooltip'.tr(
+        namedArgs: {'role': userPlayer.roleKey.locName.tr()},
+      ),
       child: const Padding(
         padding: EdgeInsets.only(right: 3),
         child: Icon(
@@ -143,28 +145,28 @@ class _PlayerInfoDisplayState extends ConsumerState<PlayerInfoDisplay>
   }
 
   Widget _buildStatusInfo() => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Expanded(child: RoleIcon(roleKey: widget.player.roleKey)),
+      const SizedBox(width: 2),
+      Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: RoleIcon(roleKey: widget.player.roleKey)),
-          const SizedBox(width: 2),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconWithNumber(
-                iconData: Icons.done_outline,
-                displayNum: widget.player.tricksWon,
-                tooltip: 'PLAYERINFO:tricksWon',
-                iconSize: 20,
-              ),
-              IconWithNumber(
-                iconData: Icons.new_releases_outlined,
-                displayNum: widget.player.calculateCurrentPoints(widget.game),
-                tooltip: 'PLAYERINFO:currentPoints',
-                iconSize: 20,
-              ),
-            ],
+          IconWithNumber(
+            iconData: Icons.done_outline,
+            displayNum: widget.player.tricksWon,
+            tooltip: 'PLAYERINFO:tricksWon',
+            iconSize: 20,
+          ),
+          IconWithNumber(
+            iconData: Icons.new_releases_outlined,
+            displayNum: widget.player.calculateCurrentPoints(widget.game),
+            tooltip: 'PLAYERINFO:currentPoints',
+            iconSize: 20,
           ),
         ],
-      );
+      ),
+    ],
+  );
 }

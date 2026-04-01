@@ -18,13 +18,12 @@ class SingleCardDisplay extends StatelessWidget {
   factory SingleCardDisplay.unknown({
     void Function()? onTap,
     bool isDisabled = false,
-  }) =>
-      SingleCardDisplay(
-        cardColor: Colors.blueGrey,
-        symbol: '?',
-        onTap: onTap,
-        isDisabled: isDisabled,
-      );
+  }) => SingleCardDisplay(
+    cardColor: Colors.blueGrey,
+    symbol: '?',
+    onTap: onTap,
+    isDisabled: isDisabled,
+  );
 
   /// A card display from a given [cardKey].
   factory SingleCardDisplay.fromCardKey({
@@ -32,18 +31,14 @@ class SingleCardDisplay extends StatelessWidget {
     void Function()? onTap,
     bool isDisabled = false,
     bool isHidden = false,
-  }) =>
-      isHidden
-          ? SingleCardDisplay.unknown(
-              onTap: onTap,
-              isDisabled: isDisabled,
-            )
-          : SingleCardDisplay(
-              cardColor: Color(cardKey.color.hexValue),
-              symbol: cardKey.displayName,
-              onTap: onTap,
-              isDisabled: isDisabled,
-            );
+  }) => isHidden
+      ? SingleCardDisplay.unknown(onTap: onTap, isDisabled: isDisabled)
+      : SingleCardDisplay(
+          cardColor: Color(cardKey.color.hexValue),
+          symbol: cardKey.displayName,
+          onTap: onTap,
+          isDisabled: isDisabled,
+        );
 
   /// The card color to display.
   final Color cardColor;
@@ -59,67 +54,68 @@ class SingleCardDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: isDisabled ? null : onTap,
-        child: SizedBox(
-          height: 100,
-          child: AspectRatio(
-            aspectRatio: 3 / 4,
-            child: Stack(
-              children: [
-                DecoratedBox(
+    onTap: isDisabled ? null : onTap,
+    child: SizedBox(
+      height: 100,
+      child: AspectRatio(
+        aspectRatio: 3 / 4,
+        child: Stack(
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(1),
+                color: cardColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 3,
+                  right: 3,
+                  bottom: 3,
+                ),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: _buildNumberDisplay(size: 30),
+                ),
+              ),
+            ),
+            ..._getOverlayNumberWidgets(),
+            if (isDisabled)
+              Positioned.fill(
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(1),
-                    color: cardColor,
+                    color: Colors.grey.withValues(alpha: 0.4),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      left: 3,
-                      right: 3,
-                      bottom: 3,
-                    ),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: _buildNumberDisplay(size: 30),
-                    ),
+                  child: const SizedBox(),
+                ),
+              ),
+            if (isDisabled)
+              Positioned.fill(
+                top: 50,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.black.withValues(alpha: 0.7),
                   ),
                 ),
-                ..._getOverlayNumberWidgets(),
-                if (isDisabled)
-                  Positioned.fill(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(1),
-                        color: Colors.grey.withOpacity(0.4),
-                      ),
-                      child: const SizedBox(),
-                    ),
-                  ),
-                if (isDisabled)
-                  Positioned.fill(
-                    top: 50,
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.black.withOpacity(0.7),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
+              ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 
-  List<Widget> _getOverlayNumberWidgets() => [
-        Alignment.topLeft,
-        Alignment.topRight,
-        Alignment.bottomRight,
-        Alignment.bottomLeft,
-      ]
+  List<Widget> _getOverlayNumberWidgets() =>
+      [
+            Alignment.topLeft,
+            Alignment.topRight,
+            Alignment.bottomRight,
+            Alignment.bottomLeft,
+          ]
           .map(
             (alignment) => Align(
               alignment: alignment,
@@ -128,13 +124,13 @@ class SingleCardDisplay extends StatelessWidget {
           )
           .toList();
   Widget _buildNumberDisplay({double size = 15}) => Padding(
-        padding: const EdgeInsets.all(3),
-        child: OwnText(
-          translate: false,
-          text: symbol,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: size),
-        ),
-      );
+    padding: const EdgeInsets.all(3),
+    child: OwnText(
+      translate: false,
+      text: symbol,
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: size),
+    ),
+  );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

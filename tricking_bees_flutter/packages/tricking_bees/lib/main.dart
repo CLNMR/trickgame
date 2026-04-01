@@ -8,6 +8,7 @@ import 'screens/game_screen.r.dart';
 
 /// Fill in the following line, if you want to use a local emulated Firebase
 /// Environment
+// ignore: unreachable_from_main
 const emulatorAddress = bool.fromEnvironment('emuMode', defaultValue: false)
     ? 'localhost'
     : null;
