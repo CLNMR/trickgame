@@ -1,3 +1,5 @@
+// ignore_for_file: prefer-overriding-parent-equality
+
 import 'package:flutter_game_framework_core/flutter_game_framework_core.dart';
 import 'package:json_annotation/json_annotation.dart';
 

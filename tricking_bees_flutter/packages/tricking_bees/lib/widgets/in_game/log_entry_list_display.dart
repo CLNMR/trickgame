@@ -9,10 +9,7 @@ import 'package:tb_core/tb_core.dart';
 /// A list view for log entries.
 class LogEntryListDisplay extends ConsumerStatefulWidget {
   /// Creates a [LogEntryListDisplay].
-  const LogEntryListDisplay({
-    super.key,
-    required this.game,
-  });
+  const LogEntryListDisplay({super.key, required this.game});
 
   /// The game for which the logEntries should be shown.
   final TBGame game;
@@ -52,7 +49,8 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
 
   /// Scrolls to the bottom of the list.
   Future<void> _scrollToBottom({bool force = false}) async {
-    final isAtBottom = _scrollController.position.pixels >
+    final isAtBottom =
+        _scrollController.position.pixels >
         _scrollController.position.maxScrollExtent - 30;
     if (_scrollController.hasClients && (isAtBottom || force)) {
       await _scrollController.animateTo(
@@ -65,43 +63,42 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(),
-          gradient: AppGradients.indigoToYellow,
-        ),
-        child: _isMinimized ? _buildMaximizeButton() : _buildMaximizedLog(),
-      );
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5),
+      border: Border.all(),
+      gradient: AppGradients.indigoToYellow,
+    ),
+    child: AnimatedSwitcher(
+      duration: const Duration(milliseconds: 200),
+      child: _isMinimized ? _buildMaximizeButton() : _buildMaximizedLog(),
+    ),
+  );
 
-  // TODO: Introduce animation to switch the states, and maybe the number of
-  // unseen (new) log messages for the user as an overlayed number.
   Widget _buildMaximizeButton() => IconButton(
-        onPressed: () {
-          setState(() {
-            _isMinimized = false;
-          });
-        },
-        icon: const Icon(Icons.chevron_left),
-      );
+    key: const ValueKey('minimized'),
+    onPressed: () {
+      setState(() {
+        _isMinimized = false;
+      });
+    },
+    icon: const Icon(Icons.chevron_left),
+  );
 
   Widget _buildMinimizeButton() => IconButton(
-        onPressed: () {
-          setState(() {
-            _isMinimized = true;
-          });
-        },
-        icon: const Icon(Icons.chevron_right),
-      );
+    onPressed: () {
+      setState(() {
+        _isMinimized = true;
+      });
+    },
+    icon: const Icon(Icons.chevron_right),
+  );
 
   Widget _buildMaximizedLog() {
     final logEntries = widget.game.logEntries;
     return Column(
       children: [
         _buildHeader(),
-        const Divider(
-          height: 2,
-          thickness: 2,
-        ),
+        const Divider(height: 2, thickness: 2),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(4),
@@ -113,23 +110,23 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
   }
 
   Widget _buildHeader() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Row(
-          children: [
-            _buildMinimizeButton(),
-            const OwnText(
-              text: 'LOG:boxTitle',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const Spacer(),
-            IconButton(
-              iconSize: 12,
-              icon: const Icon(Icons.keyboard_double_arrow_down),
-              onPressed: () async => _scrollToBottom(force: true),
-            ),
-          ],
+    padding: const EdgeInsets.symmetric(horizontal: 4),
+    child: Row(
+      children: [
+        _buildMinimizeButton(),
+        const OwnText(
+          text: 'LOG:boxTitle',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-      );
+        const Spacer(),
+        IconButton(
+          iconSize: 12,
+          icon: const Icon(Icons.keyboard_double_arrow_down),
+          onPressed: () async => _scrollToBottom(force: true),
+        ),
+      ],
+    ),
+  );
 
   Widget _buildEntryList(Map<int, List<LogEntry>> logEntries) =>
       ListView.builder(
@@ -145,14 +142,24 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
     RoundNumber round,
     List<LogEntry> logEntries,
   ) {
-    final isExpanded = expandedState[round] ??
-        [widget.game.currentRound, widget.game.currentRound - 1]
-            .contains(round);
+    final isExpanded =
+        expandedState[round] ??
+        [
+          widget.game.currentRound,
+          widget.game.currentRound - 1,
+        ].contains(round);
     final expanseController = ExpandableController(initialExpanded: isExpanded);
     expanseController.addListener(() {
+      // Only allow opening previous rounds at subgame boundaries
+      // (or if the game is finished).
+      if (expanseController.expanded &&
+          widget.game.gameState != GameState.finished &&
+          round < widget.game.currentRound - 1 &&
+          !TBGame.roundStartsSubgame(round)) {
+        expanseController.expanded = false;
+        return;
+      }
       setState(() {
-        // TODO: Do not let the player open previous rounds except for subgame
-        // starts (as long as the game isn't finished)
         expandedState[round] = expanseController.expanded;
       });
     });
@@ -171,10 +178,7 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
           collapsed: const SizedBox(),
           expanded: DecoratedBox(
             decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black,
-                width: 1,
-              ),
+              border: Border.all(color: Colors.black, width: 1),
               borderRadius: BorderRadius.circular(2),
               color: Colors.white,
             ),
@@ -191,57 +195,51 @@ class _LogEntryListDisplayState extends ConsumerState<LogEntryListDisplay> {
   }
 
   Widget _buildHeaderForRound(RoundNumber round) => OwnText(
-        trObject: round == -1
-            ? TrObject('LOG:headerGameStart')
-            : round == widget.game.totalRoundNum
-                ? TrObject('LOG:headerEndOfGame')
-                : TBGame.roundStartsSubgame(round)
-                    ? TrObject(
-                        'LOG:headerSubgameStart',
-                        namedArgs: {
-                          'subgame':
-                              TBGame.getSubgameNumForRound(round).toString(),
-                          'subgameNum': widget.game.subgameNum.toString(),
-                        },
-                      )
-                    : TrObject(
-                        'LOG:headerSubgameRound',
-                        namedArgs: {
-                          'round': TBGame.getSubRoundNumber(round).toString(),
-                        },
-                      ),
-        style: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-        ),
-      );
+    trObject: round == -1
+        ? TrObject('LOG:headerGameStart')
+        : round == widget.game.totalRoundNum
+        ? TrObject('LOG:headerEndOfGame')
+        : TBGame.roundStartsSubgame(round)
+        ? TrObject(
+            'LOG:headerSubgameStart',
+            namedArgs: {
+              'subgame': TBGame.getSubgameNumForRound(round).toString(),
+              'subgameNum': widget.game.subgameNum.toString(),
+            },
+          )
+        : TrObject(
+            'LOG:headerSubgameRound',
+            namedArgs: {'round': TBGame.getSubRoundNumber(round).toString()},
+          ),
+    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+  );
 
   Widget _buildSingleLogEntryDisplay(LogEntry logEntry) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: logEntry.indentLevel.toDouble() * 6,
-              top: 5,
-              right: 2,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.only(
+          left: logEntry.indentLevel.toDouble() * 6,
+          top: 5,
+          right: 2,
+        ),
+        child: const Icon(Icons.circle, size: 6, color: Colors.black),
+      ),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SelectableText.rich(
+              context.trFromObjectToTextSpan(
+                logEntry.getDescription(widget.game),
+                widget.game.shortenedPlayerNames,
+              ),
             ),
-            child: const Icon(Icons.circle, size: 6, color: Colors.black),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SelectableText.rich(
-                  context.trFromObjectToTextSpan(
-                    logEntry.getDescription(widget.game),
-                    widget.game.shortenedPlayerNames,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
+          ],
+        ),
+      ),
+    ],
+  );
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
